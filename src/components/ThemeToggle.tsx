@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Button } from "./ui/button";
+import { Icon } from "./IconWrapper";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState(
@@ -23,7 +22,7 @@ export default function ThemeToggle() {
       size={"icon"}
       variant={"secondary"}
     >
-      {theme === "dark" ? <Brightness7Icon/> : <DarkModeIcon/>}
+      {theme === "dark" ? <Icon name="Son"/> : <Icon name="Moon"/>}
     </Button>
   );
 }
