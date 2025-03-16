@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Sun, Moon } from "lucide-react";
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Button } from "./ui/button";
 
 export default function ThemeToggle() {
@@ -20,12 +21,9 @@ export default function ThemeToggle() {
     <Button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       size={"icon"}
+      variant={"secondary"}
     >
-      {theme === "dark" ? (
-        <Sun />
-      ) : (
-        <Moon />
-      )}
+      {theme === "dark" ? <Brightness7Icon/> : <DarkModeIcon/>}
     </Button>
   );
 }
