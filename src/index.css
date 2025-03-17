@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap");
+
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
@@ -84,7 +86,7 @@
   --popover-foreground: oklch(0.985 0 0);
 
   --primary: oklch(0.647 0.257 32.29);
-  
+
   --primary-foreground: oklch(0.985 0 0);
 
   --secondary: oklch(0.274 0.006 286.033);
@@ -206,11 +208,16 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme {
+  --font-sans: "Inter", "sans-serif";
+  --font-title: "Bebas Neue", "cursive"
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
