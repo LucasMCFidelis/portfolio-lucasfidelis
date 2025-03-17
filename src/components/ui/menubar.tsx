@@ -1,10 +1,8 @@
 import * as React from "react"
 import * as MenubarPrimitive from "@radix-ui/react-menubar"
-import {
-  Check, ChevronRight, RadioButtonUnchecked
-} from "@mui/icons-material";
 
 import { cn } from "@/lib/utils"
+import { Icon } from "../IconWrapper"
 
 function Menubar({
   className,
@@ -129,7 +127,7 @@ function MenubarCheckboxItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
-          <Check className="size-4" />
+          <Icon name="Check" />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}
@@ -153,7 +151,7 @@ function MenubarRadioItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
-          <RadioButtonUnchecked className="size-2 fill-current" />
+          <Icon name="RadioButtonUnchecked" fontSize="inherit" />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}
@@ -235,7 +233,7 @@ function MenubarSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRight className="ml-auto h-4 w-4" />
+      <Icon name="ChevronRight" />
     </MenubarPrimitive.SubTrigger>
   )
 }

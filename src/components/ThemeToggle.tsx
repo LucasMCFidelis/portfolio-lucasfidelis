@@ -22,7 +22,7 @@ export default function ThemeToggle() {
       size={"icon"}
       variant={"outline"}
     >
-      {theme === "dark" ? <Icon name="Son"/> : <Icon name="Moon"/>}
+      <Icon name={theme === "dark" ? "Sun" : "Moon"} />
     </Button>
   );
 }

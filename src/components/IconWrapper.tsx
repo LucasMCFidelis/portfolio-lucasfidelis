@@ -1,3 +1,4 @@
+import { cloneElement, ReactElement } from "react";
 import {
   Brightness7,
   CallMade,
@@ -7,23 +8,37 @@ import {
   Instagram,
   LinkedIn,
   Menu,
+  Close,
+  Check,
+  ChevronRight,
+  RadioButtonUnchecked,
 } from "@mui/icons-material";
+import { SvgIconProps } from "@mui/material/SvgIcon";
 
-const ICONS = {
+const ICONS: Record<string, ReactElement<SvgIconProps>> = {
   Menu: <Menu />,
-  Son: <Brightness7 />,
+  Sun: <Brightness7 />,
   Moon: <DarkMode />,
   Download: <Download />,
   LinkedIn: <LinkedIn />,
   GitHub: <GitHub />,
   ContactArrow: <CallMade />,
   Instagram: <Instagram />,
+  Close: <Close />,
+  Check: <Check />,
+  ChevronRight: <ChevronRight />,
+  Circle: <RadioButtonUnchecked />,
 };
 
 interface IconProps {
   name: keyof typeof ICONS;
+  fontSize?: "small" | "medium" | "large" | "inherit";
 }
 
-export function Icon({ name }: IconProps) {
-  return ICONS[name] || <Menu />;
+export function Icon({ name, fontSize = "medium" }: IconProps) {
+  const IconComponent = ICONS[name] || ICONS["Menu"];
+
+  return cloneElement(IconComponent, {
+    fontSize,
+  });
 }
