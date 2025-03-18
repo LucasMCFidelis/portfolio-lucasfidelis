@@ -1,9 +1,11 @@
 import Header from "./components/Header";
+import SectionHome from "./components/SectionHome";
 
 function App() {
   return (
-    <div className="flex items-start justify-center min-h-screen m-5">
-      <Header/>
+    <div className="flex flex-col items-center mx-4 my-5 sm:mx-8 sm:my-10 gap-10 sm:gap-20">
+      <Header />
+      <SectionHome/>
     </div>
   );
 }
