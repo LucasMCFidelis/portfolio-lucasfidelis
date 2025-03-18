@@ -3,7 +3,7 @@ import SectionHome from "./components/SectionHome";
 
 function App() {
   return (
-    <div className="flex flex-col items-center mx-4 my-5 sm:mx-8 sm:my-10 gap-10 sm:gap-20">
+    <div className="max-w-screen flex flex-col items-center gap-10 sm:gap-20 container-padding ">
       <Header />
       <SectionHome/>
     </div>
