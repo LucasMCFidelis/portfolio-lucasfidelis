@@ -13,7 +13,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="w-full flex items-center justify-between p-4">
+    <header className="w-full h-[10vh] flex items-center justify-between sticky top-0 bg-background shadow-md shadow-accent">
       <h1 className="font-title text-3xl">Lucas Fidelis</h1>
 
       {/* Menu Desktop */}
