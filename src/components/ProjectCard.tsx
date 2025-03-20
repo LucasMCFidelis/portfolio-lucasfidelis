@@ -20,7 +20,13 @@ import { type CarouselApi } from "@/components/ui/carousel";
 import React from "react";
 import { ProjectCardProps } from "@/interfaces/ProjectCardProps";
 
-export default function ProjectCard({title, description, year, area, urlGitHub}: ProjectCardProps) {
+export default function ProjectCard({
+  title,
+  description,
+  year,
+  area,
+  urlGitHub,
+}: ProjectCardProps) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -39,7 +45,7 @@ export default function ProjectCard({title, description, year, area, urlGitHub}:
   }, [api]);
 
   return (
-    <article className="w-full flex flex-col lg:flex-row justify-between items-center lg:gap-20 lg:pl-20">
+    <article className="w-full flex flex-col justify-between items-center lg:flex-row lg:items-center lg:gap-20 lg:pl-20">
       <Carousel
         className="w-[60vw] max-w-96 md:max-w-md lg:max-w-2xl xl:max-w-3xl flex-1"
         setApi={setApi}
@@ -66,9 +72,7 @@ export default function ProjectCard({title, description, year, area, urlGitHub}:
       <Card className="bg-transparent border-none w-full flex justify-between">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
-          <CardDescription>
-              {description}
-          </CardDescription>
+          <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 space-y-3 sm:space-y-5">
           <h4 className="uppercase">Informações do Projeto</h4>
@@ -84,13 +88,33 @@ export default function ProjectCard({title, description, year, area, urlGitHub}:
           </div>
           <Separator />
         </CardContent>
-        <CardFooter>
-          <a href={urlGitHub} target="_blank" rel="noopener noreferrer">
-            <Button variant={"link"}>
-              VER NO GITHUB
-              <Icon name="GitHub" />
-            </Button>
-          </a>
+        <CardFooter className="max-w-full flex flex-wrap">
+          {urlGitHub.length === 1 ? (
+            <a
+              href={urlGitHub[0].url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="link">
+                VER NO GITHUB
+                <Icon name="GitHub" />
+              </Button>
+            </a>
+          ) : (
+            urlGitHub.map((repo, index) => (
+              <a
+                key={index}
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="link">
+                  {repo.name || `VER NO GITHUB ${index + 1}`}
+                  <Icon name="GitHub" />
+                </Button>
+              </a>
+            ))
+          )}
         </CardFooter>
       </Card>
     </article>

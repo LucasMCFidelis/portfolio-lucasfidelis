@@ -1,7 +1,7 @@
 export interface ProjectCardProps {
   title: string;
-  description: string;
+  description?: string;
   year: number;
   area: string;
-  urlGitHub: string;
+  urlGitHub: { name?: string; url: string }[];
 }
