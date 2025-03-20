@@ -12,11 +12,11 @@ export default function SectionHome() {
       />
       <div className="max-w-sm md:max-w-xl flex flex-col justify-center gap-y-5">
         <div>
-          <h1 className="font-title text-2xl md:text-5xl lg:text-8xl">
+          <h1>
             Olá, eu sou
             <br className="hidden md:inline" /> Lucas Fidelis
           </h1>
-          <p className="text-muted-foreground text-sm md:text-md lg:text-lg">
+          <p>
             Estudante de Análise e Desenvolvimento de Sistemas e futuro
             desenvolvedor de frontend.
           </p>
