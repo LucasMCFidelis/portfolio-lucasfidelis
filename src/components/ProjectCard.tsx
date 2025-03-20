@@ -41,7 +41,7 @@ export default function ProjectCard({title, description, year, area, urlGitHub}:
   return (
     <article className="w-full flex flex-col lg:flex-row justify-between items-center lg:gap-20 lg:pl-20">
       <Carousel
-        className="max-w-56 sm:max-w-xs md:max-w-sm xl:max-w-md flex-1"
+        className="w-[60vw] max-w-96 md:max-w-md lg:max-w-2xl xl:max-w-3xl flex-1"
         setApi={setApi}
       >
         <CarouselContent>
