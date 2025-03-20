@@ -12,6 +12,8 @@ import {
   Check,
   ChevronRight,
   RadioButtonUnchecked,
+  ArrowBack,
+  ArrowForward,
 } from "@mui/icons-material";
 import { SvgIconProps } from "@mui/material/SvgIcon";
 
@@ -28,6 +30,8 @@ const ICONS: Record<string, ReactElement<SvgIconProps>> = {
   Check: <Check />,
   ChevronRight: <ChevronRight />,
   Circle: <RadioButtonUnchecked />,
+  ArrowForward: <ArrowForward />,
+  ArrowBack: <ArrowBack />,
 };
 
 interface IconProps {
