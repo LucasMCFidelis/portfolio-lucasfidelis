@@ -45,9 +45,9 @@ export default function ProjectCard({
   }, [api]);
 
   return (
-    <article className="w-full flex flex-col justify-between items-center lg:flex-row lg:items-center lg:gap-20 lg:pl-20">
+    <article className="w-full flex flex-col justify-between items-center lg:flex-row lg:items-start lg:gap-20 lg:pl-20">
       <Carousel
-        className="w-[60vw] max-w-96 md:max-w-md lg:max-w-2xl xl:max-w-3xl flex-1"
+        className="w-[60vw] md:max-w-80 lg:max-w-2xl xl:max-w-3xl"
         setApi={setApi}
       >
         <CarouselContent>
