@@ -5,7 +5,7 @@ export default function SectionProjects() {
   return (
     <section className="w-full flex flex-col items-start gap-8">
       <h2>Projetos em destaque</h2>
-      <div className="w-full space-y-10 sm:space-y-20">
+      <div className="w-full space-y-10 sm:space-y-10">
         {projectsList.map(
           ({ title, description, year, area, urlGitHub }, index) => (
             <ProjectCard
