@@ -229,7 +229,7 @@
     @apply font-title;
   }
   h1 {
-    @apply text-3xl md:text-5xl lg:text-8xl;
+    @apply text-3xl md:text-5xl xl:text-8xl;
   }
   h2 {
     @apply text-2xl md:text-5xl lg:text-6xl;

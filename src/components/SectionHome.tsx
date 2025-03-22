@@ -1,6 +1,7 @@
 import { Icon } from "./IconWrapper";
 import { Button } from "./ui/button";
 import profile1 from "../assets/profile-1.jpg";
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 export default function SectionHome() {
   return (
@@ -10,18 +11,20 @@ export default function SectionHome() {
         alt="Foto Lucas"
         className="w-full max-w-sm self-center h-[60vh] sm:h-[40vh] sm:w-[30vh] lg:h-[65vh] lg:w-[55vh] rounded-2xl object-cover object-top"
       />
-      <div className="max-w-sm md:max-w-xl flex flex-col justify-center gap-y-5">
-        <div>
-          <h1>
-            Olá, eu sou
-            <br className="hidden md:inline" /> Lucas Fidelis
-          </h1>
-          <p>
+      <Card className="w-full md:max-w-xl flex flex-col md:flex-1 gap-y-5 bg-transparent border-none">
+        <CardHeader>
+          <CardTitle>
+            <h1>
+              Olá, eu sou
+              <br className="hidden md:inline" /> Lucas Fidelis
+            </h1>
+          </CardTitle>
+          <CardDescription>
             Estudante de Análise e Desenvolvimento de Sistemas e futuro
             desenvolvedor de frontend.
-          </p>
-        </div>
-        <div className="flex justify-start items-center gap-4">
+          </CardDescription>
+        </CardHeader>
+        <CardAction className="flex justify-start items-center gap-4">
           <Button>
             CONTATE-ME
             <Icon name="ContactArrow" />
@@ -44,8 +47,8 @@ export default function SectionHome() {
               <Icon name="GitHub" />
             </Button>
           </a>
-        </div>
-      </div>
+        </CardAction>
+      </Card>
     </section>
   );
 }

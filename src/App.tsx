@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import SectionAboutMe from "./components/SectionAboutMe";
+import SectionContact from "./components/SectionContact";
 import SectionHome from "./components/SectionHome";
 import SectionProjects from "./components/SectionProjects";
 import { Separator } from "./components/ui/separator";
@@ -13,6 +14,8 @@ function App() {
       <SectionProjects />
       <Separator />
       <SectionAboutMe />
+      <Separator />
+      <SectionContact />
     </div>
   );
 }

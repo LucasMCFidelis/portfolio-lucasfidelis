@@ -53,7 +53,7 @@ export default function ProjectCard({
         <CarouselContent>
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index}>
-              <div className="p-1">
+              <div>
                 <Card>
                   <CardContent className="flex aspect-square items-center justify-center p-6">
                     <span className="text-4xl font-semibold">{index + 1}</span>
@@ -88,14 +88,14 @@ export default function ProjectCard({
           </div>
           <Separator />
         </CardContent>
-        <CardFooter className="max-w-full flex flex-wrap">
+        <CardFooter className="max-w-full flex flex-wrap gap-x-2">
           {urlGitHub.length === 1 ? (
             <a
               href={urlGitHub[0].url}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button variant="link">
+              <Button variant="link" className="has-[>svg]:pl-0">
                 VER NO GITHUB
                 <Icon name="GitHub" />
               </Button>
@@ -108,7 +108,7 @@ export default function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="link">
+                <Button variant="link" className="has-[>svg]:pl-0">
                   {repo.name || `VER NO GITHUB ${index + 1}`}
                   <Icon name="GitHub" />
                 </Button>
