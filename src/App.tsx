@@ -1,8 +1,8 @@
 import Header from "./components/Header";
-import SectionAboutMe from "./components/SectionAboutMe";
-import SectionContact from "./components/SectionContact";
-import SectionHome from "./components/SectionHome";
-import SectionProjects from "./components/SectionProjects";
+import SectionAboutMe from "./components/sections/SectionAboutMe";
+import SectionContact from "./components/sections/SectionContact";
+import SectionHome from "./components/sections/SectionHome";
+import SectionProjects from "./components/sections/SectionProjects";
 import { Separator } from "./components/ui/separator";
 
 function App() {

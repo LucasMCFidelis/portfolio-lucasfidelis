@@ -1,11 +1,12 @@
-import { Icon } from "./IconWrapper";
-import { Button } from "./ui/button";
-import profile1 from "../assets/profile-1.jpg";
-import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Icon } from "../IconWrapper";
+import { Button } from "../ui/button";
+import profile1 from "../../assets/profile-1.jpg";
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import SectionWrapper from "../SectionWrapper";
 
 export default function SectionHome() {
   return (
-    <section className="w-full flex flex-col items-start sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
+    <SectionWrapper className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
       <img
         src={profile1}
         alt="Foto Lucas"
@@ -49,6 +50,6 @@ export default function SectionHome() {
           </a>
         </CardAction>
       </Card>
-    </section>
+    </SectionWrapper>
   );
 }

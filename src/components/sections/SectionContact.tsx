@@ -1,5 +1,6 @@
-import { Icon } from "./IconWrapper";
-import { Button } from "./ui/button";
+import { Icon } from "../IconWrapper";
+import SectionWrapper from "../SectionWrapper";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -7,11 +8,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 
 export default function SectionContact() {
   return (
-    <section className="w-full flex flex-col lg:flex-row items-start justify-between sm:gap-8">
+    <SectionWrapper>
       <Card className="bg-transparent border-none w-full lg:w-3/5">
         <CardHeader className="p-0">
           <CardTitle><h2>Conecte-se a mim</h2></CardTitle>
@@ -43,6 +44,6 @@ export default function SectionContact() {
           </a>
         </CardFooter>
       </Card>
-    </section>
+    </SectionWrapper>
   );
 }

@@ -1,16 +1,17 @@
 import { projectsList } from "@/projectsList";
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "../ProjectCard";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
+import SectionWrapper from "../SectionWrapper";
 
 export default function SectionProjects() {
   return (
-    <section className="w-full flex flex-col items-start gap-8">
+    <SectionWrapper>
       <Card className="bg-transparent border-none w-full gap-10">
         <CardHeader className="lg:w-1/2">
           <CardTitle>
@@ -37,6 +38,6 @@ export default function SectionProjects() {
           )}
         </CardContent>
       </Card>
-    </section>
+    </SectionWrapper>
   );
 }

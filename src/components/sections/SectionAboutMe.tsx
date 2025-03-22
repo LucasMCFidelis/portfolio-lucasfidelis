@@ -1,15 +1,18 @@
-import { Button } from "./ui/button";
+import SectionWrapper from "../SectionWrapper";
+import { Button } from "../ui/button";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 
 export default function SectionAboutMe() {
   return (
-    <section className="w-full flex flex-col lg:flex-row items-start justify-between sm:gap-8">
+    <SectionWrapper 
+    className="lg:flex-row justify-between gap-0 sm:gap-8"
+    >
       <h2>Sobre min</h2>
       <Card className="bg-transparent border-none w-full lg:w-3/5">
         <CardHeader>
@@ -37,6 +40,6 @@ export default function SectionAboutMe() {
           </a>
         </CardFooter>
       </Card>
-    </section>
+    </SectionWrapper>
   );
 }
