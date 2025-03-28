@@ -26,17 +26,22 @@ import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "O nome deve ter pelo menos 2 caracteres.",
   }),
-  email: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  email: z.string().email({
+    message: "Digite um email válido.",
   }),
   subject: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "O assunto deve ter pelo menos 2 caracteres.",
   }),
-  message: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  message: z
+    .string()
+    .min(2, {
+      message: "A mensagem deve ter pelo menos 2 caracteres.",
+    })
+    .max(500, {
+      message: "A mensagem não pode ultrapassar 500 caracteres.",
+    }),
 });
 
 export default function SectionContact() {
@@ -45,6 +50,9 @@ export default function SectionContact() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      email: "",
+      subject: "",
+      message: "",
     },
   });
 
@@ -67,9 +75,12 @@ export default function SectionContact() {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <Button variant={"link"} className="lowercase">
+          <a
+            href="mailto:lucasm241301@gmail.com"
+            className="text-primary lowercase cursor-pointer underline-offset-3 hover:underline"
+          >
             lucasm241301@gmail.com
-          </Button>
+          </a>
         </CardContent>
         <CardFooter className="p-0 space-x-3">
           <a
@@ -94,10 +105,7 @@ export default function SectionContact() {
       </Card>
       <div className="flex-1 w-full">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -153,7 +161,7 @@ export default function SectionContact() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Enviar</Button>
           </form>
         </Form>
       </div>
