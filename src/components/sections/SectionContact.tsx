@@ -16,16 +16,25 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
-  username: z.string().min(2, {
+  name: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  email: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  subject: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  message: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
 });
@@ -35,7 +44,7 @@ export default function SectionContact() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
     },
   });
 
@@ -83,24 +92,63 @@ export default function SectionContact() {
           </a>
         </CardFooter>
       </Card>
-      <div className="flex-1">
+      <div className="flex-1 w-full">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex-1 space-y-8"
+            className="space-y-4"
           >
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Nome" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>assunto</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Assunto" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>mensagem</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Type your message here."
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
