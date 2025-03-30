@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { sendEmail } from "@/sendEmail";
 
 const formSchema = z.object({
   name: z
@@ -58,8 +59,7 @@ export default function SectionContact() {
     toast.dismiss(); // Remove qualquer toast ativo antes de exibir um novo
 
     try {
-      console.log(values);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await sendEmail(values.name, values.email, values.subject, values.message);
       toast.success("Mensagem enviada com sucesso!");
       form.reset();
     } catch (error) {
