@@ -59,7 +59,12 @@ export default function SectionContact() {
     toast.dismiss(); // Remove qualquer toast ativo antes de exibir um novo
 
     try {
-      await sendEmail(values.name, values.email, values.subject, values.message);
+      await sendEmail(
+        values.name,
+        values.email,
+        values.subject,
+        values.message
+      );
       toast.success("Mensagem enviada com sucesso!");
       form.reset();
     } catch (error) {
@@ -72,8 +77,8 @@ export default function SectionContact() {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <SectionWrapper className="md:flex-row md:flex-nowrap md:justify-between">
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         <Card className="bg-transparent border-none w-full md:w-3/5">
           <CardHeader className="p-0">
             <CardTitle>
