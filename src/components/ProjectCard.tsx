@@ -71,7 +71,7 @@ export default function ProjectCard({
       </Carousel>
       <Card className="bg-transparent border-none w-full flex justify-between">
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
+          <CardTitle><h3>{title}</h3></CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 space-y-3 sm:space-y-5">
