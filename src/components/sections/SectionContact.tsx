@@ -88,7 +88,7 @@ export default function SectionContact() {
               href="mailto:lucasm241301@gmail.com"
               className="text-primary lowercase cursor-pointer underline-offset-3 hover:underline"
             >
-              lucasm241301@gmail.com
+              fidelis.lucasm@gmail.com
             </a>
           </CardContent>
           <CardFooter className="p-0 space-x-3">
