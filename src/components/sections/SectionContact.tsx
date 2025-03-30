@@ -85,10 +85,10 @@ export default function SectionContact() {
           </CardHeader>
           <CardContent className="p-0">
             <a
-              href="mailto:lucasm241301@gmail.com"
+              href="mailto:fidelis.lucasm@gmail.com"
               className="text-primary lowercase cursor-pointer underline-offset-3 hover:underline"
             >
-              lucasm241301@gmail.com
+              fidelis.lucasm@gmail.com
             </a>
           </CardContent>
           <CardFooter className="p-0 space-x-3">
