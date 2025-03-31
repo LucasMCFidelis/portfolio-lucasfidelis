@@ -3,34 +3,65 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
 import { Icon } from "./IconWrapper";
+import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const sections = [
-    { title: "Início", href: "/" },
-    { title: "Projetos", href: "/projetos" },
-    { title: "Sobre", href: "/sobre" },
-    { title: "Contato", href: "/contato" },
+    { title: "Início", href: "/home", id: "home" },
+    { title: "Projetos", href: "/home", id: "projects" },
+    { title: "Sobre", href: "/about", id: "about" },
+    { title: "Contato", id: "contact" },
   ];
+
+  const handleNavigation = (href?: string, id?: string) => {
+    const HEADER_HEIGHT = 12 * window.innerHeight / 100; // 12vh convertido para pixels
+
+    const section = id ? document.getElementById(id) : null;
+    if (section) {
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: sectionTop - HEADER_HEIGHT, behavior: "smooth" });
+    } else if (href && location.pathname !== href) {
+      navigate(href, { state: { scrollTo: id } });
+    }
+  };
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const scrollToSection = () => {
+        const section = document.getElementById(location.state.scrollTo);
+        if (section) {
+          const HEADER_HEIGHT = 12 * window.innerHeight / 100;
+          const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top: sectionTop - HEADER_HEIGHT, behavior: "smooth" });
+        }
+      };
+  
+      // Espera a página carregar completamente antes de tentar dar scroll
+      setTimeout(scrollToSection, 300);
+    }
+  }, [location]);
 
   return (
     <header className="w-full h-[10vh] flex items-center justify-between sticky top-0 bg-background shadow-md shadow-accent z-20">
       <h1 className="font-title text-3xl">Lucas Fidelis</h1>
 
       {/* Menu Desktop */}
-      <div className="hidden md:flex items-center gap-4">
+      <nav className="hidden md:flex items-center gap-4">
         <Menubar className="bg-transparent border-none shadow-none">
-          {sections.map(({ title, href }, index) => (
-            <MenubarMenu key={index}>
-              <a href={href}>
-                <MenubarTrigger className="px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground cursor-pointer">
+          <MenubarMenu>
+            {sections.map(({ title, href, id }, index) => (
+                <MenubarTrigger key={index} className="px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground cursor-pointer" onClick={() => handleNavigation(href, id)}>
                   {title}
                 </MenubarTrigger>
-              </a>
-            </MenubarMenu>
-          ))}
+            ))}
+          </MenubarMenu>
         </Menubar>
         <ThemeToggle />
-      </div>
+      </nav>
 
       {/* Menu Mobile */}
       <div className="md:hidden flex items-center gap-2">
@@ -43,11 +74,11 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="right">
             <nav className="flex flex-col gap-4 m-4">
-              {sections.map(({ title, href }, index) => (
+              {sections.map(({ title, href, id }, index) => (
                 <a
                   key={index}
-                  href={href}
-                  className="text-md hover:text-primary"
+                  onClick={() => handleNavigation(href, id)}
+                  className="text-md hover:text-primary cursor-pointer"
                 >
                   {title}
                 </a>
