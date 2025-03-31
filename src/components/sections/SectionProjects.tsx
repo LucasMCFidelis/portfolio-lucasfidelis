@@ -11,7 +11,7 @@ import SectionWrapper from "../SectionWrapper";
 
 export default function SectionProjects() {
   return (
-    <SectionWrapper>
+    <SectionWrapper id="projects">
       <Card className="bg-transparent border-none w-full gap-10">
         <CardHeader className="lg:w-1/2">
           <CardTitle>
