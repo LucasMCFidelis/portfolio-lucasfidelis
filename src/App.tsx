@@ -1,20 +1,19 @@
 import Header from "./components/Header";
-import SectionAboutMe from "./components/sections/SectionAboutMe";
 import SectionContact from "./components/sections/SectionContact";
-import SectionHome from "./components/sections/SectionHome";
-import SectionProjects from "./components/sections/SectionProjects";
-import { Separator } from "./components/ui/separator";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/Home";
+import AboutMe from "./pages/AbouteMe";
 
 function App() {
   return (
     <div className="max-w-screen flex flex-col items-center md:gap-20 container-padding ">
-      <Header />
-      <SectionHome />
-      <Separator />
-      <SectionProjects />
-      <Separator />
-      <SectionAboutMe />
-      <Separator />
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/about" element={<AboutMe />}></Route>
+        </Routes>
+      </BrowserRouter>
       <SectionContact />
     </div>
   );
