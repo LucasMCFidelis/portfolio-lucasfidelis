@@ -30,15 +30,9 @@ export default function SectionAboutMe() {
           </CardDescription>
         </CardHeader>
         <CardFooter className="max-w-full flex flex-wrap">
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
             <Button variant="link" onClick={() => navigate("/about")}>
               Mais sobre mim
             </Button>
-          </a>
         </CardFooter>
       </Card>
     </SectionWrapper>
