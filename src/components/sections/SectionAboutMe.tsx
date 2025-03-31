@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import SectionWrapper from "../SectionWrapper";
 import { Button } from "../ui/button";
 import {
@@ -9,9 +10,9 @@ import {
 } from "../ui/card";
 
 export default function SectionAboutMe() {
+  const navigate = useNavigate()
   return (
-    <SectionWrapper 
-    className="lg:flex-row justify-between gap-0 sm:gap-8"
+    <SectionWrapper id="about" className="lg:flex-row justify-between gap-0 sm:gap-8"
     >
       <h2>Sobre min</h2>
       <Card className="bg-transparent border-none w-full lg:w-3/5">
@@ -34,7 +35,7 @@ export default function SectionAboutMe() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button variant="link">
+            <Button variant="link" onClick={() => navigate("/about")}>
               Mais sobre mim
             </Button>
           </a>

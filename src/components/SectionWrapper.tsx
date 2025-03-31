@@ -4,10 +4,11 @@ import { twMerge } from 'tailwind-merge'
 interface SectionWrapperProps {
 children: ReactNode
 className?: string
+id?: string
 }
-export default function SectionWrapper({children, className}: SectionWrapperProps) {
+export default function SectionWrapper({children, className, id}: SectionWrapperProps) {
   return (
-    <section className={twMerge("w-full flex flex-col items-start gap-8", className)}>
+    <section id={id} className={twMerge("w-full flex flex-col items-start gap-8", className)}>
       {children}
     </section>
   );

@@ -6,7 +6,7 @@ import SectionWrapper from "../SectionWrapper";
 
 export default function SectionHome() {
   return (
-    <SectionWrapper className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
+    <SectionWrapper id="home" className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
       <img
         src={profile1}
         alt="Foto Lucas"

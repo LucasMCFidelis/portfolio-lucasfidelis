@@ -77,7 +77,7 @@ export default function SectionContact() {
 
   return (
     <>
-      <SectionWrapper className="md:flex-row md:flex-nowrap md:justify-between">
+      <SectionWrapper id="contact" className="md:flex-row md:flex-nowrap md:justify-between">
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         <Card className="bg-transparent border-none w-full md:w-3/5">
           <CardHeader className="p-0">
