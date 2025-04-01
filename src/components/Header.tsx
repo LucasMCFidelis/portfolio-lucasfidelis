@@ -5,17 +5,11 @@ import ThemeToggle from "./ThemeToggle";
 import { Icon } from "./IconWrapper";
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { appSections } from "@/appSections";
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const sections = [
-    { title: "Início", href: "/home", id: "home" },
-    { title: "Projetos", href: "/home", id: "projects" },
-    { title: "Sobre", href: "/about", id: "about" },
-    { title: "Contato", id: "contact" },
-  ];
 
   const handleNavigation = (href?: string, id?: string) => {
     const HEADER_HEIGHT = 12 * window.innerHeight / 100; // 12vh convertido para pixels
@@ -53,7 +47,7 @@ export default function Header() {
       <nav className="hidden md:flex items-center gap-4">
         <Menubar className="bg-transparent border-none shadow-none">
           <MenubarMenu>
-            {sections.map(({ title, href, id }, index) => (
+            {Object.values(appSections).map(({ title, href, id }, index) => (
                 <MenubarTrigger key={index} className="px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground cursor-pointer" onClick={() => handleNavigation(href, id)}>
                   {title}
                 </MenubarTrigger>
@@ -74,7 +68,7 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="right">
             <nav className="flex flex-col gap-4 m-4">
-              {sections.map(({ title, href, id }, index) => (
+              {Object.values(appSections).map(({ title, href, id }, index) => (
                 <a
                   key={index}
                   onClick={() => handleNavigation(href, id)}
