@@ -1,7 +1,7 @@
 import SectionAboutMe from "@/components/sections/SectionAboutMe";
 import SectionHome from "@/components/sections/SectionHome";
 import SectionProjects from "@/components/sections/SectionProjects";
-import { Separator } from "@radix-ui/react-menubar";
+import { Separator } from "@/components/ui/separator";
 
 export default function HomePage() {
   return (
@@ -11,7 +11,6 @@ export default function HomePage() {
       <SectionProjects />
       <Separator />
       <SectionAboutMe />
-      <Separator />
     </>
   );
 }
