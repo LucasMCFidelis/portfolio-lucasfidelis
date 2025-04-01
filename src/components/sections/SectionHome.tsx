@@ -26,7 +26,7 @@ export default function SectionHome() {
           </CardDescription>
         </CardHeader>
         <CardAction className="flex justify-start items-center gap-4">
-          <Button>
+          <Button onClick={() => document.getElementById("contact")?.scrollIntoView({behavior: "smooth"})}>
             CONTATE-ME
             <Icon name="ContactArrow" />
           </Button>
