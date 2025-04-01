@@ -28,11 +28,11 @@ export default function SectionSkills() {
   return (
     <SectionWrapper>
       <Card className="bg-transparent border-none w-full">
-        <div className="flex justify-between">
+        <div className="flex flex-col md:flex-row justify-between">
           <CardTitle>
             <h2>Minhas habilidades</h2>
           </CardTitle>
-          <CardDescription className="max-w-1/2">
+          <CardDescription className="md:max-w-1/2">
             Estou constantemente buscando aprimorar minhas habilidades e
             aprender novas, conforme necessário. Atualmente, minhas principais
             competências incluem:
