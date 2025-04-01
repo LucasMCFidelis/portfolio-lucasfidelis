@@ -10,10 +10,25 @@ import {
 } from "../ui/card";
 import { Icon } from "../IconWrapper";
 import { appSections } from "@/appSections";
+import { useState } from "react";
 
 export default function SectionAboutMe() {
+  const fileId = import.meta.env.VITE_FILE_RESUME_ID;
+  if (!fileId) {
+    console.error("O fileId não foi definido");
+  }
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
+  const handleDownload = () => {
+    setIsDownloading(true);
+
+    // Simular um tempo de espera antes de resetar o estado
+    setTimeout(() => setIsDownloading(false), 3000);
+  };
 
   return (
     <SectionWrapper id="about" className="lg:flex-col">
@@ -40,9 +55,32 @@ export default function SectionAboutMe() {
           <CardFooter className="max-w-full flex flex-wrap justify-start items-center gap-4">
             {location.pathname === "/about" ? (
               <>
-                <Button>
-                  DOWNLOAD RESUME
-                  <Icon name="Download" />
+                <Button
+                  disabled={isDownloading}
+                  onClick={handleDownload}
+                  className="flex items-center gap-2"
+                >
+                  <a
+                    href={`https://drive.google.com/uc?export=download&id=${fileId}`}
+                    download
+                    className="flex items-center gap-2"
+                  >
+                    {isDownloading ? (
+                      <>
+                        BAIXANDO O ARQUIVO
+                        <span className="text-xl leading-none flex">
+                          <span className="animate-pulse">.</span>
+                          <span className="animate-pulse delay-150">.</span>
+                          <span className="animate-pulse delay-300">.</span>
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        DOWNLOAD RESUME
+                        <Icon name="Download" />
+                      </>
+                    )}
+                  </a>
                 </Button>
                 <a
                   href="https://www.linkedin.com/in/lucas-fidelis-778705149"
