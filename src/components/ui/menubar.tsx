@@ -151,7 +151,7 @@ function MenubarRadioItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
-          <Icon name="RadioButtonUnchecked" fontSize="inherit" />
+          <Icon name="RadioButton" fontSize="inherit" />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}

@@ -29,7 +29,7 @@ const ICONS: Record<string, ReactElement<SvgIconProps>> = {
   Close: <Close />,
   Check: <Check />,
   ChevronRight: <ChevronRight />,
-  Circle: <RadioButtonUnchecked />,
+  RadioButton: <RadioButtonUnchecked />,
   ArrowForward: <ArrowForward />,
   ArrowBack: <ArrowBack />,
 };
