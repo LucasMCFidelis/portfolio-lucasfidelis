@@ -246,7 +246,7 @@
 }
 
 @layer components {
-  .container-padding > * {
-    @apply px-4 sm:px-8 mb-10;
+  .container-padding > section {
+    @apply px-4 sm:px-8;
   }
 }

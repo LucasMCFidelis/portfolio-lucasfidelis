@@ -78,7 +78,6 @@ export default function SectionContact() {
   return (
     <>
       <SectionWrapper id="contact" className="md:flex-row md:flex-nowrap md:justify-between">
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         <Card className="bg-transparent border-none w-full md:w-3/5">
           <CardHeader className="p-0">
             <CardTitle>
@@ -116,6 +115,7 @@ export default function SectionContact() {
               </Button>
             </a>
           </CardFooter>
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </Card>
         <div className="flex-1 w-full">
           <Form {...form}>
