@@ -1,7 +1,12 @@
 import axios from "axios";
 import { formaterEmailContent } from "./formaterEmailContent";
 
-export async function sendEmail(name: string, from: string, subject: string, message: string) {
+export async function sendEmail(
+  name: string,
+  from: string,
+  subject: string,
+  message: string
+) {
   try {
     const htmlContent = formaterEmailContent(name, from, message); // Gera o HTML formatado
 
@@ -16,5 +21,15 @@ export async function sendEmail(name: string, from: string, subject: string, mes
     console.log("E-mail enviado com sucesso:", response.data);
   } catch (error) {
     console.error("Erro ao enviar e-mail:", error);
+    if (axios.isAxiosError(error)) {
+      const statusCode = error.response?.status || 500;
+      const errorMessage = error.response?.data?.message;
+
+      throw {
+        status: statusCode,
+        message: errorMessage,
+        error: "Erro ao enviar email",
+      };
+    }
   }
 }
