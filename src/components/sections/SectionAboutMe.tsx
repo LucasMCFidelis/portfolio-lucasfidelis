@@ -10,7 +10,8 @@ import {
 } from "../ui/card";
 import { Icon } from "../IconWrapper";
 import { appSections } from "@/appSections";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import image from "@/assets/undraw_profile.svg";
 
 export default function SectionAboutMe() {
   const fileId = import.meta.env.VITE_FILE_RESUME_ID;
@@ -20,6 +21,10 @@ export default function SectionAboutMe() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
@@ -111,9 +116,9 @@ export default function SectionAboutMe() {
       </div>
       {location.pathname === "/about" && (
         <img
-          src="https://placehold.co/600x400"
+          src={image}
           alt=""
-          className="w-full rounded-3xl md:max-h-96 lg:max-h-[600px] object-cover"
+          className="w-full md:max-h-96 object-contain py-4"
         />
       )}
     </SectionWrapper>
