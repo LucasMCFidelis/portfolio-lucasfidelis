@@ -4,7 +4,6 @@ import { Card, CardDescription, CardTitle } from "../ui/card";
 import SkillButton from "../SkillButton";
 import { hardSkills, softSkills } from "@/utils/lists/skills";
 
-
 export default function SectionSkills() {
   return (
     <SectionWrapper>
@@ -23,8 +22,9 @@ export default function SectionSkills() {
           <div className="w-full md:w-1/2 h-min flex flex-wrap justify-start gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
             <div className="h-full flex flex-wrap gap-3">
-              {hardSkills.map((skill) => (
+              {hardSkills.map((skill, index) => (
                 <SkillButton
+                  key={index}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}
                   descriptionSkill={skill.descriptionSkill}
@@ -35,8 +35,9 @@ export default function SectionSkills() {
           <div className="w-full md:w-1/2 h-min flex flex-wrap gap-x-3 gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Soft Skills</p>
             <div className="h-full flex flex-wrap gap-3">
-              {softSkills.map((skill) => (
+              {softSkills.map((skill, index) => (
                 <SkillButton
+                  key={index}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}
                   descriptionSkill={skill.descriptionSkill}

@@ -52,7 +52,11 @@ export default function SkillButton({
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <CardSkillContent titleSkill={titleSkill} levelSkill={levelSkill} />
+        <CardSkillContent
+          titleSkill={titleSkill}
+          levelSkill={levelSkill}
+          descriptionSkill={descriptionSkill}
+        />
       </PopoverContent>
     </Popover>
   ) : (
