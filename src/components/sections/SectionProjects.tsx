@@ -1,4 +1,4 @@
-import { projectsList } from "@/projectsList";
+import { projectsList } from "@/utils/lists/projectsList";
 import ProjectCard from "../ProjectCard";
 import {
   Card,
