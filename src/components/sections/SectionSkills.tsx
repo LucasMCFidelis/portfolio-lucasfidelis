@@ -1,30 +1,11 @@
 import { CardContent } from "@mui/material";
 import SectionWrapper from "../SectionWrapper";
 import { Card, CardDescription, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
+import SkillButton from "../SkillButton";
+import { hardSkills, softSkills } from "@/utils/lists/skills";
+
 
 export default function SectionSkills() {
-  const hardSkills = [
-    "html",
-    "css",
-    "javascript",
-    "git",
-    "tailwind css",
-    "figma",
-    "github",
-    "cypress",
-    "typescript",
-    "node.js",
-  ];
-  const softSkills = [
-    "Adaptabilidade",
-    "Empatia ",
-    "Proatividade",
-    "Organização",
-    "Flexibilidade",
-    "Comunicação",
-    "Aprendizado Contínuo",
-  ];
   return (
     <SectionWrapper>
       <Card className="bg-transparent border-none w-full">
@@ -43,9 +24,11 @@ export default function SectionSkills() {
             <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
             <div className="h-full flex flex-wrap gap-3">
               {hardSkills.map((skill) => (
-                <Button variant={"outline"} size={"lg"} className="uppercase dark:border-primary">
-                  {skill}
-                </Button>
+                <SkillButton
+                  titleSkill={skill.titleSkill}
+                  levelSkill={skill.levelSkill}
+                  descriptionSkill={skill.descriptionSkill}
+                />
               ))}
             </div>
           </div>
@@ -53,9 +36,11 @@ export default function SectionSkills() {
             <p className="text-sm lg:text-2xl font-sans w-full">Soft Skills</p>
             <div className="h-full flex flex-wrap gap-3">
               {softSkills.map((skill) => (
-                <Button variant={"outline"} size={"lg"} className="uppercase dark:border-primary">
-                  {skill}
-                </Button>
+                <SkillButton
+                  titleSkill={skill.titleSkill}
+                  levelSkill={skill.levelSkill}
+                  descriptionSkill={skill.descriptionSkill}
+                />
               ))}
             </div>
           </div>
