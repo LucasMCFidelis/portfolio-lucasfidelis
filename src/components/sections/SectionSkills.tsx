@@ -6,7 +6,7 @@ import { hardSkills, softSkills } from "@/utils/lists/skills";
 
 export default function SectionSkills() {
   return (
-    <SectionWrapper>
+    <SectionWrapper id="skills">
       <Card className="bg-transparent border-none w-full">
         <div className="flex flex-col md:flex-row justify-between">
           <CardTitle>
