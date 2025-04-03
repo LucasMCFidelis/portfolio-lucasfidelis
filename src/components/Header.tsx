@@ -1,5 +1,10 @@
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
 import { Icon } from "./IconWrapper";
@@ -77,8 +82,9 @@ export default function Header() {
               <Icon name="Menu" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right">
-            <nav className="flex flex-col gap-4 m-4">
+          <SheetContent side="right" className="p-4">
+            <SheetTitle className="text-lg font-medium">Menu de navegação</SheetTitle>
+            <nav className="flex flex-col gap-4">
               {Object.values(appSections).map(({ title, href, id }, index) => (
                 <a
                   key={index}
