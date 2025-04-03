@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { sendEmail } from "@/sendEmail";
+import { sendEmail } from "@/utils/sendEmail";
 
 const formSchema = z.object({
   name: z

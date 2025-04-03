@@ -5,7 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 import { Icon } from "./IconWrapper";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { appSections } from "@/appSections";
+import { appSections } from "@/utils/lists/appSections";
 
 export default function Header() {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import SectionContact from "./components/sections/SectionContact";
 import { BrowserRouter } from "react-router-dom";
-import { AppRoutes } from "./AppRoutes";
+import { AppRoutes } from "./components/AppRoutes";
 import { Separator } from "./components/ui/separator";
 
 function App() {

@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "./pages/Home";
-import AboutMe from "./pages/AbouteMe";
-import { appSections } from "./appSections"; 
+import HomePage from "../pages/Home";
+import AboutMe from "../pages/AbouteMe";
+import { appSections } from "../utils/lists/appSections"; 
 
 export function AppRoutes() {
   return (

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Icon } from "../IconWrapper";
-import { appSections } from "@/appSections";
+import { appSections } from "@/utils/lists/appSections";
 import { useEffect, useState } from "react";
 import image from "@/assets/undraw_profile.svg";
 
