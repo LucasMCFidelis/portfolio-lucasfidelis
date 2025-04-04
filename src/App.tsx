@@ -1,24 +1,20 @@
+import React from "react";
 import Header from "./components/Header";
-import SectionContact from "./components/sections/SectionContact";
 import { Separator } from "./components/ui/separator";
-import SectionAboutMe from "./components/sections/SectionAboutMe";
-import SectionHome from "./components/sections/SectionHome";
-import SectionProjects from "./components/sections/SectionProjects";
-import SectionSkills from "./components/sections/SectionSkills";
+import { appSections } from "./utils/lists/appSections";
 
 function App() {
+  const sectionsArray = Object.values(appSections);
+
   return (
     <div className="max-w-screen flex flex-col items-center gap-10 md:gap-20 container-padding mb-[8vh] md:mb-[15vh] ">
-      <Header />
-      <SectionHome />
-      <Separator />
-      <SectionProjects />
-      <Separator />
-      <SectionAboutMe />
-      <Separator />
-      <SectionSkills />
-      <Separator />
-      <SectionContact />
+      <Header/>
+      {sectionsArray.map((section, index) => (
+        <React.Fragment key={section.id}>
+          {section.sectionElement}
+          {index !== sectionsArray.length - 1 && <Separator />}
+        </React.Fragment>
+      ))}
     </div>
   );
 }
