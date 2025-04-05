@@ -4,4 +4,5 @@ export interface ProjectCardProps {
   year: number;
   area: string;
   urlGitHub: { name?: string; url: string }[];
+  images: string[]
 }

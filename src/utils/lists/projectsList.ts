@@ -1,4 +1,6 @@
 import { ProjectCardProps } from "@/interfaces/ProjectCardProps";
+import imageProject2 from "../../assets/Captura de tela 2025-04-04 150234.png";
+import imageProject3 from "../../assets/screenshot-1743790120160.png";
 
 export const projectsList: ProjectCardProps[] = [
     {
@@ -25,6 +27,7 @@ export const projectsList: ProjectCardProps[] = [
           url: "https://github.com/LucasMCFidelis/auth-service-eventsCatalog-",
         },
       ],
+      images: [imageProject2]
     },
     {
       title: "To Do List com Screen Themes",
@@ -33,6 +36,7 @@ export const projectsList: ProjectCardProps[] = [
       year: 2024,
       area: "Frontend",
       urlGitHub: [{ url: "https://github.com/LucasMCFidelis/To-do-list" }],
+      images: [imageProject2]
     },
     {
       title: "Positivus Landing Page",
@@ -43,6 +47,7 @@ export const projectsList: ProjectCardProps[] = [
       urlGitHub: [
         { url: "https://github.com/LucasMCFidelis/Positivus-Landing-Page" },
       ],
+      images: [imageProject2]
     },
     {
       title: "Portfólio",
@@ -52,6 +57,7 @@ export const projectsList: ProjectCardProps[] = [
       urlGitHub: [
         { url: "https://github.com/LucasMCFidelis/portfolio-lucasfidelis" },
       ],
+      images: [imageProject2, imageProject3]
     },
     {
       title: "Testes end to end usando Cypress",
@@ -62,5 +68,6 @@ export const projectsList: ProjectCardProps[] = [
       urlGitHub: [
         { url: "https://github.com/LucasMCFidelis/Testes-golden-movie-studio" },
       ],
+      images: [imageProject2]
     },
   ];

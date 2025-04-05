@@ -26,6 +26,7 @@ export default function ProjectCard({
   year,
   area,
   urlGitHub,
+  images
 }: ProjectCardProps) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
@@ -51,12 +52,12 @@ export default function ProjectCard({
         setApi={setApi}
       >
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {images && images.map((image, index) => (
             <CarouselItem key={index}>
               <div>
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
+                <Card className="py-0">
+                  <CardContent className="overflow-hidden  aspect-square">
+                    <img src={image} className="w-full h-full object-contain" alt="" />
                   </CardContent>
                 </Card>
               </div>
@@ -71,7 +72,9 @@ export default function ProjectCard({
       </Carousel>
       <Card className="bg-transparent border-none w-full flex justify-between">
         <CardHeader>
-          <CardTitle><h3>{title}</h3></CardTitle>
+          <CardTitle>
+            <h3>{title}</h3>
+          </CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 space-y-3 sm:space-y-5">
