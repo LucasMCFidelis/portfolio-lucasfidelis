@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendEmail } from "@/utils/sendEmail";
+import { appSections } from "@/utils/lists/appSections";
 
 const formSchema = z.object({
   name: z
@@ -77,7 +78,7 @@ export default function SectionContact() {
 
   return (
     <>
-      <SectionWrapper id="contact" className="md:flex-row md:flex-nowrap md:justify-between">
+      <SectionWrapper id={appSections.contact.id} className="md:flex-row md:flex-nowrap md:justify-between">
         <Card className="bg-transparent border-none w-full md:w-2/5 lg:w-3/5">
           <CardHeader className="p-0">
             <CardTitle>

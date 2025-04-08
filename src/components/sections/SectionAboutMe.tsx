@@ -10,6 +10,7 @@ import {
 import { Icon } from "../IconWrapper";
 import { useState } from "react";
 import image from "@/assets/undraw_profile.svg";
+import { appSections } from "@/utils/lists/appSections";
 
 export default function SectionAboutMe() {
   const fileId = import.meta.env.VITE_FILE_RESUME_ID;
@@ -27,7 +28,7 @@ export default function SectionAboutMe() {
   };
 
   return (
-    <SectionWrapper id="about" className="lg:flex-col">
+    <SectionWrapper id={appSections.about.id} className="lg:flex-col">
       <div className="flex flex-col lg:flex-row w-full lg:justify-between">
         <h2>Sobre mim</h2>
 

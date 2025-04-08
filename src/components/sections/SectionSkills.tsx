@@ -3,10 +3,11 @@ import SectionWrapper from "../SectionWrapper";
 import { Card, CardDescription, CardTitle } from "../ui/card";
 import SkillButton from "../SkillButton";
 import { hardSkills, softSkills } from "@/utils/lists/skills";
+import { appSections } from "@/utils/lists/appSections";
 
 export default function SectionSkills() {
   return (
-    <SectionWrapper id="skills">
+    <SectionWrapper id={appSections.skills.id}>
       <Card className="bg-transparent border-none w-full">
         <div className="flex flex-col md:flex-row justify-between">
           <CardTitle>

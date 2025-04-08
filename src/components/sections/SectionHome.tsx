@@ -3,10 +3,11 @@ import { Button } from "../ui/button";
 import profile1 from "../../assets/profile-1.jpg";
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import SectionWrapper from "../SectionWrapper";
+import { appSections } from "@/utils/lists/appSections";
 
 export default function SectionHome() {
   return (
-    <SectionWrapper id="home" className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
+    <SectionWrapper id={appSections.home.id} className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
       <img
         src={profile1}
         alt="Foto Lucas"

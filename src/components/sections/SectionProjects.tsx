@@ -8,10 +8,11 @@ import {
   CardTitle,
 } from "../ui/card";
 import SectionWrapper from "../SectionWrapper";
+import { appSections } from "@/utils/lists/appSections";
 
 export default function SectionProjects() {
   return (
-    <SectionWrapper id="projects">
+    <SectionWrapper id={appSections.projects.id}>
       <Card className="bg-transparent border-none w-full gap-10">
         <CardHeader className="lg:w-1/2">
           <CardTitle>
