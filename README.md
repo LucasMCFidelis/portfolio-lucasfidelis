@@ -2,6 +2,7 @@
 
 Bem-vindo ao repositório do meu portfólio! 🚀  
 Este projeto foi desenvolvido com o objetivo de apresentar minhas habilidades, projetos e informações profissionais de forma clara, moderna e responsiva.
+**[Repositório disponível em produção](https://portfolio-lucasfidelis.onrender.com)**
 
 ## 💻 Tecnologias Utilizadas
 
