@@ -25,14 +25,14 @@ export default function SectionProjects() {
         </CardHeader>
         <CardContent className="w-full space-y-10">
           {projectsList.map(
-            ({ title, description, year, area, urlGitHub }, index) => (
+            ({ title, description, year, area, urlList }, index) => (
               <ProjectCard
                 key={index}
                 title={title}
                 description={description}
                 year={year}
                 area={area}
-                urlGitHub={urlGitHub}
+                urlList={urlList}
               />
             )
           )}

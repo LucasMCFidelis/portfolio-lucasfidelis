@@ -14,6 +14,7 @@ import {
   RadioButtonUnchecked,
   ArrowBack,
   ArrowForward,
+  Link
 } from "@mui/icons-material";
 import { SvgIconProps } from "@mui/material/SvgIcon";
 
@@ -32,6 +33,7 @@ const ICONS: Record<string, ReactElement<SvgIconProps>> = {
   RadioButton: <RadioButtonUnchecked />,
   ArrowForward: <ArrowForward />,
   ArrowBack: <ArrowBack />,
+  Link: <Link/>
 };
 
 interface IconProps {

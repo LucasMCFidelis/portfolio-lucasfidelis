@@ -25,7 +25,7 @@ export default function ProjectCard({
   description,
   year,
   area,
-  urlGitHub,
+  urlList,
 }: ProjectCardProps) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
@@ -71,7 +71,9 @@ export default function ProjectCard({
       </Carousel>
       <Card className="bg-transparent border-none w-full flex justify-between">
         <CardHeader>
-          <CardTitle><h3>{title}</h3></CardTitle>
+          <CardTitle>
+            <h3>{title}</h3>
+          </CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 space-y-3 sm:space-y-5">
@@ -89,28 +91,24 @@ export default function ProjectCard({
           <Separator />
         </CardContent>
         <CardFooter className="max-w-full flex flex-wrap gap-x-2">
-          {urlGitHub.length === 1 ? (
-            <a
-              href={urlGitHub[0].url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+          {urlList.length === 1 ? (
+            <a href={urlList[0].url} target="_blank" rel="noopener noreferrer">
               <Button variant="link" className="has-[>svg]:pl-0">
                 VER NO GITHUB
                 <Icon name="GitHub" />
               </Button>
             </a>
           ) : (
-            urlGitHub.map((repo, index) => (
+            urlList.map((url, index) => (
               <a
                 key={index}
-                href={repo.url}
+                href={url.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Button variant="link" className="has-[>svg]:pl-0">
-                  {repo.name || `VER NO GITHUB ${index + 1}`}
-                  <Icon name="GitHub" />
+                  {url.name || `VER NO GITHUB ${index + 1}`}
+                  <Icon name={`${url.icon ? "Link" : "GitHub"}`} />
                 </Button>
               </a>
             ))
