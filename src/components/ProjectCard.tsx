@@ -122,16 +122,16 @@ export default function ProjectCard({
               </Button>
             </a>
           ) : (
-            urlList.map((repo, index) => (
+            urlList.map((url, index) => (
               <a
                 key={index}
-                href={repo.url}
+                href={url.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Button variant="link" className="has-[>svg]:pl-0">
-                  {repo.name || `VER NO GITHUB ${index + 1}`}
-                  <Icon name="GitHub" />
+                  {url.name || `VER NO GITHUB ${index + 1}`}
+                  <Icon name={`${ url.icon ? "Link" : "GitHub"}`} />
                 </Button>
               </a>
             ))
