@@ -17,7 +17,7 @@ const positivusImages = Object.entries(allProjectsImages)
   .filter(([path]) => path.includes("/positivus/"))
   .map(([, module]) => module as string);
 
-  const testsCypressImages = Object.entries(allProjectsImages)
+const testsCypressImages = Object.entries(allProjectsImages)
   .filter(([path]) => path.includes("/testsCypress/"))
   .map(([, module]) => module as string);
 
@@ -28,7 +28,7 @@ export const projectsList: ProjectCardProps[] = [
       "Conjunto de APIs desenvolvidas com arquitetura de microserviços utilizando Node.js e Fastify, garantindo alta performance e escalabilidade. O sistema é composto por microserviços independentes, incluindo Gerenciamento de Eventos, Gerenciamento e Autenticação de Usuários, e Envio de E-mails. A persistência de dados é feita com PostgreSQL e Prisma ORM, permitindo consultas eficientes e seguras. A autenticação é implementada com bcrypt, enquanto a validação de dados é realizada com Joi. Além disso, os serviços se comunicam de forma assíncrona, garantindo eficiência na troca de informações. Boas práticas, como padronização de respostas, logs detalhados e testes manuais no Postman, foram aplicadas para assegurar a confiabilidade do sistema.",
     year: 2024,
     area: "Backend",
-    urlGitHub: [
+    urlList: [
       {
         name: "API Eventos",
         url: "https://github.com/LucasMCFidelis/event-service-eventsCatalog",
@@ -54,7 +54,7 @@ export const projectsList: ProjectCardProps[] = [
       "Este projeto é uma To Do List e me permitiu aplicar meus conhecimentos em versionamento com Git e GitHub, além de desenvolver interfaces responsivas e dinâmicas com TypeScript, React e Tailwind.",
     year: 2024,
     area: "Frontend",
-    urlGitHub: [{ url: "https://github.com/LucasMCFidelis/To-do-list" }],
+    urlList: [{ url: "https://github.com/LucasMCFidelis/To-do-list" }],
     images: toDoListImages,
   },
   {
@@ -63,8 +63,16 @@ export const projectsList: ProjectCardProps[] = [
       "Landing page para uma empresa fictícia de marketing digital, incluindo seções de serviços, processo de trabalho, equipe, entre outras. As principais tecnologias usadas neste projeto foram React.js, TypeScript e Tailwind CSS.",
     year: 2024,
     area: "Frontend",
-    urlGitHub: [
-      { url: "https://github.com/LucasMCFidelis/Positivus-Landing-Page" },
+    urlList: [
+      {
+        name: "Repositório",
+        url: "https://github.com/LucasMCFidelis/Positivus-Landing-Page",
+      },
+      {
+        name: "Deploy",
+        url: "https://positivus-landing-page-eight.vercel.app/",
+        icon: "link",
+      },
     ],
     images: positivusImages,
   },
@@ -74,7 +82,7 @@ export const projectsList: ProjectCardProps[] = [
       "Portfólio pessoal para exibir projetos e habilidades. A aplicação foi construída utilizando React, TypeScript e Tailwind CSS, garantindo uma estrutura robusta e responsiva. Alem disso foi implementada a biblioteca shadcn/ui, que oferece componentes personalizáveis e com foco na usabilidade e desempenho. O layout foi projetado para ser completamente responsivo, adaptando-se a diferentes tamanhos de tela e proporcionando uma experiência de navegação fluída e agradável.",
     year: 2025,
     area: "Frontend",
-    urlGitHub: [
+    urlList: [
       { url: "https://github.com/LucasMCFidelis/portfolio-lucasfidelis" },
     ],
     images: portfolioImages,
@@ -85,7 +93,7 @@ export const projectsList: ProjectCardProps[] = [
       "Automatização de testes end-to-end com base nos requisitos do sistema, empregando Cypress em conjunto com o módulo “faker” para gerar dados fictícios e testar o processo de cadastro.",
     year: 2024,
     area: "Quality Assurance (QA)",
-    urlGitHub: [
+    urlList: [
       { url: "https://github.com/LucasMCFidelis/Testes-golden-movie-studio" },
     ],
     images: testsCypressImages,

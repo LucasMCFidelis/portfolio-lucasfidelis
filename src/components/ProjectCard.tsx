@@ -25,7 +25,7 @@ export default function ProjectCard({
   description,
   year,
   area,
-  urlGitHub,
+  urlList,
   images,
 }: ProjectCardProps) {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -110,9 +110,9 @@ export default function ProjectCard({
           <Separator />
         </CardContent>
         <CardFooter className="max-w-full flex flex-wrap gap-x-2">
-          {urlGitHub.length === 1 ? (
+          {urlList.length === 1 ? (
             <a
-              href={urlGitHub[0].url}
+              href={urlList[0].url}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -122,7 +122,7 @@ export default function ProjectCard({
               </Button>
             </a>
           ) : (
-            urlGitHub.map((repo, index) => (
+            urlList.map((repo, index) => (
               <a
                 key={index}
                 href={repo.url}

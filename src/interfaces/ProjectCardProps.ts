@@ -3,6 +3,6 @@ export interface ProjectCardProps {
   description?: string;
   year: number;
   area: string;
-  urlGitHub: { name?: string; url: string }[];
+  urlList: { name?: string; url: string, icon?: "default" | "link"  }[];
   images: string[]
 }
