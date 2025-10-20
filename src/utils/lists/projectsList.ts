@@ -1,25 +1,4 @@
 import { ProjectCardProps } from "@/interfaces/ProjectCardProps";
-import { allProjectsImages } from "../getAllProjectsImages";
-
-const portfolioImages = Object.entries(allProjectsImages)
-  .filter(([path]) => path.includes("/portfolio/"))
-  .map(([, module]) => module as string);
-
-const toDoListImages = Object.entries(allProjectsImages)
-  .filter(([path]) => path.includes("/toDoList/"))
-  .map(([, module]) => module as string);
-
-const catalogBackEndImages = Object.entries(allProjectsImages)
-  .filter(([path]) => path.includes("/catalogBackEnd/"))
-  .map(([, module]) => module as string);
-
-const positivusImages = Object.entries(allProjectsImages)
-  .filter(([path]) => path.includes("/positivus/"))
-  .map(([, module]) => module as string);
-
-const testsCypressImages = Object.entries(allProjectsImages)
-  .filter(([path]) => path.includes("/testsCypress/"))
-  .map(([, module]) => module as string);
 
 export const projectsList: ProjectCardProps[] = [
   {
@@ -46,7 +25,7 @@ export const projectsList: ProjectCardProps[] = [
         url: "https://github.com/LucasMCFidelis/auth-service-eventsCatalog-",
       },
     ],
-    images: catalogBackEndImages,
+    images: [],
   },
   {
     title: "To Do List com Screen Themes",
@@ -55,7 +34,7 @@ export const projectsList: ProjectCardProps[] = [
     year: 2024,
     area: "Frontend",
     urlList: [{ url: "https://github.com/LucasMCFidelis/To-do-list" }],
-    images: toDoListImages,
+    images: [],
   },
   {
     title: "Positivus Landing Page",
@@ -74,7 +53,7 @@ export const projectsList: ProjectCardProps[] = [
         icon: "link",
       },
     ],
-    images: positivusImages,
+    images: [],
   },
   {
     title: "Portfólio",
@@ -85,7 +64,7 @@ export const projectsList: ProjectCardProps[] = [
     urlList: [
       { url: "https://github.com/LucasMCFidelis/portfolio-lucasfidelis" },
     ],
-    images: portfolioImages,
+    images: [],
   },
   {
     title: "Testes end to end usando Cypress",
@@ -96,6 +75,6 @@ export const projectsList: ProjectCardProps[] = [
     urlList: [
       { url: "https://github.com/LucasMCFidelis/Testes-golden-movie-studio" },
     ],
-    images: testsCypressImages,
+    images: [],
   },
 ];

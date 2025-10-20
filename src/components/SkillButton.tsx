@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";

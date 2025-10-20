@@ -1,3 +1,5 @@
+"use client"
+
 import SectionWrapper from "../SectionWrapper";
 import { Button } from "../ui/button";
 import {
@@ -13,7 +15,7 @@ import image from "@/assets/undraw_profile.svg";
 import { appSections } from "@/utils/lists/appSections";
 
 export default function SectionAboutMe() {
-  const fileId = import.meta.env.VITE_FILE_RESUME_ID;
+  const fileId = process.env.NEXT_PUBLIC_FILE_RESUME_ID;
   if (!fileId) {
     console.error("O fileId não foi definido");
   }

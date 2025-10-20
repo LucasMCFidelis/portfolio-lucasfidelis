@@ -1,3 +1,5 @@
+"use client";
+
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import {
   Sheet,
@@ -21,7 +23,7 @@ export default function Header() {
     if (section) {
       const sectionTop = section.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({ top: sectionTop - HEADER_HEIGHT, behavior: "smooth" });
-    } 
+    }
     setTimeout(() => setIsSheetOpen(false), 1000);
   };
 
@@ -57,12 +59,14 @@ export default function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="p-4">
-            <SheetTitle className="text-lg font-medium">Menu de navegação</SheetTitle>
+            <SheetTitle className="text-lg font-medium">
+              Menu de navegação
+            </SheetTitle>
             <nav className="flex flex-col gap-4">
               {Object.values(appSections).map(({ title, id }, index) => (
                 <a
                   key={index}
-                  onClick={() => handleNavigation( id)}
+                  onClick={() => handleNavigation(id)}
                   className="text-md hover:text-primary cursor-pointer"
                 >
                   {title}

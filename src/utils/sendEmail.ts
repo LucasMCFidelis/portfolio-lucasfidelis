@@ -10,7 +10,7 @@ export async function sendEmail(
   try {
     const htmlContent = formaterEmailContent(name, from, message); // Gera o HTML formatado
 
-    const response = await axios.post(import.meta.env.VITE_MAIL_API_ROUTE, {
+    const response = await axios.post(process.env.NEXT_PUBLIC_MAIL_API_ROUTE, {
       name,
       from, // E-mail da pessoa que preencheu o formulário (será usado no reply-to)
       subject,

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -111,11 +113,7 @@ export default function ProjectCard({
         </CardContent>
         <CardFooter className="max-w-full flex flex-wrap gap-x-2">
           {urlList.length === 1 ? (
-            <a
-              href={urlList[0].url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={urlList[0].url} target="_blank" rel="noopener noreferrer">
               <Button variant="link" className="has-[>svg]:pl-0">
                 VER NO GITHUB
                 <Icon name="GitHub" />
@@ -131,7 +129,7 @@ export default function ProjectCard({
               >
                 <Button variant="link" className="has-[>svg]:pl-0">
                   {url.name || `VER NO GITHUB ${index + 1}`}
-                  <Icon name={`${ url.icon ? "Link" : "GitHub"}`} />
+                  <Icon name={`${url.icon ? "Link" : "GitHub"}`} />
                 </Button>
               </a>
             ))

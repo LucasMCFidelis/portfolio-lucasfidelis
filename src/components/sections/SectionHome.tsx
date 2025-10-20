@@ -1,3 +1,5 @@
+"use client"
+
 import { Icon } from "../IconWrapper";
 import { Button } from "../ui/button";
 import profile1 from "../../assets/profile-1.jpg";
@@ -9,7 +11,7 @@ export default function SectionHome() {
   return (
     <SectionWrapper id={appSections.home.id} className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
       <img
-        src={profile1}
+        src={profile1.src}
         alt="Foto Lucas"
         className="w-full max-w-sm self-center h-[60vh] sm:h-[40vh] sm:w-[30vh] lg:h-[65vh] lg:w-[55vh] rounded-2xl object-cover object-top"
       />
