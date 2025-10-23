@@ -1,16 +1,28 @@
-"use client"
+"use client";
 
-import { Icon } from "../IconWrapper";
-import { Button } from "../ui/button";
-import profile1 from "../../assets/profile-1.jpg";
-import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import SectionWrapper from "../SectionWrapper";
+import Image from "next/image";
+
 import { appSections } from "@/utils/lists/appSections";
+
+import profile1 from "../../assets/profile-1.jpg";
+import { Icon } from "../IconWrapper";
+import SectionWrapper from "../SectionWrapper";
+import { Button } from "../ui/button";
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 export default function SectionHome() {
   return (
-    <SectionWrapper id={appSections.home.id} className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5">
-      <img
+    <SectionWrapper
+      id={appSections.home.id}
+      className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5"
+    >
+      <Image
         src={profile1.src}
         alt="Foto Lucas"
         className="w-full max-w-sm self-center h-[60vh] sm:h-[40vh] sm:w-[30vh] lg:h-[65vh] lg:w-[55vh] rounded-2xl object-cover object-top"
@@ -29,7 +41,13 @@ export default function SectionHome() {
           </CardDescription>
         </CardHeader>
         <CardAction className="flex justify-start items-center gap-4">
-          <Button onClick={() => document.getElementById("contact")?.scrollIntoView({behavior: "smooth"})}>
+          <Button
+            onClick={() =>
+              document
+                .getElementById("contact")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
             CONTATE-ME
             <Icon name="ContactArrow" />
           </Button>

@@ -1,5 +1,8 @@
+import { appSections } from "@/utils/lists/appSections";
 import { projectsList } from "@/utils/lists/projectsList";
+
 import ProjectCard from "../ProjectCard";
+import SectionWrapper from "../SectionWrapper";
 import {
   Card,
   CardContent,
@@ -7,8 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import SectionWrapper from "../SectionWrapper";
-import { appSections } from "@/utils/lists/appSections";
 
 export default function SectionProjects() {
   return (

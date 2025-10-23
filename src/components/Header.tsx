@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import {
   Sheet,
@@ -7,11 +10,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import ThemeToggle from "./ThemeToggle";
-import { Icon } from "./IconWrapper";
-import { useState } from "react";
 import { appSections } from "@/utils/lists/appSections";
+
+import { Icon } from "./IconWrapper";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);

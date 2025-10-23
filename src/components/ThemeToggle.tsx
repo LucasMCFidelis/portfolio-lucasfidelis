@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
+
 import { Icon } from "./IconWrapper";
+import { Button } from "./ui/button";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState(

@@ -1,22 +1,22 @@
-import { cloneElement, ReactElement } from "react";
 import {
+  ArrowBack,
+  ArrowForward,
   Brightness7,
   CallMade,
+  Check,
+  ChevronRight,
+  Close,
   DarkMode,
   Download,
   GitHub,
   Instagram,
+  Link,
   LinkedIn,
   Menu,
-  Close,
-  Check,
-  ChevronRight,
   RadioButtonUnchecked,
-  ArrowBack,
-  ArrowForward,
-  Link,
 } from "@mui/icons-material";
 import { SvgIconProps } from "@mui/material/SvgIcon";
+import { cloneElement, ReactElement } from "react";
 
 const ICONS: Record<string, ReactElement<SvgIconProps>> = {
   Menu: <Menu />,

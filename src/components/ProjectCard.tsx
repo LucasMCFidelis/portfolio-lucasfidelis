@@ -1,5 +1,10 @@
 "use client";
 
+import Image from "next/image";
+import React from "react";
+
+import { Icon } from "@/components/IconWrapper";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,9 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/IconWrapper";
-import { Separator } from "@/components/ui/separator";
 import {
   Carousel,
   CarouselContent,
@@ -19,7 +21,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { type CarouselApi } from "@/components/ui/carousel";
-import React from "react";
+import { Separator } from "@/components/ui/separator";
 import { ProjectCardProps } from "@/interfaces/ProjectCardProps";
 
 export default function ProjectCard({
@@ -59,10 +61,11 @@ export default function ProjectCard({
               <CarouselItem key={index}>
                 <div>
                   <Card className="py-0">
-                    <CardContent className="overflow-hidden  aspect-square">
+                    <CardContent className="overflow-hidden aspect-square">
                       {image ? (
-                        <img
+                        <Image
                           src={image}
+                          fill
                           className="w-full h-full object-contain"
                           alt="Imagem do carrossel"
                         />

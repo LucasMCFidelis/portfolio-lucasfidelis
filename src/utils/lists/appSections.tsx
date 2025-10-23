@@ -1,5 +1,5 @@
-import SectionContact from "@/components/sections/SectionContact";
 import SectionAboutMe from "@/components/sections/SectionAboutMe";
+import SectionContact from "@/components/sections/SectionContact";
 import SectionHome from "@/components/sections/SectionHome";
 import SectionProjects from "@/components/sections/SectionProjects";
 import SectionSkills from "@/components/sections/SectionSkills";

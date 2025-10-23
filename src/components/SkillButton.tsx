@@ -1,12 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { Star, StarBorder } from "@mui/icons-material";
+import { Rating } from "@mui/material";
+import { useEffect,useState } from "react";
+
+import { SkillInterface } from "@/interfaces/SkillInterface";
+
+import { Button } from "./ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Button } from "./ui/button";
-import { Rating } from "@mui/material";
-import { Star, StarBorder } from "@mui/icons-material";
-import { SkillInterface } from "@/interfaces/SkillInterface";
 
 function CardSkillContent({
   titleSkill,

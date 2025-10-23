@@ -1,7 +1,8 @@
 import "./index.css";
 
-import Header from "@/components/Header";
 import type { Metadata } from "next";
+
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Portfolio Lucas Fidelis",

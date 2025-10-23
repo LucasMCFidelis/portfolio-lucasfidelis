@@ -1,11 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { z } from "zod";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { appSections } from "@/utils/lists/appSections";
+import { sendEmail } from "@/utils/sendEmail";
+
 import { Icon } from "../IconWrapper";
 import SectionWrapper from "../SectionWrapper";
 import { Button } from "../ui/button";
@@ -17,18 +32,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { sendEmail } from "@/utils/sendEmail";
-import { appSections } from "@/utils/lists/appSections";
 
 const formSchema = z.object({
   name: z
@@ -80,7 +83,10 @@ export default function SectionContact() {
 
   return (
     <>
-      <SectionWrapper id={appSections.contact.id} className="md:flex-row md:flex-nowrap md:justify-between">
+      <SectionWrapper
+        id={appSections.contact.id}
+        className="md:flex-row md:flex-nowrap md:justify-between"
+      >
         <Card className="bg-transparent border-none w-full md:w-2/5 lg:w-3/5">
           <CardHeader className="p-0">
             <CardTitle>
@@ -118,7 +124,11 @@ export default function SectionContact() {
               </Button>
             </a>
           </CardFooter>
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar
+          />
         </Card>
         <div className="flex-1 w-full">
           <Form {...form}>

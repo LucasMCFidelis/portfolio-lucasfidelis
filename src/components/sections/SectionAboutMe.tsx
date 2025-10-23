@@ -1,5 +1,12 @@
-"use client"
+"use client";
 
+import Image from "next/image";
+import { useState } from "react";
+
+import image from "@/assets/undraw_profile.svg";
+import { appSections } from "@/utils/lists/appSections";
+
+import { Icon } from "../IconWrapper";
 import SectionWrapper from "../SectionWrapper";
 import { Button } from "../ui/button";
 import {
@@ -9,10 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Icon } from "../IconWrapper";
-import { useState } from "react";
-import image from "@/assets/undraw_profile.svg";
-import { appSections } from "@/utils/lists/appSections";
 
 export default function SectionAboutMe() {
   const fileId = process.env.NEXT_PUBLIC_FILE_RESUME_ID;
@@ -97,7 +100,7 @@ export default function SectionAboutMe() {
           </CardFooter>
         </Card>
       </div>
-      <img
+      <Image
         src={image}
         alt=""
         className="w-full md:max-h-96 object-contain py-4"

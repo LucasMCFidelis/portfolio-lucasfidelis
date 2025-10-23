@@ -1,9 +1,11 @@
 import { CardContent } from "@mui/material";
-import SectionWrapper from "../SectionWrapper";
-import { Card, CardDescription, CardTitle } from "../ui/card";
-import SkillButton from "../SkillButton";
-import { hardSkills, softSkills } from "@/utils/lists/skills";
+
 import { appSections } from "@/utils/lists/appSections";
+import { hardSkills, softSkills } from "@/utils/lists/skills";
+
+import SectionWrapper from "../SectionWrapper";
+import SkillButton from "../SkillButton";
+import { Card, CardDescription, CardTitle } from "../ui/card";
 
 export default function SectionSkills() {
   return (
