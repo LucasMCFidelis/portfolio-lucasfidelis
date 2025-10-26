@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -17,17 +18,7 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
-
-  const handleNavigation = (id: string) => {
-    const HEADER_HEIGHT = (12 * window.innerHeight) / 100; // 12vh convertido para pixels
-
-    const section = id ? document.getElementById(id) : null;
-    if (section) {
-      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: sectionTop - HEADER_HEIGHT, behavior: "smooth" });
-    }
-    setTimeout(() => setIsSheetOpen(false), 1000);
-  };
+  const router = useRouter();
 
   return (
     <header className="w-full h-[10vh] flex items-center justify-between sticky top-0 bg-background shadow-md shadow-accent z-20">
@@ -37,11 +28,11 @@ export default function Header() {
       <nav className="hidden md:flex items-center gap-4">
         <Menubar className="bg-transparent border-none shadow-none">
           <MenubarMenu>
-            {Object.values(appSections).map(({ title, id }, index) => (
+            {Object.values(appSections).map(({ title, href }, index) => (
               <MenubarTrigger
                 key={index}
                 className="px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground cursor-pointer"
-                onClick={() => handleNavigation(id)}
+                onClick={() => router.push(href)}
               >
                 {title}
               </MenubarTrigger>
@@ -65,10 +56,10 @@ export default function Header() {
               Menu de navegação
             </SheetTitle>
             <nav className="flex flex-col gap-4">
-              {Object.values(appSections).map(({ title, id }, index) => (
+              {Object.values(appSections).map(({ title, href }, index) => (
                 <a
                   key={index}
-                  onClick={() => handleNavigation(id)}
+                  onClick={() => router.push(href)}
                   className="text-md hover:text-primary cursor-pointer"
                 >
                   {title}

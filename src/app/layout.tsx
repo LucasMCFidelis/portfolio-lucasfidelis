@@ -3,6 +3,7 @@ import "./index.css";
 import type { Metadata } from "next";
 
 import Header from "@/components/Header";
+import SectionContact from "@/components/sections/SectionContact";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({
           <ThemeProvider>
             <Header />
             {children}
+            <SectionContact />
           </ThemeProvider>
         </main>
       </body>

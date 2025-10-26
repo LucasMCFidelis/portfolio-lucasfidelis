@@ -87,7 +87,7 @@ export default function SectionContact() {
         id={appSections.contact.id}
         className="md:flex-row md:flex-nowrap md:justify-between"
       >
-        <Card className="bg-transparent border-none w-full md:w-2/5 lg:w-3/5">
+        <Card className="bg-transparent border-none w-full md:w-2/5 lg:w-3/5 px-5">
           <CardHeader className="p-0">
             <CardTitle>
               <h2>Conecte-se a mim</h2>
