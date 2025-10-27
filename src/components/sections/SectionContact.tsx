@@ -1,26 +1,10 @@
-"use client";
-
 import "react-toastify/dist/ReactToastify.css";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
-import { z } from "zod";
+import { ToastContainer } from "react-toastify";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { appSections } from "@/utils/lists/appSections";
-import { sendEmail } from "@/utils/sendEmail";
 
+import { FormContact } from "../FormContact";
 import { Icon } from "../IconWrapper";
 import SectionWrapper from "../SectionWrapper";
 import { Button } from "../ui/button";
@@ -33,54 +17,7 @@ import {
   CardTitle,
 } from "../ui/card";
 
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
-  email: z.string().email({ message: "Digite um email válido." }),
-  subject: z
-    .string()
-    .min(2, { message: "O assunto deve ter pelo menos 2 caracteres." }),
-  message: z
-    .string()
-    .min(2, { message: "A mensagem deve ter pelo menos 2 caracteres." })
-    .max(500, { message: "A mensagem não pode ultrapassar 500 caracteres." }),
-});
-
 export default function SectionContact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    toast.dismiss(); // Remove qualquer toast ativo antes de exibir um novo
-
-    try {
-      await sendEmail(
-        values.name,
-        values.email,
-        values.subject,
-        values.message
-      );
-      toast.success("Mensagem enviada com sucesso!");
-      form.reset();
-    } catch (error) {
-      console.error("Erro ao enviar a mensagem:", error);
-      toast.error("Ocorreu um erro. Tente novamente.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   return (
     <>
       <SectionWrapper
@@ -93,7 +30,7 @@ export default function SectionContact() {
               <h2>Conecte-se a mim</h2>
             </CardTitle>
             <CardDescription>
-              Entre em contato comigo pelo e-mail:
+              Entre em contato comigo pelo e-mail abaixo ou diretamente pelo formulário
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
@@ -131,68 +68,7 @@ export default function SectionContact() {
           />
         </Card>
         <div className="flex-1 w-full">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nome" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Seu email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="subject"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Assunto</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Assunto" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mensagem</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Digite sua mensagem aqui"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Enviando..." : "Enviar"}
-              </Button>
-            </form>
-          </Form>
+          <FormContact />
         </div>
       </SectionWrapper>
     </>

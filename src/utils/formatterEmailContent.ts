@@ -1,4 +1,4 @@
-export function formaterEmailContent(
+export function formatterEmailContent(
   name: string,
   from: string,
   message: string
