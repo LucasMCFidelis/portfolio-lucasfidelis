@@ -1,7 +1,7 @@
 type Section = {
   title: string;
   id: string;
-  href: string;
+  href?: string;
 };
 
 export const appSections: Record<string, Section> = {
@@ -27,6 +27,5 @@ export const appSections: Record<string, Section> = {
   contact: {
     title: "Contato",
     id: "contact",
-    href: "/contact",
   },
 };

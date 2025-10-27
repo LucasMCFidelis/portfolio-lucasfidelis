@@ -12,6 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { appSections } from "@/utils/lists/appSections";
+import { scrollToContactSession } from "@/utils/scrollToContactSession";
 
 import { Icon } from "./IconWrapper";
 import ThemeToggle from "./ThemeToggle";
@@ -19,6 +20,11 @@ import ThemeToggle from "./ThemeToggle";
 export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const router = useRouter();
+
+  function handleNavigation(id: string) {
+    if (id == appSections.contact.id) return scrollToContactSession();
+    if (appSections[id].href) router.push(appSections[id].href);
+  }
 
   return (
     <header className="w-full h-[10vh] flex items-center justify-between sticky top-0 bg-background shadow-md shadow-accent z-20">
@@ -28,11 +34,11 @@ export default function Header() {
       <nav className="hidden md:flex items-center gap-4">
         <Menubar className="bg-transparent border-none shadow-none">
           <MenubarMenu>
-            {Object.values(appSections).map(({ title, href }, index) => (
+            {Object.values(appSections).map(({ title, id }) => (
               <MenubarTrigger
-                key={index}
+                key={id}
                 className="px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground cursor-pointer"
-                onClick={() => router.push(href)}
+                onClick={() => handleNavigation(id)}
               >
                 {title}
               </MenubarTrigger>
@@ -56,14 +62,18 @@ export default function Header() {
               Menu de navegação
             </SheetTitle>
             <nav className="flex flex-col gap-4">
-              {Object.values(appSections).map(({ title, href }, index) => (
-                <a
+              {Object.values(appSections).map(({ title, id }, index) => (
+                <Button
                   key={index}
-                  onClick={() => router.push(href)}
-                  className="text-md hover:text-primary cursor-pointer"
+                  variant="ghost"
+                  onClick={() => {
+                    handleNavigation(id);
+                    setTimeout(() => setIsSheetOpen(false), 500);
+                  }}
+                  className="text-md justify-start hover:text-primary cursor-pointer"
                 >
                   {title}
-                </a>
+                </Button>
               ))}
             </nav>
           </SheetContent>

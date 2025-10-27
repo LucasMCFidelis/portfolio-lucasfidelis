@@ -2,17 +2,12 @@
 
 import { Icon } from "@/components/IconWrapper";
 import { Button } from "@/components/ui/button";
+import { scrollToContactSession } from "@/utils/scrollToContactSession";
 
 export default function ActionsHomeCard() {
   return (
     <>
-      <Button
-        onClick={() =>
-          document
-            .getElementById("contact")
-            ?.scrollIntoView({ behavior: "smooth" })
-        }
-      >
+      <Button onClick={scrollToContactSession}>
         CONTATE-ME
         <Icon name="ContactArrow" />
       </Button>
