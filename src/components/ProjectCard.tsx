@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 import { Icon } from "@/components/IconWrapper";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -22,19 +22,23 @@ import {
 } from "@/components/ui/carousel";
 import { type CarouselApi } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
-import { ProjectCardProps } from "@/interfaces/ProjectCardProps";
+import { ProjectDTO } from "@/data/projects/projectDTO";
+
+import { Button } from "./ui/button";
 
 export default function ProjectCard({
   title,
   description,
-  year,
-  area,
-  urlList,
+  yearDevelopment,
+  typeProject,
+  repositoryUrl,
+  deploymentUrl,
   images,
-}: ProjectCardProps) {
+}: ProjectDTO) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  const router = useRouter();
 
   React.useEffect(() => {
     if (!api) {
@@ -61,13 +65,13 @@ export default function ProjectCard({
               <CarouselItem key={index}>
                 <div>
                   <Card className="py-0">
-                    <CardContent className="overflow-hidden aspect-square">
+                    <CardContent className="relative w-full h-full overflow-hidden aspect-square">
                       {image ? (
                         <Image
-                          src={image}
+                          src={image.url}
                           fill
-                          className="w-full h-full object-contain"
-                          alt="Imagem do carrossel"
+                          className="object-contain"
+                          alt={image.title}
                         />
                       ) : (
                         <span className="text-4xl font-semibold">?</span>
@@ -105,37 +109,25 @@ export default function ProjectCard({
           <Separator />
           <div className="flex justify-between items-center">
             <p>Ano</p>
-            <p>{year}</p>
+            <p>{yearDevelopment}</p>
           </div>
           <Separator />
           <div className="flex justify-between items-center">
             <p>Área</p>
-            <p>{area}</p>
+            <p className="first-letter:uppercase">{typeProject}</p>
           </div>
           <Separator />
         </CardContent>
         <CardFooter className="max-w-full flex flex-wrap gap-x-2">
-          {urlList.length === 1 ? (
-            <a href={urlList[0].url} target="_blank" rel="noopener noreferrer">
-              <Button variant="link" className="has-[>svg]:pl-0">
-                VER NO GITHUB
-                <Icon name="GitHub" />
-              </Button>
-            </a>
-          ) : (
-            urlList.map((url, index) => (
-              <a
-                key={index}
-                href={url.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="link" className="has-[>svg]:pl-0">
-                  {url.name || `VER NO GITHUB ${index + 1}`}
-                  <Icon name={`${url.icon ? "Link" : "GitHub"}`} />
-                </Button>
-              </a>
-            ))
+          <Button variant="link" onClick={() => router.push(repositoryUrl)}>
+            Repositório
+            <Icon name="GitHub" />
+          </Button>
+          {deploymentUrl && (
+            <Button variant="link" onClick={() => router.push(deploymentUrl)}>
+              Deploy
+              <Icon name="Link" />
+            </Button>
           )}
         </CardFooter>
       </Card>

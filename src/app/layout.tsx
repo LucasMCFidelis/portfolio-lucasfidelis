@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import Header from "@/components/Header";
 import SectionContact from "@/components/sections/SectionContact";
+import { Separator } from "@/components/ui/separator";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function RootLayout({
           <ThemeProvider>
             <Header />
             {children}
+            <Separator />
             <SectionContact />
           </ThemeProvider>
         </main>
