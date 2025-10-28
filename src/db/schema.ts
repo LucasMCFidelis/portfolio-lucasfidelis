@@ -18,7 +18,7 @@ export const typeProject = pgEnum("type_project", [
 
 export const socialMediasTable = pgTable("social_medias", {
   id: uuid().primaryKey().defaultRandom(),
-  title: text(),
+  title: text().notNull(),
   url: text().notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });

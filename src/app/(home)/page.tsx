@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import SectionWrapper from "@/components/SectionWrapper";
+import { SocialMediasButtons } from "@/components/SocialMediasButtons";
 import {
   Card,
   CardAction,
@@ -40,7 +41,9 @@ export default function HomePage() {
           </CardDescription>
         </CardHeader>
         <CardAction className="flex justify-start items-center gap-4 px-5">
-          <ActionsHomeCard />
+          <ActionsHomeCard>
+            <SocialMediasButtons />
+          </ActionsHomeCard>
         </CardAction>
       </Card>
     </SectionWrapper>

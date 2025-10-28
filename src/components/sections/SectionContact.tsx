@@ -5,9 +5,8 @@ import { ToastContainer } from "react-toastify";
 import { appSections } from "@/utils/lists/appSections";
 
 import { FormContact } from "../FormContact";
-import { Icon } from "../IconWrapper";
 import SectionWrapper from "../SectionWrapper";
-import { Button } from "../ui/button";
+import { SocialMediasButtons } from "../SocialMediasButtons";
 import {
   Card,
   CardContent,
@@ -17,7 +16,7 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default function SectionContact() {
+export default async function SectionContact() {
   return (
     <>
       <SectionWrapper
@@ -30,7 +29,8 @@ export default function SectionContact() {
               <h2>Conecte-se a mim</h2>
             </CardTitle>
             <CardDescription>
-              Entre em contato comigo pelo e-mail abaixo ou diretamente pelo formulário
+              Entre em contato comigo pelo e-mail abaixo ou diretamente pelo
+              formulário
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
@@ -42,24 +42,7 @@ export default function SectionContact() {
             </a>
           </CardContent>
           <CardFooter className="p-0 space-x-3">
-            <a
-              href="https://www.linkedin.com/in/lucas-fidelis-778705149"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button size="icon" variant="secondary">
-                <Icon name="LinkedIn" />
-              </Button>
-            </a>
-            <a
-              href="https://github.com/LucasMCFidelis"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button size="icon" variant="secondary">
-                <Icon name="GitHub" />
-              </Button>
-            </a>
+            <SocialMediasButtons />
           </CardFooter>
           <ToastContainer
             position="top-right"
