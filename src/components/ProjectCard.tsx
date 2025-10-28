@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { useEffect, useState } from "react";
 
 import { Icon } from "@/components/IconWrapper";
 import {
@@ -35,12 +35,12 @@ export default function ProjectCard({
   deploymentUrl,
   images,
 }: ProjectDTO) {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
   const router = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api) {
       return;
     }
@@ -70,7 +70,11 @@ export default function ProjectCard({
                         <Image
                           src={image.url}
                           fill
-                          className="object-contain"
+                          className={
+                            image.mobileScreen
+                              ? "object-contain"
+                              : "object-cover"
+                          }
                           alt={image.title}
                         />
                       ) : (

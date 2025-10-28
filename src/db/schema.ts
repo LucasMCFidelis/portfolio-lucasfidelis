@@ -26,7 +26,7 @@ export const socialMediasTable = pgTable("social_medias", {
 export const imagesTable = pgTable("images", {
   id: uuid().primaryKey().defaultRandom(),
   title: text().notNull(),
-  description: text(),
+  mobileScreen: boolean("mobile_screen").notNull().default(false),
   url: text().notNull(),
   projectId: uuid("project_id")
     .references(() => projectsTable.id, { onDelete: "cascade" })

@@ -1,7 +1,7 @@
 export interface ImageDTO {
   id: string;
   title: string;
-  description: string;
+  mobileScreen: boolean;
   createdAt: Date;
   url: string;
   projectId: string;
