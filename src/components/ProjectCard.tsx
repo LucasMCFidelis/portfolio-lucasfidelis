@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { Icon, ICONS_MAPPED } from "@/components/IconWrapper";
+import { Icon, IconName} from "@/components/IconWrapper";
 import {
   Card,
   CardContent,
@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
 
 interface LinkInProjectCartProps {
-  iconKey: keyof typeof ICONS_MAPPED;
+  iconKey: IconName;
   href: string;
   title: string;
 }

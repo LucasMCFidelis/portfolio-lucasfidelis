@@ -16,10 +16,9 @@ import {
   Menu,
   RadioButtonUnchecked,
 } from "@mui/icons-material";
-import { SvgIconProps } from "@mui/material/SvgIcon";
-import { cloneElement, ReactElement } from "react";
+import { cloneElement } from "react";
 
-export const ICONS_MAPPED: Record<string, ReactElement<SvgIconProps>> = {
+const ICONS = {
   Menu: <Menu />,
   Sun: <Brightness7 />,
   Moon: <DarkMode />,
@@ -36,15 +35,17 @@ export const ICONS_MAPPED: Record<string, ReactElement<SvgIconProps>> = {
   ArrowBack: <ArrowBack />,
   Link: <Link />,
   Folder: <Folder />,
-};
+} as const;
+
+export type IconName = keyof typeof ICONS;
 
 interface IconProps {
-  name: keyof typeof ICONS_MAPPED;
+  name: IconName;
   fontSize?: "small" | "medium" | "large" | "inherit";
 }
 
 export function Icon({ name, fontSize = "medium" }: IconProps) {
-  const IconComponent = ICONS_MAPPED[name] || ICONS_MAPPED["Menu"];
+  const IconComponent = ICONS[name] || ICONS["Menu"];
 
   return cloneElement(IconComponent, {
     fontSize,

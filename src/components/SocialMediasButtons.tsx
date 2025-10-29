@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { getAllSocialMedias } from "@/data/socialMedias/getAllSocialMedias";
 
-import { Icon } from "./IconWrapper";
+import { Icon, IconName } from "./IconWrapper";
 import { buttonVariants } from "./ui/button";
 
 export async function SocialMediasButtons() {
@@ -20,7 +20,7 @@ export async function SocialMediasButtons() {
             size: "icon",
           })}
         >
-          <Icon name={data.title} />
+          <Icon name={data.title as IconName} />
         </Link>
       ))}
     </>
