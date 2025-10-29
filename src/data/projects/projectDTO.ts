@@ -5,9 +5,10 @@ export interface ProjectDTO {
   title: string;
   description: string;
   yearDevelopment: number;
-  typeProject: "frontend" | "backend" | "qa" | "outros";
+  typeProject: "frontend" | "backend" | "fullstack" | "qa" | "outros";
   repositoryUrl: string;
-  deploymentUrl: string;
+  deploymentUrl: string | null;
+  documentationUrl: string | null;
   projectInEvidence: boolean;
   createdAt: Date;
   images: Array<ImageDTO>;

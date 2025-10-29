@@ -5,4 +5,5 @@ export interface ImageDTO {
   createdAt: Date;
   url: string;
   projectId: string;
+  indexDisplay: number | null;
 }

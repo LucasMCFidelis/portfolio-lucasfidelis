@@ -13,6 +13,7 @@ export const typeProject = pgEnum("type_project", [
   "frontend",
   "backend",
   "qa",
+  "fullstack",
   "outros",
 ]);
 
@@ -31,6 +32,7 @@ export const imagesTable = pgTable("images", {
   projectId: uuid("project_id")
     .references(() => projectsTable.id, { onDelete: "cascade" })
     .notNull(),
+  indexDisplay: integer("index_display"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -44,6 +46,7 @@ export const projectsTable = pgTable("projects", {
   typeProject: typeProject("type_project").notNull().default("outros"),
   repositoryUrl: text("repository_url").notNull(),
   deploymentUrl: text("deployment_url"),
+  documentationUrl: text("documentation_url"),
   projectInEvidence: boolean().notNull().default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });

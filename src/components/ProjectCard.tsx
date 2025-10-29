@@ -33,6 +33,7 @@ export default function ProjectCard({
   typeProject,
   repositoryUrl,
   deploymentUrl,
+  documentationUrl,
   images,
 }: ProjectDTO) {
   const [api, setApi] = useState<CarouselApi>();
@@ -118,7 +119,9 @@ export default function ProjectCard({
           <Separator />
           <div className="flex justify-between items-center">
             <p>Área</p>
-            <p className="first-letter:uppercase">{typeProject}</p>
+            <p className="first-letter:uppercase">
+              {typeProject === "qa" ? "Quality Assurance (QA)" : typeProject}
+            </p>
           </div>
           <Separator />
         </CardContent>
@@ -131,6 +134,15 @@ export default function ProjectCard({
             <Button variant="link" onClick={() => router.push(deploymentUrl)}>
               Deploy
               <Icon name="Link" />
+            </Button>
+          )}
+          {documentationUrl && (
+            <Button
+              variant="link"
+              onClick={() => router.push(documentationUrl)}
+            >
+              Documentação
+              <Icon name="Folder" />
             </Button>
           )}
         </CardFooter>

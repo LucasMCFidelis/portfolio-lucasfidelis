@@ -8,6 +8,7 @@ import {
   Close,
   DarkMode,
   Download,
+  Folder,
   GitHub,
   Instagram,
   Link,
@@ -34,6 +35,7 @@ const ICONS: Record<string, ReactElement<SvgIconProps>> = {
   ArrowForward: <ArrowForward />,
   ArrowBack: <ArrowBack />,
   Link: <Link />,
+  Folder: <Folder />,
 };
 
 interface IconProps {
