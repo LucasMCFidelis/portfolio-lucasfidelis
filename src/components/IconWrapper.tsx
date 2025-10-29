@@ -19,7 +19,7 @@ import {
 import { SvgIconProps } from "@mui/material/SvgIcon";
 import { cloneElement, ReactElement } from "react";
 
-const ICONS: Record<string, ReactElement<SvgIconProps>> = {
+export const ICONS_MAPPED: Record<string, ReactElement<SvgIconProps>> = {
   Menu: <Menu />,
   Sun: <Brightness7 />,
   Moon: <DarkMode />,
@@ -39,12 +39,12 @@ const ICONS: Record<string, ReactElement<SvgIconProps>> = {
 };
 
 interface IconProps {
-  name: keyof typeof ICONS;
+  name: keyof typeof ICONS_MAPPED;
   fontSize?: "small" | "medium" | "large" | "inherit";
 }
 
 export function Icon({ name, fontSize = "medium" }: IconProps) {
-  const IconComponent = ICONS[name] || ICONS["Menu"];
+  const IconComponent = ICONS_MAPPED[name] || ICONS_MAPPED["Menu"];
 
   return cloneElement(IconComponent, {
     fontSize,

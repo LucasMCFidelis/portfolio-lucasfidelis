@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { Icon } from "@/components/IconWrapper";
+import { Icon, ICONS_MAPPED } from "@/components/IconWrapper";
 import {
   Card,
   CardContent,
@@ -23,8 +23,32 @@ import {
 import { type CarouselApi } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 import { ProjectDTO } from "@/data/projects/projectDTO";
+import { cn } from "@/lib/utils";
 
-import { Button } from "./ui/button";
+import { buttonVariants } from "./ui/button";
+
+interface LinkInProjectCartProps {
+  iconKey: keyof typeof ICONS_MAPPED;
+  href: string;
+  title: string;
+}
+
+function LinkInProjectCart({ href, iconKey, title }: LinkInProjectCartProps) {
+  return (
+    <Link
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        "first-letter:uppercase",
+        buttonVariants({ variant: "link" })
+      )}
+    >
+      {title}
+      <Icon name={iconKey} />
+    </Link>
+  );
+}
 
 export default function ProjectCard({
   title,
@@ -39,7 +63,6 @@ export default function ProjectCard({
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
-  const router = useRouter();
 
   useEffect(() => {
     if (!api) {
@@ -126,24 +149,24 @@ export default function ProjectCard({
           <Separator />
         </CardContent>
         <CardFooter className="max-w-full flex flex-wrap gap-x-2">
-          <Button variant="link" onClick={() => router.push(repositoryUrl)}>
-            Repositório
-            <Icon name="GitHub" />
-          </Button>
+          <LinkInProjectCart
+            iconKey={"GitHub"}
+            href={repositoryUrl}
+            title={"Repositório"}
+          />
           {deploymentUrl && (
-            <Button variant="link" onClick={() => router.push(deploymentUrl)}>
-              Deploy
-              <Icon name="Link" />
-            </Button>
+            <LinkInProjectCart
+              iconKey={"Link"}
+              href={deploymentUrl}
+              title={"Deploy"}
+            />
           )}
           {documentationUrl && (
-            <Button
-              variant="link"
-              onClick={() => router.push(documentationUrl)}
-            >
-              Documentação
-              <Icon name="Folder" />
-            </Button>
+            <LinkInProjectCart
+              iconKey={"Folder"}
+              href={documentationUrl}
+              title={"Documentação"}
+            />
           )}
         </CardFooter>
       </Card>
