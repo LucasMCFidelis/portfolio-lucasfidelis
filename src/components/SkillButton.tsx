@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 import { Star, StarBorder } from "@mui/icons-material";
 import { Rating } from "@mui/material";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
-import { SkillInterface } from "@/interfaces/SkillInterface";
+import { SkillDTO } from "@/data/skills/skillDTO";
 
 import { Button } from "./ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
@@ -14,7 +14,7 @@ function CardSkillContent({
   titleSkill,
   levelSkill,
   descriptionSkill,
-}: SkillInterface) {
+}: Omit<SkillDTO, "typeSkill">) {
   return (
     <>
       <h4 className="font-sans font-semibold capitalize">{titleSkill}</h4>
@@ -37,7 +37,7 @@ export default function SkillButton({
   titleSkill,
   levelSkill,
   descriptionSkill,
-}: SkillInterface) {
+}: Omit<SkillDTO, "typeSkill">) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

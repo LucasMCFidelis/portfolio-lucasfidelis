@@ -1,13 +1,19 @@
 import { CardContent } from "@mui/material";
 
+import { getHardSkills } from "@/data/skills/getHardSkills";
+import { getSoftSkills } from "@/data/skills/getSoftSkills";
 import { appSections } from "@/utils/lists/appSections";
-import { hardSkills, softSkills } from "@/utils/lists/skills";
 
 import SectionWrapper from "../SectionWrapper";
 import SkillButton from "../SkillButton";
 import { Card, CardDescription, CardTitle } from "../ui/card";
 
-export default function SectionSkills() {
+export default async function SectionSkills() {
+  const [hardSkills, softSkills] = await Promise.all([
+    getHardSkills(),
+    getSoftSkills(),
+  ]);
+
   return (
     <SectionWrapper id={appSections.skills.id}>
       <Card className="bg-transparent border-none w-full">

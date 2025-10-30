@@ -1,6 +1,6 @@
-import { SkillInterface } from "@/interfaces/SkillInterface";
+import { SkillDTO } from "@/data/skills/skillDTO";
 
-export const hardSkills: SkillInterface[] = [
+export const hardSkills: Omit<SkillDTO, "typeSkill">[] = [
   {
     titleSkill: "html",
     levelSkill: 4,
@@ -81,7 +81,7 @@ export const hardSkills: SkillInterface[] = [
   },
 ];
 
-export const softSkills: SkillInterface[] = [
+export const softSkills: Omit<SkillDTO, "typeSkill">[] = [
   {
     titleSkill: "Adaptabilidade",
     levelSkill: 4,

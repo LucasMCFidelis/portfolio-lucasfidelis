@@ -1,12 +1,12 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
-  integer,
-  pgEnum,
+  doublePrecision,
+  integer, pgEnum,
   pgTable,
   text,
   timestamp,
-  uuid,
+  uuid
 } from "drizzle-orm/pg-core";
 
 export const typeProject = pgEnum("type_project", [
@@ -16,6 +16,8 @@ export const typeProject = pgEnum("type_project", [
   "fullstack",
   "outros",
 ]);
+
+export const typeSkill = pgEnum("type_skill", ["hard", "soft"]);
 
 export const globalContentTable = pgTable("global_content", {
   id: uuid().primaryKey().defaultRandom(),
@@ -69,3 +71,11 @@ export const imagesRelations = relations(imagesTable, ({ one }) => ({
     references: [projectsTable.id],
   }),
 }));
+
+export const skillsTable = pgTable("skills", {
+  id: uuid().primaryKey().defaultRandom(),
+  titleSkill: text("title_skill").notNull(),
+  levelSkill: doublePrecision("level_skill").notNull(),
+  descriptionSkill: text("description_skill"),
+  typeSkill: typeSkill("type_skill").notNull().default("hard"),
+});
