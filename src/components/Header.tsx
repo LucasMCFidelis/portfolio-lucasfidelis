@@ -23,7 +23,16 @@ export default function Header() {
 
   function handleNavigation(id: string) {
     if (id == appSections.contact.id) return scrollToContactSession();
-    if (appSections[id].href) router.push(appSections[id].href);
+
+    const section = appSections[id];
+    if (!section) return;
+
+    if (section.href) {
+      const hrefNormalized =
+        section.href +
+        `${section.id == appSections.skills.id ? "#" + section.id : ""}`;
+      router.push(hrefNormalized);
+    }
   }
 
   return (

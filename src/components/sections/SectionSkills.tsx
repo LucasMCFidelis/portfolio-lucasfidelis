@@ -15,7 +15,7 @@ export default async function SectionSkills() {
   ]);
 
   return (
-    <SectionWrapper id={appSections.skills.id}>
+    <SectionWrapper id={appSections.skills.id} className="pt-[10vh]">
       <Card className="bg-transparent border-none w-full">
         <div className="flex flex-col md:flex-row justify-between">
           <CardTitle>
