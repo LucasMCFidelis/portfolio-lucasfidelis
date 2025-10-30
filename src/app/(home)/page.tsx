@@ -13,13 +13,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getGlobalContent } from "@/data/globalContent/getGlobalContent";
 import { getInEvidenceProjects } from "@/data/projects/getInEvidenceProjects";
 import { appSections } from "@/utils/lists/appSections";
 
 import ActionsHomeCard from "./components/ActionsHomeCard";
 
 export default async function HomePage() {
-  const projectsInEvidence = await getInEvidenceProjects();
+  const [projectsInEvidence, { aboutCurtDescription }] = await Promise.all([
+    getInEvidenceProjects(),
+    getGlobalContent(),
+  ]);
 
   return (
     <>
@@ -43,10 +47,7 @@ export default async function HomePage() {
                 <br className="hidden md:inline" /> Lucas Fidelis
               </h1>
             </CardTitle>
-            <CardDescription>
-              Estudante de Análise e Desenvolvimento de Sistemas e futuro
-              desenvolvedor de frontend.
-            </CardDescription>
+            <CardDescription>{aboutCurtDescription}</CardDescription>
           </CardHeader>
           <CardAction className="flex justify-start items-center gap-4 px-5">
             <ActionsHomeCard>

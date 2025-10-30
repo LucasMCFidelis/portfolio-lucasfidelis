@@ -17,6 +17,14 @@ export const typeProject = pgEnum("type_project", [
   "outros",
 ]);
 
+export const globalContentTable = pgTable("global_content", {
+  id: uuid().primaryKey().defaultRandom(),
+  aboutCurtDescription: text("about_curt_description"),
+  aboutLargeDescription: text("about_large_description"),
+  fileResumeId: text("file_resume_id").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const socialMediasTable = pgTable("social_medias", {
   id: uuid().primaryKey().defaultRandom(),
   title: text().notNull(),
