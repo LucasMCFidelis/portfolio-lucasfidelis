@@ -95,9 +95,9 @@ export default function ProjectCard({
                           src={image.url}
                           fill
                           className={
-                            image.mobileScreen
+                            `rounded-xl ${image.mobileScreen
                               ? "object-contain"
-                              : "object-cover"
+                              : "object-cover"}`
                           }
                           alt={image.title}
                         />
