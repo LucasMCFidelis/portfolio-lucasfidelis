@@ -80,7 +80,7 @@ export default function ProjectCard({
   return (
     <article className="w-full flex flex-col justify-between items-center lg:flex-row lg:items-start lg:gap-20 lg:pl-20">
       <Carousel
-        className="w-[60vw] md:max-w-80 lg:max-w-2xl xl:max-w-3xl"
+        className="w-4/5 lg:w-[30vw] xl:w-[40vw]"
         setApi={setApi}
       >
         <CarouselContent>
@@ -125,7 +125,7 @@ export default function ProjectCard({
           Slide {current} of {count}
         </div>
       </Carousel>
-      <Card className="bg-transparent border-none w-full flex justify-between">
+      <Card className="bg-transparent border-none w-full flex flex-1 justify-between">
         <CardHeader>
           <CardTitle>
             <h3>{title}</h3>
