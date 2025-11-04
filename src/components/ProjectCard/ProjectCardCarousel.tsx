@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import { ProjectCarouselFull } from "./ProjectCarouselFull";
 
 export function ProjectCardCarousel({ images }: { images: Array<ImageDTO> }) {
   const [api, setApi] = useState<CarouselApi>();
@@ -33,7 +34,11 @@ export function ProjectCardCarousel({ images }: { images: Array<ImageDTO> }) {
     });
   }, [api]);
   return (
-    <Carousel className="w-4/5 lg:w-[30vw] xl:w-[40vw]" setApi={setApi}>
+    <Carousel
+      className="relative w-4/5 lg:w-[30vw] xl:w-[40vw]"
+      setApi={setApi}
+    >
+      <ProjectCarouselFull images={images} title="Teste" />
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={index}>
