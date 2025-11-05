@@ -14,6 +14,6 @@ export const getGlobalContent = cache(async (): Promise<GlobalContentDTO> => {
   return {
     aboutCurtDescription: allGlobalContent?.aboutCurtDescription || "",
     aboutLargeDescription: allGlobalContent?.aboutLargeDescription || "",
-    fileResumeId: "",
+    fileResumeId: allGlobalContent.fileResumeId,
   };
 });
