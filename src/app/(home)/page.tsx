@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,6 +19,12 @@ import { getInEvidenceProjects } from "@/data/projects/getInEvidenceProjects";
 import { appSections } from "@/utils/lists/appSections";
 
 import ActionsHomeCard from "./components/ActionsHomeCard";
+
+export const metadata: Metadata = {
+  title: "Inicio - Portfólio de Lucas Fidelis",
+  description:
+    "Portfólio de Lucas Fidelis — Desenvolvedor Front-end e QA. Explore projetos em destaque, habilidades com React, TypeScript, Next.js, testes automatizados e práticas modernas de desenvolvimento. Conheça meu trabalho e formas de contato.",
+};
 
 export default async function HomePage() {
   const [projectsInEvidence, { aboutCurtDescription }] = await Promise.all([
@@ -63,6 +70,7 @@ export default async function HomePage() {
       >
         <Link
           href={appSections.projects.href}
+          id="redirect-to-all-projects"
           className={buttonVariants({ variant: "link" })}
         >
           Visualizar todos os Projetos

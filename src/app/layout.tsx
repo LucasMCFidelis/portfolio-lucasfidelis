@@ -9,7 +9,8 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Portfolio Lucas Fidelis",
-  description: "",
+  description: "Portfólio de Lucas Fidelis — explore projetos, habilidades, informações profissionais e formas de contato reunidos em um único lugar.",
+  icons: "/icon.svg",
 };
 
 export default function RootLayout({

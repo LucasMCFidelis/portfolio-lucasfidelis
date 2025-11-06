@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Image from "next/image";
 
 import image from "@/assets/undraw_profile.svg";
@@ -15,6 +16,12 @@ import { getGlobalContent } from "@/data/globalContent/getGlobalContent";
 import { appSections } from "@/utils/lists/appSections";
 
 import DownloadResumeButton from "./components/DownloadResumeButton";
+
+export const metadata: Metadata = {
+  title: "Sobre Mim - Portfólio de Lucas Fidelis",
+  description:
+    "Conheça mais sobre Lucas Fidelis — desenvolvedor focado em soluções web modernas. Saiba sobre sua trajetória, principais habilidades técnicas e comportamentais, experiências e formas de contato.",
+};
 
 export default async function AboutMePage() {
   const { aboutCurtDescription, aboutLargeDescription, fileResumeId } =
