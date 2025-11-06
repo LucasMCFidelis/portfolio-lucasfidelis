@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
@@ -17,7 +18,7 @@ import { scrollToContactSession } from "@/utils/scrollToContactSession";
 import { Icon } from "./IconWrapper";
 import ThemeToggle from "./ThemeToggle";
 
-export default function Header() {
+function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const router = useRouter();
 
@@ -37,7 +38,9 @@ export default function Header() {
 
   return (
     <header className="w-full h-[10vh] flex items-center justify-between sticky top-0 bg-background shadow-md shadow-accent z-30">
-      <h1 className="font-title text-3xl">Lucas Fidelis</h1>
+      <Link href={appSections.home.href} className="font-title text-3xl">
+        Lucas Fidelis
+      </Link>
 
       {/* Menu Desktop */}
       <nav className="hidden md:flex items-center gap-4">
@@ -93,3 +96,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default memo(Header);

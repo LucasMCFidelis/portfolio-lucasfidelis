@@ -1,6 +1,7 @@
 import "react-toastify/dist/ReactToastify.css";
 
 import Link from "next/link";
+import { memo } from "react";
 import { ToastContainer } from "react-toastify";
 
 import { appSections } from "@/utils/lists/appSections";
@@ -17,7 +18,7 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default async function SectionContact() {
+function SectionContact() {
   return (
     <>
       <SectionWrapper
@@ -59,3 +60,5 @@ export default async function SectionContact() {
     </>
   );
 }
+
+export default memo(SectionContact);
