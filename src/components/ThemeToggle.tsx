@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useThemeContext } from "@/hooks/states/useThemeContext";
 
@@ -9,7 +9,13 @@ export default function ThemeToggle() {
   const { isDarkMode, toggleTheme } = useThemeContext();
 
   return (
-    <Button onClick={toggleTheme} size={"icon"} variant={"outline"}>
+    <Button
+      onClick={toggleTheme}
+      name="toggle-theme"
+      aria-label="toggle-theme"
+      size={"icon"}
+      variant={"outline"}
+    >
       <Icon name={isDarkMode ? "Sun" : "Moon"} />
     </Button>
   );

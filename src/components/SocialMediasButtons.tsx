@@ -12,6 +12,7 @@ export async function SocialMediasButtons() {
       {Object.entries(socialMedias).map(({ 0: key, 1: data }) => (
         <Link
           key={key}
+          id={data.title.toLowerCase()}
           href={data.url}
           target="_blank"
           rel="noopener noreferrer"

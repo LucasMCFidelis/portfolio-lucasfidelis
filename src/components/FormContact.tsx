@@ -72,7 +72,11 @@ export function FormContact() {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        id="contact-form"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -125,7 +129,7 @@ export function FormContact() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isSubmitting}>
+        <Button id="submit-contact-form" type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Enviando..." : "Enviar"}
         </Button>
       </form>

@@ -5,7 +5,7 @@ import { getSoftSkills } from "@/data/skills/getSoftSkills";
 import { appSections } from "@/utils/lists/appSections";
 
 import SectionWrapper from "../SectionWrapper";
-import SkillButton from "../SkillButton";
+import SkillCard from "../SkillCard/SkillCard";
 import { Card, CardDescription, CardTitle } from "../ui/card";
 
 export default async function SectionSkills() {
@@ -32,7 +32,7 @@ export default async function SectionSkills() {
             <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
             <div className="h-full flex flex-wrap gap-3">
               {hardSkills.map((skill, index) => (
-                <SkillButton
+                <SkillCard
                   key={index}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}
@@ -45,7 +45,7 @@ export default async function SectionSkills() {
             <p className="text-sm lg:text-2xl font-sans w-full">Soft Skills</p>
             <div className="h-full flex flex-wrap gap-3">
               {softSkills.map((skill, index) => (
-                <SkillButton
+                <SkillCard
                   key={index}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}

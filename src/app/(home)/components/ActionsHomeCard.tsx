@@ -13,7 +13,7 @@ export default function ActionsHomeCard({
 }) {
   return (
     <>
-      <Button onClick={scrollToContactSession}>
+      <Button name="contact" onClick={scrollToContactSession}>
         CONTATE-ME
         <Icon name="ContactArrow" />
       </Button>

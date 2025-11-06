@@ -1,5 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 
+import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 
 import { appSections } from "@/utils/lists/appSections";
@@ -34,12 +35,13 @@ export default async function SectionContact() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
-            <a
+            <Link
               href="mailto:fidelis.lucasm@gmail.com"
+              id="redirect-to-email"
               className="text-primary lowercase cursor-pointer underline-offset-3 hover:underline"
             >
               fidelis.lucasm@gmail.com
-            </a>
+            </Link>
           </CardContent>
           <CardFooter className="p-0 space-x-3">
             <SocialMediasButtons />

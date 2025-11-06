@@ -44,7 +44,7 @@ export default async function SectionProjects({
               const { images, ...rest } = project;
               const haveImages = project.images.length > 0;
               return (
-                <ProjectCardWrapper key={project.id}>
+                <ProjectCardWrapper key={project.id} projectId={project.id}>
                   {haveImages && <ProjectCardCarousel images={images} />}
                   <ProjectCardTextArea haveImages={haveImages} {...rest} />
                 </ProjectCardWrapper>

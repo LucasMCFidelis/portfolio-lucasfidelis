@@ -1,12 +1,19 @@
 import { ReactNode } from "react";
 
-export default function ProjectCardWrapper({
-  children,
-}: {
+interface ProjectCardWrapperProps {
+  projectId: string;
   children: ReactNode;
-}) {
+}
+
+export default function ProjectCardWrapper({
+  projectId,
+  children,
+}: ProjectCardWrapperProps) {
   return (
-    <article className="w-full flex flex-col justify-between items-center lg:flex-row lg:items-start lg:gap-20 lg:pl-20">
+    <article
+      id={`project-${projectId}`}
+      className="w-full flex flex-col justify-between items-center lg:flex-row lg:items-start lg:gap-20 lg:pl-20"
+    >
       {children}
     </article>
   );

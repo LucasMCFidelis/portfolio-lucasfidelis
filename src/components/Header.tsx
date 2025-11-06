@@ -74,6 +74,8 @@ export default function Header() {
               {Object.values(appSections).map(({ title, id }, index) => (
                 <Button
                   key={index}
+                  name="sheet-menu-mobile"
+                  aria-label="sheet-menu-mobile"
                   variant="ghost"
                   onClick={() => {
                     handleNavigation(id);

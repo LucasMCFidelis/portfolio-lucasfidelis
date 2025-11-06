@@ -30,6 +30,7 @@ function LinkInProjectCart({ href, iconKey, title }: LinkInProjectCartProps) {
     <Link
       href={href}
       target="_blank"
+      aria-label={`${title}, abre em uma nova guia`}
       rel="noopener noreferrer"
       className={cn(
         "first-letter:uppercase",

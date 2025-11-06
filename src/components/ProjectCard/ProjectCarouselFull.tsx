@@ -32,6 +32,7 @@ export function ProjectCarouselFull({
       <DialogTrigger asChild>
         <Button
           title="Open fullscreen carrousel"
+          aria-label="Abre carrossel de imagens do projeto no tamanho completo da tela"
           className="absolute top-0 -right-14 z-20 hidden md:block"
         >
           <Fullscreen />
