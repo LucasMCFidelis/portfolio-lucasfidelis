@@ -10,6 +10,7 @@ export const getAllProjects = async (): Promise<Array<ProjectDTO>> => {
   try {
     allProjects = await db.query.projectsTable.findMany({
       orderBy: [
+        desc(projectsTable.visible),
         desc(projectsTable.projectInEvidence),
         desc(projectsTable.yearDevelopment),
         asc(projectsTable.title),

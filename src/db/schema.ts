@@ -57,6 +57,7 @@ export const projectsTable = pgTable("projects", {
   repositoryUrl: text("repository_url").notNull(),
   deploymentUrl: text("deployment_url"),
   documentationUrl: text("documentation_url"),
+  visible: boolean().notNull().default(true),
   projectInEvidence: boolean().notNull().default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });

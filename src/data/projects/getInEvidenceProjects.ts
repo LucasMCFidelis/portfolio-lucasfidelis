@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { imagesTable, projectsTable } from "@/db/schema";
@@ -9,8 +9,15 @@ export const getInEvidenceProjects = async (): Promise<Array<ProjectDTO>> => {
   let inEvidenceProjects: Array<ProjectDTO>;
   try {
     inEvidenceProjects = await db.query.projectsTable.findMany({
-      where: eq(projectsTable.projectInEvidence, true),
-      orderBy: [asc(projectsTable.yearDevelopment), asc(projectsTable.title)],
+      where: and(
+        eq(projectsTable.visible, true),
+        eq(projectsTable.projectInEvidence, true)
+      ),
+      orderBy: [
+        desc(projectsTable.projectInEvidence),
+        asc(projectsTable.yearDevelopment),
+        asc(projectsTable.title),
+      ],
       with: { images: { orderBy: asc(imagesTable.indexDisplay) } },
     });
   } catch (error) {
