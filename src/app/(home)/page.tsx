@@ -38,7 +38,7 @@ export default async function HomePage() {
         id={appSections.home.id}
         className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5"
       >
-        <div className="relative w-full max-w-sm self-center h-[60vh] sm:h-[40vh] sm:w-[30vh] lg:h-[65vh] lg:w-[55vh] lg:min-w-xl rounded-2xl">
+        <div className="relative w-full max-w-sm self-center h-[60vh] sm:h-[40vh] sm:w-[30vh] lg:h-[65vh] lg:w-[55vh] xl:min-w-lg rounded-2xl">
           <Image
             src={"/profile.jpeg"}
             alt="Foto Lucas"
