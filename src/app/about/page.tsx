@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 
 import image from "@/assets/undraw_profile.svg";
+import SectionExperience from "@/components/sections/SectionExperience";
 import SectionSkills from "@/components/sections/SectionSkills";
 import SectionWrapper from "@/components/SectionWrapper";
 import { SocialMediasButtons } from "@/components/SocialMediasButtons";
@@ -31,7 +32,7 @@ export default async function AboutMePage() {
     <>
       <SectionWrapper id={appSections.about.id} className="lg:flex-col">
         <div className="flex flex-col lg:flex-row w-full lg:justify-between">
-          <h2>Sobre mim</h2>
+          <h2 className="font-semibold">Sobre mim</h2>
 
           <Card className="bg-transparent border-none w-full lg:w-3/5">
             <CardHeader>
@@ -54,6 +55,7 @@ export default async function AboutMePage() {
           className="w-full md:max-h-96 object-contain py-4"
         />
       </SectionWrapper>
+      <SectionExperience />
       <SectionSkills />
     </>
   );

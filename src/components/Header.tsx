@@ -31,7 +31,7 @@ function Header() {
     if (section.href) {
       const hrefNormalized =
         section.href +
-        `${section.id == appSections.skills.id ? "#" + section.id : ""}`;
+        `${section.id == appSections.skills.id || section.id == appSections.experiences.id ? "#" + section.id : ""}`;
       router.push(hrefNormalized);
     }
   }

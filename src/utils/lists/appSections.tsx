@@ -16,6 +16,11 @@ export const appSections: Record<string, Section> = {
     href: "/projects",
   },
   about: { title: "Sobre", id: "about", href: "/about" },
+  experiences: {
+    title: "Experiências",
+    id: "experiences",
+    href: "/about",
+  },
   skills: {
     title: "Habilidades",
     id: "skills",
