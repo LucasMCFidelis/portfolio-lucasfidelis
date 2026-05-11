@@ -1,12 +1,16 @@
-import { CardContent } from "@mui/material";
-
 import { getHardSkills } from "@/data/skills/getHardSkills";
 import { getSoftSkills } from "@/data/skills/getSoftSkills";
 import { appSections } from "@/utils/lists/appSections";
 
 import SectionWrapper from "../SectionWrapper";
 import SkillCard from "../SkillCard/SkillCard";
-import { Card, CardDescription, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 export default async function SectionSkills() {
   const [hardSkills, softSkills] = await Promise.all([
@@ -16,8 +20,8 @@ export default async function SectionSkills() {
 
   return (
     <SectionWrapper id={appSections.skills.id} className="pt-[10vh]">
-      <Card className="bg-transparent border-none w-full">
-        <div className="flex flex-col md:flex-row justify-between">
+      <Card className="bg-transparent border-none w-full px-5">
+        <CardHeader className="p-0 flex flex-col md:flex-row justify-between">
           <CardTitle>
             <h2>Minhas habilidades</h2>
           </CardTitle>
@@ -26,8 +30,8 @@ export default async function SectionSkills() {
             aprender novas, conforme necessário. Atualmente, minhas principais
             competências incluem:
           </CardDescription>
-        </div>
-        <CardContent className="flex flex-col md:flex-row justify-between gap-8">
+        </CardHeader>
+        <CardContent className="flex flex-col md:flex-row justify-between gap-8 px-0">
           <div className="w-full md:w-1/2 h-min flex flex-wrap justify-start gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
             <div className="h-full flex flex-wrap gap-3">
