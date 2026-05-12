@@ -1,12 +1,16 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
+  date,
   doublePrecision,
-  integer, pgEnum,
+  integer,
+  jsonb,
+  pgEnum,
   pgTable,
   text,
   timestamp,
-  uuid
+  uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const typeProject = pgEnum("type_project", [
@@ -15,6 +19,25 @@ export const typeProject = pgEnum("type_project", [
   "qa",
   "fullstack",
   "outros",
+]);
+
+export const experienceCategoryEnum = pgEnum("experience_category", [
+  "academic",
+  "professional",
+]);
+
+export const experienceTypeEnum = pgEnum("experience_type", [
+  // academic
+  "degree",
+  "bootcamp",
+
+  // professional
+  "full-time",
+  "part-time",
+  "volunteer",
+  "contract",
+  "freelance",
+  "internship",
 ]);
 
 export const typeSkill = pgEnum("type_skill", ["hard", "soft"]);
@@ -79,4 +102,28 @@ export const skillsTable = pgTable("skills", {
   levelSkill: doublePrecision("level_skill").notNull(),
   descriptionSkill: text("description_skill"),
   typeSkill: typeSkill("type_skill").notNull().default("hard"),
+});
+
+export const experiencesTable = pgTable("experiences", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  title: varchar("title", { length: 255 }).notNull(),
+  company: varchar("company", { length: 255 }).notNull(),
+
+  description: text("description").notNull(),
+
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date"),
+
+  // enums
+  category: experienceCategoryEnum("category").notNull(),
+  type: experienceTypeEnum("type").notNull(),
+
+  // lista de tecnologias
+  technologies: jsonb("technologies").$type<string[]>().notNull(),
+
+  experienceInEvidence: boolean("experience_in_evidence")
+    .notNull()
+    .default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
