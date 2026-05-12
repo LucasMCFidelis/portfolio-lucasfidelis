@@ -1,16 +1,27 @@
-export interface Experience {
+export type ProfessionalExperienceType = "professional";
+
+export type ProfessionalExperience = {
   title: string;
   company: string;
   startDate: string;
   endDate?: string;
   description: string;
   technologies: string[];
-  type: "full-time" | "part-time" | "volunteer" | "contract" | "freelance" | "internship";
-}
+  type: ProfessionalExperienceType;
+  typeComplement:
+    | "full-time"
+    | "part-time"
+    | "volunteer"
+    | "contract"
+    | "freelance"
+    | "internship";
+};
 
-export async function getExperiences(): Promise<Experience[]> {
+export async function getProfessionalExperiences(): Promise<
+  Array<ProfessionalExperience>
+> {
   // Substitua com seus dados reais de experiência
-  const experiences: Experience[] = [
+  const experiences: ProfessionalExperience[] = [
     {
       title: "Analista de Testes (QA)",
       company: "Rota Financeira",
@@ -19,7 +30,8 @@ export async function getExperiences(): Promise<Experience[]> {
       description:
         "Suporte à qualidade do sistema em ambiente ágil com Scrum, realizando execução de testes exploratórios e validação de funcionalidades. Registro, gestão e reporte de bugs no ClickUp com detalhamento de evidências para apoio à resolução pelos desenvolvedores. Escrita de critérios de aceite em Gherkin.",
       technologies: ["Scrum", "ClickUp", "Gherkin", "Testes Exploratórios"],
-      type: "volunteer",
+      type: "professional",
+      typeComplement: "volunteer",
     },
     {
       title: "Analista de QA",
@@ -35,7 +47,8 @@ export async function getExperiences(): Promise<Experience[]> {
         "Lean Inception",
         "E2E Testing",
       ],
-      type: "volunteer",
+      type: "professional",
+      typeComplement: "volunteer",
     },
     {
       title: "Estagiário em Desenvolvimento de Sistemas",
@@ -45,7 +58,8 @@ export async function getExperiences(): Promise<Experience[]> {
       description:
         "Suporte técnico e modernização do sistema de gerenciamento da biblioteca, configurando e parametrizando o software Koha em ambiente virtualizado. Ajustes na interface OPAC, testes em ambientes virtualizados e implementação de rotinas de backup. Modelagem de banco de dados e desenvolvimento inicial de aplicativo desktop com Electron e JavaScript.",
       technologies: ["Koha", "Electron", "JavaScript", "Virtualização", "SQL"],
-      type: "internship",
+      type: "professional",
+      typeComplement: "internship",
     },
   ];
 

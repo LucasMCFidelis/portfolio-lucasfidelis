@@ -14,13 +14,7 @@ interface ExperienceCardProps {
   endDate?: string;
   description: string;
   technologies: string[];
-  type:
-    | "full-time"
-    | "part-time"
-    | "volunteer"
-    | "contract"
-    | "freelance"
-    | "internship";
+  type?: string;
 }
 
 const typeLabels: Record<string, string> = {
