@@ -4,23 +4,11 @@ import { db } from "@/db";
 import { experiencesTable } from "@/db/schema";
 import { formatDate } from "@/utils/formatDate";
 
-import { mapProfessionalType, ProfessionalType } from "./mapProfessionalType";
-
-export type ProfessionalExperienceType = "professional";
-
-export type ProfessionalExperience = {
-  title: string;
-  company: string;
-  startDate: string;
-  endDate?: string;
-  description: string;
-  technologies: string[];
-  type: ProfessionalExperienceType;
-  typeComplement: ProfessionalType;
-};
+import { mapProfessionalType } from "./mapProfessionalType";
+import { ProfessionalExperienceDTO } from "./professionalExperienceDTO";
 
 export async function getProfessionalExperiences(): Promise<
-  Array<ProfessionalExperience>
+  Array<ProfessionalExperienceDTO>
 > {
   const experiences = await db.query.experiencesTable.findMany({
     where: eq(experiencesTable.category, "professional"),

@@ -1,6 +1,6 @@
 export interface SkillDTO {
   titleSkill: string;
   levelSkill: number;
-  descriptionSkill?: string;
+  descriptionSkill?: string | null;
   typeSkill: "hard" | "soft";
 }

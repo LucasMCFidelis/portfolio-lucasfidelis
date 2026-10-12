@@ -6,7 +6,7 @@ import { imagesTable, projectsTable } from "@/db/schema";
 import { ProjectDTO } from "./projectDTO";
 
 export const getInEvidenceProjects = async (): Promise<Array<ProjectDTO>> => {
-  let inEvidenceProjects: Array<ProjectDTO>;
+  let inEvidenceProjects: Array<ProjectDTO> = [];
   try {
     inEvidenceProjects = await db.query.projectsTable.findMany({
       where: and(

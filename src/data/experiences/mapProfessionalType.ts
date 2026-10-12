@@ -1,25 +1,10 @@
-import { ProfessionalExperience } from "./getProfessionalExperiences";
+import { ProfessionalType, professionalTypes } from "./professionalExperienceDTO";
 
-export const professionalTypes = [
-  "full-time",
-  "part-time",
-  "volunteer",
-  "contract",
-  "freelance",
-  "internship",
-] as const;
-
-export type ProfessionalType = (typeof professionalTypes)[number];
-
-function isProfessionalType(
-  type: string,
-): type is (typeof professionalTypes)[number] {
-  return professionalTypes.includes(type as (typeof professionalTypes)[number]);
+function isProfessionalType(type: string): type is ProfessionalType {
+  return professionalTypes.includes(type as ProfessionalType);
 }
 
-export function mapProfessionalType(
-  type: string,
-): ProfessionalExperience["typeComplement"] {
+export function mapProfessionalType(type: string): ProfessionalType {
   if (isProfessionalType(type)) return type;
 
   throw new Error(`Tipo inválido para experiência profissional: ${type}`);

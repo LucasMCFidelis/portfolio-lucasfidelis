@@ -40,7 +40,7 @@ export default async function AboutMePage() {
                 {aboutCurtDescription}
               </CardTitle>
               <CardDescription
-                dangerouslySetInnerHTML={{ __html: aboutLargeDescription }}
+                dangerouslySetInnerHTML={{ __html: aboutLargeDescription ?? "" }}
               />
             </CardHeader>
             <CardFooter className="max-w-full flex flex-wrap justify-start items-center gap-4">

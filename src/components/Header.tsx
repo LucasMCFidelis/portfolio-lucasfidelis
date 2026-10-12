@@ -12,7 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { appSections } from "@/utils/lists/appSections";
+import { appSections, type Section } from "@/utils/lists/appSections";
 import { scrollToContactSession } from "@/utils/scrollToContactSession";
 
 import { Icon } from "./IconWrapper";
@@ -25,7 +25,9 @@ function Header() {
   function handleNavigation(id: string) {
     if (id == appSections.contact.id) return scrollToContactSession();
 
-    const section = appSections[id];
+    const section: Section | undefined = Object.values(appSections).find(
+      (item) => item.id === id
+    );
     if (!section) return;
 
     if (section.href) {
@@ -74,9 +76,9 @@ function Header() {
               Menu de navegação
             </SheetTitle>
             <nav className="flex flex-col gap-4">
-              {Object.values(appSections).map(({ title, id }, index) => (
+              {Object.values(appSections).map(({ title, id }) => (
                 <Button
-                  key={index}
+                  key={id}
                   name="sheet-menu-mobile"
                   aria-label="sheet-menu-mobile"
                   variant="ghost"
