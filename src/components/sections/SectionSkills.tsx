@@ -35,9 +35,9 @@ export default async function SectionSkills() {
           <div className="w-full md:w-1/2 h-min flex flex-wrap justify-start gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
             <div className="h-full flex flex-wrap gap-3">
-              {hardSkills.map((skill, index) => (
+              {hardSkills.map((skill) => (
                 <SkillCard
-                  key={index}
+                  key={skill.titleSkill}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}
                   descriptionSkill={skill.descriptionSkill}
@@ -48,9 +48,9 @@ export default async function SectionSkills() {
           <div className="w-full md:w-1/2 h-min flex flex-wrap gap-x-3 gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Soft Skills</p>
             <div className="h-full flex flex-wrap gap-3">
-              {softSkills.map((skill, index) => (
+              {softSkills.map((skill) => (
                 <SkillCard
-                  key={index}
+                  key={skill.titleSkill}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}
                   descriptionSkill={skill.descriptionSkill}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Icon } from "@/components/IconWrapper";
 import { buttonVariants } from "@/components/ui/button";
@@ -16,12 +16,16 @@ export default function DownloadResumeButton({
 }: DownloadResumeButtonProps) {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
-  const handleDownload = () => {
-    setIsDownloading(true);
+  useEffect(() => {
+    if (!isDownloading) return;
 
     // Simular um tempo de espera antes de resetar o estado
-    setTimeout(() => setIsDownloading(false), 3000);
-  };
+    const timeout = setTimeout(() => setIsDownloading(false), 3000);
+    return () => clearTimeout(timeout);
+  }, [isDownloading]);
+
+  const handleDownload = () => setIsDownloading(true);
+
   return (
     <Link
       href={`https://drive.google.com/uc?export=download&id=${fileId}`}

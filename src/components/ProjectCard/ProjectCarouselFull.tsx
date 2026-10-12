@@ -46,7 +46,7 @@ export function ProjectCarouselFull({
         <Carousel>
           <CarouselContent>
             {images.map((image, index) => (
-              <CarouselItem key={index} className="aspect-video">
+              <CarouselItem key={image?.id ?? index} className="aspect-video">
                 <Card className="h-full py-0">
                   <CardContent className="relative w-full h-11/12 overflow-hidden">
                     {image ? (

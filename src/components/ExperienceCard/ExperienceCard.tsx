@@ -47,7 +47,7 @@ export default function ExperienceCard({
               {company}
             </CardDescription>
           </div>
-          {typeLabels[type] && (
+          {type && typeLabels[type] && (
             <Badge variant="secondary" className="w-fit">
               {typeLabels[type]}
             </Badge>
@@ -63,8 +63,8 @@ export default function ExperienceCard({
         </p>
         {technologies.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-2">
-            {technologies.map((tech, index) => (
-              <Badge key={index} variant="outline" className="text-xs">
+            {technologies.map((tech) => (
+              <Badge key={tech} variant="outline" className="text-xs">
                 {tech}
               </Badge>
             ))}
