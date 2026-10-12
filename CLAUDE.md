@@ -7,7 +7,7 @@ Portfólio pessoal de Lucas Fidelis (Desenvolvedor Front-end e QA). Todo o conte
 | Área | Tecnologia |
 | --- | --- |
 | Framework | Next.js 15 (App Router) + React 19 |
-| Linguagem | TypeScript 5.7 (`strict: false` hoje — ver "Pontos de atenção") |
+| Linguagem | TypeScript 5.7 (`strict: true`, `moduleResolution: bundler`) |
 | Estilo | Tailwind CSS v4 (`@import "tailwindcss"` em `src/app/index.css`, sem `tailwind.config`) + `tailwindcss-animate` / `tw-animate-css` |
 | UI | shadcn/ui (estilo `new-york`, base `zinc`) sobre Radix UI; ícones via `@mui/icons-material` (wrapper `Icon`) |
 | Banco | PostgreSQL + Drizzle ORM (`drizzle-orm/node-postgres`) |
@@ -22,7 +22,8 @@ Portfólio pessoal de Lucas Fidelis (Desenvolvedor Front-end e QA). Todo o conte
 npm run dev      # next dev
 npm run build    # next build
 npm run start    # next start
-npm run lint     # next lint (imports fora de ordem são ERRO)
+npm run lint     # eslint . (imports fora de ordem são ERRO)
+npx tsc --noEmit # checagem de tipos
 npx drizzle-kit generate   # gera migration em ./drizzle a partir de src/db/schema.ts
 npx drizzle-kit push       # aplica o schema direto no banco
 ```
@@ -39,8 +40,8 @@ Não há suíte de testes configurada.
 ```
 src/
 ├── app/                      # Rotas (App Router)
-│   ├── layout.tsx            # Layout raiz: ThemeProvider > Header + {children} + Separator + SectionContact
-│   ├── index.css             # Tailwind, tokens CSS (oklch) claro/escuro, fontes
+│   ├── layout.tsx            # Layout raiz: next/font, script anti-flash do tema, ThemeProvider > Header + {children} + Separator + SectionContact
+│   ├── index.css             # Tailwind, tokens CSS (oklch) claro/escuro; fontes vêm de next/font (variáveis --font-inter / --font-bebas-neue)
 │   ├── (home)/               # Route group → "/"
 │   │   ├── page.tsx
 │   │   └── components/       # Componentes exclusivos da rota (ActionsHomeCard)
@@ -58,7 +59,7 @@ src/
 ├── data/                     # Camada de acesso a dados (server-only na prática)
 │   └── <dominio>/            # projects, skills, experiences, socialMedias, globalContent, images
 │       ├── get*.ts           # Funções de consulta (Drizzle)
-│       ├── *DTO.ts           # Tipos de saída consumidos pela UI
+│       ├── *DTO.ts           # Tipos de saída consumidos pela UI (também as uniões/constantes dos tipos, ex.: academicExperienceDTO.ts)
 │       └── map*.ts           # Mapeadores banco → UI
 ├── db/
 │   ├── index.ts              # Instância `db` do Drizzle
@@ -86,7 +87,7 @@ Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Comp
 4. **Client Components** existem apenas para: Header (navegação/sheet), ThemeProvider/ThemeToggle, FormContact, carrosséis, botões com `onClick`/estado.
 5. **Mutações** (envio de e-mail) via Server Action em `src/actions/`, chamada pelo formulário client.
 6. **Navegação/seções** centralizadas em `src/utils/lists/appSections.tsx` (`id` para âncoras, `href` para rotas). Use essa constante em vez de strings soltas.
-7. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`; cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
+7. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`, com preferência salva em `localStorage` (`isDarkMode`) ou `prefers-color-scheme`; um script inline em `layout.tsx` aplica a classe antes da hidratação (mantenha a mesma chave nos dois lugares); cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
 
 ## Convenções do projeto
 
@@ -120,7 +121,7 @@ Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Comp
 8. **`next/image`** para imagens (sempre com `alt`, `fill`/`width`+`height` e `sizes` quando `fill`); novos domínios remotos precisam entrar em `images.remotePatterns` no `next.config.ts`. Use `priority` na imagem LCP (foto da home).
 9. **`next/link` e `useRouter`**: `Link` para navegação declarativa (melhor para SEO/prefetch); `router.push` só quando houver lógica. Links externos: `target="_blank"` + `rel="noopener noreferrer"`.
 10. **Metadata API** em todas as páginas (`metadata` ou `generateMetadata`) com `title` e `description` únicos; considere `openGraph` e `metadataBase`.
-11. **Fontes**: prefira `next/font` (self-host, sem layout shift) em vez de `@import url(fonts.googleapis…)` no CSS.
+11. **Fontes**: use `next/font` (self-host, sem layout shift), como em `layout.tsx`; as variáveis CSS são expostas ao Tailwind via `@theme inline` em `index.css`. Não use `@import url(fonts.googleapis…)`.
 12. **Segmentos especiais**: adicione `loading.tsx`, `error.tsx` e `not-found.tsx` para estados de carregamento/erro por rota, em vez de mensagens fixas como "Carregando…" dentro de um Server Component.
 13. **Route groups** `(nome)` organizam sem afetar a URL; `components/` dentro de uma rota é colocation privada — nada ali vira rota (só `page`/`route` viram).
 14. **Variáveis de ambiente**: validar presença no boot (ex.: lançar erro claro se `DATABASE_URL` faltar) e nunca commitar `.env`.
@@ -130,7 +131,7 @@ Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Comp
 
 1. **Componentes puros e pequenos**: uma responsabilidade por componente; extraia quando houver JSX repetido ou lógica distinta (como `Wrapper` + conteúdo nos cards).
 2. **Props tipadas e mínimas**: passe só o que o componente usa (`Omit<SkillDTO, "typeSkill">` é um bom exemplo); prefira dados primitivos/DTOs a objetos de banco.
-3. **`key` estável**: use o `id` do item, não o índice do array, em listas que podem mudar/reordenar. (Hoje vários `.map` usam `index` — prefira `id` ou um campo único.)
+3. **`key` estável**: use o `id` do item, não o índice do array, em listas que podem mudar/reordenar. Quando o item não tem `id` (ex.: skills, experiências), use um campo único como `titleSkill` ou uma chave composta.
 4. **Estado**: mantenha o menor estado possível e derive o resto durante o render; não duplique em `useState` o que pode ser calculado. Levante o estado só até o ancestral comum.
 5. **`useEffect` só para sincronizar com sistemas externos** (DOM, localStorage, subscriptions). Não use para derivar estado nem para tratar eventos; sempre limpe timers/listeners no retorno (ex.: o `setTimeout` de `DownloadResumeButton` deveria ser limpo no unmount).
 6. **Eventos**: handlers com nome `handleX`/`onX`; evite criar lógica pesada inline no JSX.
@@ -149,14 +150,8 @@ Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Comp
 
 Itens encontrados na análise do código. Não são regras — são candidatos a melhoria; corrija-os ao mexer nas áreas relacionadas.
 
-- `tsconfig.json` tem `"strict": false`; vários trechos dependem disso (ex.: `getInEvidenceProjects` pode retornar `undefined` no `catch`; `getGlobalContent` acessa `allGlobalContent.fileResumeId` após usar `?.`; `ExperienceCard` indexa `typeLabels[type]` com `type` possivelmente `undefined`). Ativar `strict` gradualmente.
-- `ThemeProvider` inicia em `isDarkMode=false` e **escreve** no `localStorage`, mas nunca o lê nem respeita `prefers-color-scheme` → o tema não persiste e pode haver flash. Ler a preferência na inicialização (e idealmente aplicar a classe `dark` via script inline para evitar FOUC). O `createContext({} as ...)` também torna a checagem em `useThemeContext` inútil.
-- `package.json`: `"lint": "next lint"` (descontinuado em versões futuras do Next — migrar para `eslint .`); `@tailwindcss/vite` é resquício da migração Vite → Next e pode ser removido; `"type": "module"` e `"version": "0.0.0"` também vêm do template Vite.
-- `@import url(fonts.googleapis…)` em `index.css` → migrar para `next/font`.
-- `src/utils/checkExperienceType.ts` está 100% comentado (código morto) — remover ou reativar.
-- `getAcademicExperiences.ts` e `mapAcademicType.ts` têm import circular (tipo importado de volta); mover `AcademicExperienceType` para um arquivo de tipos/DTO como nos outros domínios (`*DTO.ts`). `mapAcademicType` também mapeia qualquer valor ≠ `"bootcamp"` para `"academic"`, enquanto o enum do banco usa `degree`/`bootcamp`.
-- `SectionExperiencies`/`SectionExperience`: mostra "Carregando formação..." quando a lista está vazia (inclusive em erro) — mensagem enganosa para um Server Component; usar estado vazio/`loading.tsx`.
-- `.map` com `key={index}` em Skills, Experiences e badges.
-- `SectionWrapper.tsx` e `ThemeProvider.tsx` estão com formatação fora do padrão (indentação/aspas) — rodar Prettier se for adotado.
-- Dados de contato (`fidelis.lucasm@gmail.com`) estão hardcoded em `SectionContact`; considerar mover para o banco/`global_content` junto das demais informações.
-- `sendEmail` não valida a entrada no servidor e recebe 4 argumentos posicionais; preferir um objeto validado com o mesmo schema zod do formulário (compartilhado).
+- `sendEmail` não valida a entrada no servidor e recebe 4 argumentos posicionais; preferir um objeto validado com o mesmo schema zod do formulário (compartilhado). *(Decidido manter por enquanto.)*
+- Dados de contato (`fidelis.lucasm@gmail.com`) estão hardcoded em `SectionContact`; considerar mover para o banco/`global_content` junto das demais informações. *(Decidido manter por enquanto — exigiria alteração de schema + migration.)*
+- `package.json` ainda tem `"type": "module"` e `"version": "0.0.0"` herdados do template Vite (`"type": "module"` é necessário para o `eslint.config.js` atual em ESM — não remover sem ajustar o config).
+- `ProjectCardCarousel.tsx` passa `title="Teste"` fixo para `ProjectCarouselFull` (placeholder esquecido; deveria receber o título do projeto).
+- `ExperienceCard` não exibe o rótulo de tipo das experiências acadêmicas (`typeComplement` `degree`/`bootcamp` já é entregue pelo data layer, mas `typeLabels` só cobre os tipos profissionais).
