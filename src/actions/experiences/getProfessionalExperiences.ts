@@ -2,11 +2,10 @@
 
 import { desc, eq } from "drizzle-orm";
 
-import { mapProfessionalType } from "@/data/experiences/mapProfessionalType";
+import { mapProfessionalExperience } from "@/data/experiences/mapExperience";
 import { ProfessionalExperienceDTO } from "@/data/experiences/professionalExperienceDTO";
 import { db } from "@/db";
 import { experiencesTable } from "@/db/schema";
-import { formatDate } from "@/utils/formatDate";
 
 export async function getProfessionalExperiences(): Promise<
   Array<ProfessionalExperienceDTO>
@@ -19,14 +18,5 @@ export async function getProfessionalExperiences(): Promise<
     ],
   });
 
-  return experiences.map((exp) => ({
-    title: exp.title,
-    company: exp.company,
-    startDate: formatDate(exp.startDate),
-    endDate: exp.endDate ? formatDate(exp.endDate) : undefined,
-    description: exp.description,
-    technologies: exp.technologies,
-    type: "professional",
-    typeComplement: mapProfessionalType(exp.type),
-  }));
+  return experiences.map(mapProfessionalExperience);
 }
