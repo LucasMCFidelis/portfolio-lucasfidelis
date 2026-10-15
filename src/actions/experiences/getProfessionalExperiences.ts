@@ -1,20 +1,21 @@
+"use server";
+
 import { desc, eq } from "drizzle-orm";
 
+import { mapProfessionalType } from "@/data/experiences/mapProfessionalType";
+import { ProfessionalExperienceDTO } from "@/data/experiences/professionalExperienceDTO";
 import { db } from "@/db";
 import { experiencesTable } from "@/db/schema";
 import { formatDate } from "@/utils/formatDate";
 
-import { AcademicExperienceDTO } from "./academicExperienceDTO";
-import { mapAcademicType } from "./mapAcademicType";
-
-export async function getAcademicExperiences(): Promise<
-  Array<AcademicExperienceDTO>
+export async function getProfessionalExperiences(): Promise<
+  Array<ProfessionalExperienceDTO>
 > {
   const experiences = await db.query.experiencesTable.findMany({
-    where: eq(experiencesTable.category, "academic"),
+    where: eq(experiencesTable.category, "professional"),
     orderBy: [
       desc(experiencesTable.experienceInEvidence),
-      desc(experiencesTable.endDate),
+      desc(experiencesTable.startDate),
     ],
   });
 
@@ -25,7 +26,7 @@ export async function getAcademicExperiences(): Promise<
     endDate: exp.endDate ? formatDate(exp.endDate) : undefined,
     description: exp.description,
     technologies: exp.technologies,
-    type: "academic",
-    typeComplement: mapAcademicType(exp.type),
+    type: "professional",
+    typeComplement: mapProfessionalType(exp.type),
   }));
 }

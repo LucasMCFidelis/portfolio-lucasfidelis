@@ -4,8 +4,11 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
 
 import Header from "@/components/Header";
+import PrefetchBoundary from "@/components/PrefetchBoundary";
 import SectionContact from "@/components/sections/SectionContact";
 import { Separator } from "@/components/ui/separator";
+import { socialMediasQueryOptions } from "@/data/socialMedias/socialMediasQueries";
+import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const inter = Inter({
@@ -27,8 +30,6 @@ export const metadata: Metadata = {
   icons: "/icon.svg",
 };
 
-// Aplica a classe `dark` antes da hidratação para evitar o flash de tema claro.
-// Deve manter a mesma chave de armazenamento usada em `ThemeProvider`.
 const themeScript = `
 (function () {
   try {
@@ -60,12 +61,16 @@ export default function RootLayout({
           id="root"
           className="max-w-screen flex flex-col items-center gap-10 md:gap-20 container-padding mb-[8vh] md:mb-[15vh]"
         >
-          <ThemeProvider>
-            <Header />
-            {children}
-            <Separator />
-            <SectionContact />
-          </ThemeProvider>
+          <QueryProvider>
+            <ThemeProvider>
+              <Header />
+              {children}
+              <Separator />
+              <PrefetchBoundary queries={[socialMediasQueryOptions()]}>
+                <SectionContact />
+              </PrefetchBoundary>
+            </ThemeProvider>
+          </QueryProvider>
         </main>
       </body>
     </html>

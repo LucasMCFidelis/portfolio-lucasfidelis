@@ -1,8 +1,11 @@
+"use client";
+
 import "react-toastify/dist/ReactToastify.css";
 
 import { ReactNode } from "react";
 
-import { ProjectDTO } from "@/data/projects/projectDTO";
+import { ProjectsVariant } from "@/data/projects/projectsQueries";
+import { useProjects } from "@/data/projects/useProjects";
 
 import { ProjectCardCarousel } from "../ProjectCard/ProjectCardCarousel";
 import ProjectCardWrapper from "../ProjectCard/ProjectCardWrapper";
@@ -19,16 +22,18 @@ import {
 interface SectionProjectsProps {
   title?: string;
   description?: string;
-  projects: Array<ProjectDTO>;
+  variant: ProjectsVariant;
   children?: ReactNode;
 }
 
-export default async function SectionProjects({
+export default function SectionProjects({
   title = "Projetos",
   description,
-  projects,
+  variant,
   children,
 }: SectionProjectsProps) {
+  const { data: projects = [] } = useProjects(variant);
+
   return (
     <>
       <SectionWrapper>

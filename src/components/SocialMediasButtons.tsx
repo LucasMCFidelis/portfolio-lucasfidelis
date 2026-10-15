@@ -1,12 +1,14 @@
+"use client";
+
 import Link from "next/link";
 
-import { getAllSocialMedias } from "@/data/socialMedias/getAllSocialMedias";
+import { useSocialMedias } from "@/data/socialMedias/useSocialMedias";
 
 import { Icon, IconName } from "./IconWrapper";
 import { buttonVariants } from "./ui/button";
 
-export async function SocialMediasButtons() {
-  const socialMedias = await getAllSocialMedias();
+export function SocialMediasButtons() {
+  const { data: socialMedias = {} } = useSocialMedias();
   return (
     <>
       {Object.entries(socialMedias).map(({ 0: key, 1: data }) => (

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Icon } from "@/components/IconWrapper";
+import PrefetchBoundary from "@/components/PrefetchBoundary";
 import SectionProjects from "@/components/sections/SectionProjects";
 import SectionWrapper from "@/components/SectionWrapper";
 import { SocialMediasButtons } from "@/components/SocialMediasButtons";
@@ -10,15 +11,16 @@ import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardAction,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getGlobalContent } from "@/data/globalContent/getGlobalContent";
-import { getInEvidenceProjects } from "@/data/projects/getInEvidenceProjects";
+import { globalContentQueryOptions } from "@/data/globalContent/globalContentQueries";
+import { inEvidenceProjectsQueryOptions } from "@/data/projects/projectsQueries";
+import { socialMediasQueryOptions } from "@/data/socialMedias/socialMediasQueries";
 import { appSections } from "@/utils/lists/appSections";
 
 import ActionsHomeCard from "./components/ActionsHomeCard";
+import HomeDescription from "./components/HomeDescription";
 
 export const metadata: Metadata = {
   title: "Inicio - Portfólio de Lucas Fidelis",
@@ -26,14 +28,15 @@ export const metadata: Metadata = {
     "Portfólio de Lucas Fidelis — Desenvolvedor Front-end e QA. Explore projetos em destaque, habilidades com React, TypeScript, Next.js, testes automatizados e práticas modernas de desenvolvimento. Conheça meu trabalho e formas de contato.",
 };
 
-export default async function HomePage() {
-  const [projectsInEvidence, { aboutCurtDescription }] = await Promise.all([
-    getInEvidenceProjects(),
-    getGlobalContent(),
-  ]);
-
+export default function HomePage() {
   return (
-    <>
+    <PrefetchBoundary
+      queries={[
+        globalContentQueryOptions(),
+        inEvidenceProjectsQueryOptions(),
+        socialMediasQueryOptions(),
+      ]}
+    >
       <SectionWrapper
         id={appSections.home.id}
         className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5"
@@ -54,7 +57,7 @@ export default async function HomePage() {
                 <br className="hidden md:inline" /> Lucas Fidelis
               </h1>
             </CardTitle>
-            <CardDescription>{aboutCurtDescription}</CardDescription>
+            <HomeDescription />
           </CardHeader>
           <CardAction className="flex justify-start items-center gap-4 px-5">
             <ActionsHomeCard>
@@ -66,7 +69,7 @@ export default async function HomePage() {
       <SectionProjects
         title="Projetos em Destaque"
         description="Aqui estão os principais projetos que já desenvolvi, com uma breve descrição sobre os aprendizados e as tecnologias utilizadas em cada um."
-        projects={projectsInEvidence}
+        variant="inEvidence"
       >
         <Link
           href={appSections.projects.href}
@@ -77,6 +80,6 @@ export default async function HomePage() {
           <Icon name="ChevronRight" />
         </Link>
       </SectionProjects>
-    </>
+    </PrefetchBoundary>
   );
 }

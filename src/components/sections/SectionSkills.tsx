@@ -1,5 +1,6 @@
-import { getHardSkills } from "@/data/skills/getHardSkills";
-import { getSoftSkills } from "@/data/skills/getSoftSkills";
+"use client";
+
+import { useHardSkills, useSoftSkills } from "@/data/skills/useSkills";
 import { appSections } from "@/utils/lists/appSections";
 
 import SectionWrapper from "../SectionWrapper";
@@ -12,11 +13,9 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default async function SectionSkills() {
-  const [hardSkills, softSkills] = await Promise.all([
-    getHardSkills(),
-    getSoftSkills(),
-  ]);
+export default function SectionSkills() {
+  const { data: hardSkills = [] } = useHardSkills();
+  const { data: softSkills = [] } = useSoftSkills();
 
   return (
     <SectionWrapper id={appSections.skills.id} className="pt-[10vh]">

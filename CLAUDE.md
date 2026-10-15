@@ -47,7 +47,9 @@ src/
 │   │   └── components/       # Componentes exclusivos da rota (ActionsHomeCard)
 │   ├── about/                # "/about" (page.tsx + components/DownloadResumeButton)
 │   └── projects/             # "/projects"
-├── actions/                  # Server Actions ("use server") — ex.: sendEmail
+├── actions/                  # Server Actions ("use server")
+│   ├── sendEmail.ts          # Mutação (e-mail)
+│   └── <dominio>/get*.ts     # Consultas Drizzle expostas como actions (únicas a tocar o `db`)
 ├── assets/                   # Imagens importadas estaticamente (svg, etc.)
 ├── components/
 │   ├── ui/                   # Primitivos shadcn/ui (gerados pelo CLI — editar com cuidado)
@@ -56,17 +58,21 @@ src/
 │   ├── SkillCard/            # Card de skill dividido em Wrapper / Button / Content
 │   ├── ExperienceCard/
 │   └── *.tsx                 # Componentes compartilhados (Header, SectionWrapper, IconWrapper, FormContact, ThemeToggle, SocialMediasButtons)
-├── data/                     # Camada de acesso a dados (server-only na prática)
+├── data/                     # Camada de acesso a dados (TanStack Query sobre as actions)
 │   └── <dominio>/            # projects, skills, experiences, socialMedias, globalContent, images
-│       ├── get*.ts           # Funções de consulta (Drizzle)
+│       ├── <dominio>Queries.ts # `queryOptions` (chave + queryFn → action); sem "use client", usável no servidor
+│       ├── use*.ts           # Hooks `useQuery` ("use client") consumidos pelos componentes
 │       ├── *DTO.ts           # Tipos de saída consumidos pela UI (também as uniões/constantes dos tipos, ex.: academicExperienceDTO.ts)
-│       └── map*.ts           # Mapeadores banco → UI
+│       └── map*.ts           # Mapeadores banco → UI (usados pelas actions)
 ├── db/
 │   ├── index.ts              # Instância `db` do Drizzle
 │   └── schema.ts             # Tabelas, enums e relations
 ├── hooks/states/             # Hooks de estado/contexto (useThemeContext)
-├── lib/utils.ts              # `cn()` (clsx + tailwind-merge) — convenção shadcn
-├── providers/                # Context providers ("use client")
+├── lib/
+│   ├── utils.ts              # `cn()` (clsx + tailwind-merge) — convenção shadcn
+│   ├── makeQueryClient.ts    # Factory do QueryClient (staleTime 5 min) — server e client
+│   └── getServerQueryClient.ts # QueryClient por requisição (`React.cache`) — só servidor
+├── providers/                # Context providers ("use client"): ThemeProvider, QueryProvider
 └── utils/                    # Funções puras e constantes (formatDate, appSections, scrollToContactSession…)
 public/                       # Estáticos (icon.svg, profile.jpeg)
 drizzle/                      # Migrations geradas (drizzle-kit)
@@ -77,17 +83,22 @@ Alias de import: `@/*` → `./src/*`. Dentro da mesma pasta de feature, imports 
 ## Arquitetura e fluxo de dados
 
 ```
-Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Component (page/section) ──props──▶ componentes de UI
-                                                                                       └──▶ Client Component (só onde há interação)
+Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
+                          ▲                      ▲
+        queryFn (client)  │                      │  prefetchQuery (servidor)
+ use*() / useQuery ◀──────┘                      └── page/layout: <PrefetchBoundary queries=[...]>
+ (Client Components)  ◀── cache hidratado (dehydrate → HydrationBoundary) ──┘
 ```
 
 1. **Schema** em `src/db/schema.ts` (tabelas `*Table`, enums `pgEnum`, `relations`). Tabelas: `global_content`, `social_medias`, `images`, `projects`, `skills`, `experiences`.
-2. **Data layer** em `src/data/<dominio>/`: uma função `getX` por caso de uso, retornando um DTO/tipo próprio (nunca o row cru do banco quando a UI não precisa de tudo). A ordenação e os filtros (ex.: `visible = true`, `projectInEvidence`) ficam na query, não na UI.
-3. **Páginas e seções são Server Components `async`** que chamam o data layer direto (sem API routes) e usam `Promise.all` para buscas independentes.
-4. **Client Components** existem apenas para: Header (navegação/sheet), ThemeProvider/ThemeToggle, FormContact, carrosséis, botões com `onClick`/estado.
-5. **Mutações** (envio de e-mail) via Server Action em `src/actions/`, chamada pelo formulário client.
-6. **Navegação/seções** centralizadas em `src/utils/lists/appSections.tsx` (`id` para âncoras, `href` para rotas). Use essa constante em vez de strings soltas.
-7. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`, com preferência salva em `localStorage` (`isDarkMode`) ou `prefers-color-scheme`; um script inline em `layout.tsx` aplica a classe antes da hidratação (mantenha a mesma chave nos dois lugares); cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
+2. **Actions de leitura** em `src/actions/<dominio>/get*.ts`: uma função `getX` por caso de uso, retornando um DTO/tipo próprio (nunca o row cru do banco quando a UI não precisa de tudo). Ordenação e filtros (ex.: `visible = true`, `projectInEvidence`) ficam na query, não na UI. Elas **propagam erros** (não engolem com `catch`), para o React Query poder tratar/refazer a busca em vez de cachear `[]`.
+3. **Data layer** em `src/data/<dominio>/`: `<dominio>Queries.ts` define `queryOptions` (chave + `queryFn` chamando a action) e `use*.ts` expõe os hooks `useQuery`. Componentes **nunca chamam a action direto** — usam o hook.
+4. **Prefetch no servidor**: cada `page.tsx`/`layout.tsx` envolve o que consome dados em `<PrefetchBoundary queries={[...]}>` com os mesmos `queryOptions`. O servidor busca (via `getServerQueryClient`, um client por requisição), hidrata o cache e o HTML inicial já sai com os dados (SEO/LCP preservados). O `QueryProvider` (no `layout.tsx`) dá o cache ao browser: navegar entre páginas reaproveita dados "frescos" por 5 min (`staleTime`) sem novo request.
+5. **Seções e componentes que leem dados são Client Components** (`"use client"` + hook `use*`). Páginas continuam Server Components, agora síncronos: só declaram o `PrefetchBoundary` e a composição. Ao criar um componente que precisa de dados, **prefetch a mesma query na página** — senão ele só busca depois da hidratação.
+6. **Client Components** também existem para: Header (navegação/sheet), ThemeProvider/ThemeToggle, FormContact, carrosséis, botões com `onClick`/estado.
+7. **Mutações** (envio de e-mail) via Server Action em `src/actions/`, chamada pelo formulário client.
+8. **Navegação/seções** centralizadas em `src/utils/lists/appSections.tsx` (`id` para âncoras, `href` para rotas). Use essa constante em vez de strings soltas.
+9. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`, com preferência salva em `localStorage` (`isDarkMode`) ou `prefers-color-scheme`; um script inline em `layout.tsx` aplica a classe antes da hidratação (mantenha a mesma chave nos dois lugares); cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
 
 ## Convenções do projeto
 
@@ -103,7 +114,7 @@ Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Comp
 
 ### Como adicionar…
 
-- **Uma nova entidade de conteúdo**: tabela em `schema.ts` → `drizzle-kit generate/push` → pasta `src/data/<dominio>/` com DTO + `get*` → Server Component de seção em `components/sections/`.
+- **Uma nova entidade de conteúdo**: tabela em `schema.ts` → `drizzle-kit generate/push` → DTO em `src/data/<dominio>/` → action `get*` em `src/actions/<dominio>/` → `<dominio>Queries.ts` + hook `use*.ts` → Client Component de seção em `components/sections/` → adicione o `queryOptions` ao `PrefetchBoundary` das páginas que usam a seção.
 - **Um componente shadcn**: `npx shadcn@latest add <componente>` (config em `components.json`; vai para `src/components/ui`).
 - **Uma nova página**: pasta em `src/app/<rota>/page.tsx` + `metadata`; componentes só dela em `src/app/<rota>/components/`; registre em `appSections` se entrar no menu.
 
@@ -112,12 +123,12 @@ Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Comp
 ## Boas práticas — Next.js (App Router)
 
 1. **Server Components por padrão.** Só adicione `"use client"` quando precisar de estado, efeitos, eventos ou APIs de browser — e o mais baixo possível na árvore (extraia o trecho interativo em um componente pequeno, como foi feito em `ProjectCard/` e `ActionsHomeCard`).
-2. **Busque dados no servidor**, direto no Server Component ou no data layer. Evite `useEffect` + `fetch` para dados que o servidor já pode entregar.
-3. **Paralelize** buscas independentes com `Promise.all` / `Promise.allSettled` (já usado em Home, Skills e Experiences) para evitar waterfalls. Use `allSettled` quando uma falha não deve derrubar a página inteira.
-4. **Deduplique com `React.cache`** funções chamadas em vários componentes da mesma requisição (padrão já usado em `getGlobalContent` e `getAllSocialMedias`).
+2. **Busque dados via hooks do data layer** (`useQuery` sobre as actions) com prefetch no servidor (`PrefetchBoundary`). Evite `useEffect` + `fetch` e não chame actions de leitura direto de componentes.
+3. **Paralelize** buscas independentes: o `PrefetchBoundary` já roda a lista de queries em `Promise.all`, e hooks `useQuery` independentes no mesmo componente rodam em paralelo. Queries separadas já isolam falhas (uma falhar não derruba a outra).
+4. **Deduplicação** é do React Query: mesma `queryKey` = uma única busca por requisição no servidor (`getServerQueryClient`) e por sessão no browser. Mantenha as chaves em `<dominio>Queries.ts`, nunca soltas nos componentes.
 5. **Cache/revalidação conscientes.** Páginas que leem do banco sem APIs dinâmicas podem ser pré-renderizadas no build; se o conteúdo muda no banco, defina a estratégia explicitamente (`export const revalidate = N`, `revalidatePath/revalidateTag` ou `dynamic = "force-dynamic"`) em vez de deixar implícita.
 6. **Server Actions**: sempre valide a entrada **no servidor** (zod) — a validação do client não protege nada; retorne resultados serializáveis; não vaze mensagens internas de erro; mantenha segredos apenas em `process.env` do servidor (nunca `NEXT_PUBLIC_*` para credenciais).
-7. **Server-only**: módulos que tocam o banco (`src/db`, `src/data`) nunca devem ser importados por Client Components. Considere `import "server-only"` nesses módulos para o build falhar se isso acontecer.
+7. **Server-only**: só `src/actions/**` (e `src/db`) tocam o banco; `src/data/**` importa as actions, nunca o `db`. Client Components não devem importar `src/db`. Actions `"use server"` só podem exportar funções `async` e são endpoints públicos — retorne apenas DTOs sem dados sensíveis.
 8. **`next/image`** para imagens (sempre com `alt`, `fill`/`width`+`height` e `sizes` quando `fill`); novos domínios remotos precisam entrar em `images.remotePatterns` no `next.config.ts`. Use `priority` na imagem LCP (foto da home).
 9. **`next/link` e `useRouter`**: `Link` para navegação declarativa (melhor para SEO/prefetch); `router.push` só quando houver lógica. Links externos: `target="_blank"` + `rel="noopener noreferrer"`.
 10. **Metadata API** em todas as páginas (`metadata` ou `generateMetadata`) com `title` e `description` únicos; considere `openGraph` e `metadataBase`.
@@ -141,8 +152,8 @@ Postgres ──Drizzle──▶ src/data/<dominio>/get*.ts ──▶ Server Comp
 10. **Acessibilidade**: elementos semânticos (`section`, `article`, `nav`, `header`), `label` associado a inputs, `alt` descritivo (ou `alt=""` para decorativas), foco visível, contraste suficiente nos dois temas.
 11. **Evite `dangerouslySetInnerHTML`**. Se for inevitável (hoje em `about/page.tsx` com `aboutLargeDescription`), o conteúdo precisa ser confiável ou sanitizado.
 12. **Composição > configuração**: prefira `children`/slots (`skillButtonElement`, `skillCardContentElement`) a dezenas de props booleanas.
-13. **TypeScript**: tipos explícitos nas fronteiras (props, retorno de `get*`, DTOs); evite `any`; use unions literais para variantes (`"hard" | "soft"`). Reaproveite tipos inferidos do Drizzle (`typeof table.$inferSelect`) em vez de duplicar manualmente.
-14. **Tratamento de erros**: nunca deixe uma função de data layer retornar `undefined` silenciosamente após `catch`; ou propague o erro (para `error.tsx`) ou retorne um valor padrão tipado (ex.: `[]`).
+13. **TypeScript**: tipos explícitos nas fronteiras (props, retorno das actions `get*`, DTOs); evite `any`; use unions literais para variantes (`"hard" | "soft"`). Reaproveite tipos inferidos do Drizzle (`typeof table.$inferSelect`) em vez de duplicar manualmente.
+14. **Tratamento de erros**: nunca deixe uma action/função de dados retornar `undefined` silenciosamente após `catch`; propague o erro (o React Query expõe `isError`/`error` e refaz a busca) e trate o estado de erro no componente. Valores padrão (`data = []`) ficam na camada de UI, não dentro da action — senão uma falha é cacheada como "lista vazia".
 
 ---
 

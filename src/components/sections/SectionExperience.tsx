@@ -1,5 +1,9 @@
-import { getAcademicExperiences } from "@/data/experiences/getAcademicExperiences";
-import { getProfessionalExperiences } from "@/data/experiences/getProfessionalExperiences";
+"use client";
+
+import {
+  useAcademicExperiences,
+  useProfessionalExperiences,
+} from "@/data/experiences/useExperiences";
 import { appSections } from "@/utils/lists/appSections";
 
 import ExperienceCard from "../ExperienceCard/ExperienceCard";
@@ -12,17 +16,9 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default async function SectionExperiences() {
-  const results = await Promise.allSettled([
-    getProfessionalExperiences(),
-    getAcademicExperiences(),
-  ]);
-
-  const professionalExperiences =
-    results[0].status === "fulfilled" ? results[0].value : [];
-
-  const academicExperiences =
-    results[1].status === "fulfilled" ? results[1].value : [];
+export default function SectionExperiences() {
+  const { data: professionalExperiences = [] } = useProfessionalExperiences();
+  const { data: academicExperiences = [] } = useAcademicExperiences();
 
   return (
     <SectionWrapper id={appSections.experiences.id} className="pt-[10vh]">
