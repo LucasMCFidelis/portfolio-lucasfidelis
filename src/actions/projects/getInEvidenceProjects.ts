@@ -12,11 +12,7 @@ export async function getInEvidenceProjects(): Promise<Array<ProjectDTO>> {
       eq(projectsTable.visible, true),
       eq(projectsTable.projectInEvidence, true)
     ),
-    orderBy: [
-      desc(projectsTable.projectInEvidence),
-      asc(projectsTable.yearDevelopment),
-      asc(projectsTable.title),
-    ],
+    orderBy: [desc(projectsTable.yearDevelopment), asc(projectsTable.title)],
     with: { images: { orderBy: asc(imagesTable.indexDisplay) } },
   });
 }
