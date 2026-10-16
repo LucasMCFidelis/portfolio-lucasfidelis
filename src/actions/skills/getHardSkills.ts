@@ -8,6 +8,7 @@ import { skillsTable } from "@/db/schema";
 
 export async function getHardSkills(): Promise<Array<SkillDTO>> {
   return db.query.skillsTable.findMany({
+    columns: { titleSkill: true, typeSkill: true },
     where: eq(skillsTable.typeSkill, "hard"),
     orderBy: asc(skillsTable.titleSkill),
   });

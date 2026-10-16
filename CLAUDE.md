@@ -55,7 +55,8 @@ src/
 │   ├── ui/                   # Primitivos shadcn/ui (gerados pelo CLI — editar com cuidado)
 │   ├── sections/             # Seções de página (SectionProjects, SectionSkills, SectionExperience, SectionContact)
 │   ├── ProjectCard/          # Card de projeto dividido em Wrapper / Carousel / TextArea
-│   ├── SkillCard/            # Card de skill dividido em Wrapper / Button / Content
+│   ├── SkillList.tsx         # Lista de skills da seção "Minhas habilidades" (badges apenas com o título)
+│   ├── RelatedSkills.tsx     # Badges das skills relacionadas a uma experiência ou projeto
 │   ├── ExperienceCard/
 │   └── *.tsx                 # Componentes compartilhados (Header, SectionWrapper, IconWrapper, FormContact, ThemeToggle, SocialMediasButtons)
 ├── data/                     # Camada de acesso a dados (TanStack Query sobre as actions)
@@ -90,7 +91,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
  (Client Components)  ◀── cache hidratado (dehydrate → HydrationBoundary) ──┘
 ```
 
-1. **Schema** em `src/db/schema.ts` (tabelas `*Table`, enums `pgEnum`, `relations`). Tabelas: `global_content`, `social_medias`, `images`, `projects`, `skills`, `experiences`.
+1. **Schema** em `src/db/schema.ts` (tabelas `*Table`, enums `pgEnum`, `relations`). Tabelas: `global_content`, `social_medias`, `images`, `projects`, `skills`, `experiences`, `experience_skills` e `project_skills` (N:N entre skills e experiências/projetos).
 2. **Actions de leitura** em `src/actions/<dominio>/get*.ts`: uma função `getX` por caso de uso, retornando um DTO/tipo próprio (nunca o row cru do banco quando a UI não precisa de tudo). Ordenação e filtros (ex.: `visible = true`, `projectInEvidence`) ficam na query, não na UI. Elas **propagam erros** (não engolem com `catch`), para o React Query poder tratar/refazer a busca em vez de cachear `[]`.
 3. **Data layer** em `src/data/<dominio>/`: `<dominio>Queries.ts` define `queryOptions` (chave + `queryFn` chamando a action) e `use*.ts` expõe os hooks `useQuery`. Componentes **nunca chamam a action direto** — usam o hook.
 4. **Prefetch no servidor**: cada `page.tsx`/`layout.tsx` envolve o que consome dados em `<PrefetchBoundary queries={[...]}>` com os mesmos `queryOptions`. O servidor busca (via `getServerQueryClient`, um client por requisição), hidrata o cache e o HTML inicial já sai com os dados (SEO/LCP preservados). O `QueryProvider` (no `layout.tsx`) dá o cache ao browser: navegar entre páginas reaproveita dados "frescos" por 5 min (`staleTime`) sem novo request.
@@ -103,7 +104,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 ## Convenções do projeto
 
 - **Componentes**: um componente por arquivo, `PascalCase.tsx`, default export para componentes de seção/card e named export para utilitários (`Icon`, `FormContact`). Props tipadas com `interface XProps`.
-- **Composição**: cards complexos são quebrados em `Wrapper` + partes (ver `ProjectCard/` e `SkillCard/`) para manter o máximo possível no servidor e isolar o que precisa de `"use client"`.
+- **Composição**: cards complexos são quebrados em `Wrapper` + partes (ver `ProjectCard/`) para manter o máximo possível no servidor e isolar o que precisa de `"use client"`.
 - **Seções** usam `SectionWrapper` (`id` vindo de `appSections`) e o padrão `Card` do shadcn com `bg-transparent border-none`.
 - **Ícones**: sempre `<Icon name="..." />`. Para um novo ícone, registre-o no mapa `ICONS` de `IconWrapper.tsx`. Ícones de redes sociais usam o `title` do banco como `IconName`.
 - **Classes**: `cn()` de `@/lib/utils` para condicionais; `twMerge` já está embutido em `cn`.
@@ -141,7 +142,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 ## Boas práticas — React
 
 1. **Componentes puros e pequenos**: uma responsabilidade por componente; extraia quando houver JSX repetido ou lógica distinta (como `Wrapper` + conteúdo nos cards).
-2. **Props tipadas e mínimas**: passe só o que o componente usa (`Omit<SkillDTO, "typeSkill">` é um bom exemplo); prefira dados primitivos/DTOs a objetos de banco.
+2. **Props tipadas e mínimas**: passe só o que o componente usa (`Pick<SkillDTO, "titleSkill">` em `SkillList` é um bom exemplo); prefira dados primitivos/DTOs a objetos de banco.
 3. **`key` estável**: use o `id` do item, não o índice do array, em listas que podem mudar/reordenar. Quando o item não tem `id` (ex.: skills, experiências), use um campo único como `titleSkill` ou uma chave composta.
 4. **Estado**: mantenha o menor estado possível e derive o resto durante o render; não duplique em `useState` o que pode ser calculado. Levante o estado só até o ancestral comum.
 5. **`useEffect` só para sincronizar com sistemas externos** (DOM, localStorage, subscriptions). Não use para derivar estado nem para tratar eventos; sempre limpe timers/listeners no retorno (ex.: o `setTimeout` de `DownloadResumeButton` deveria ser limpo no unmount).

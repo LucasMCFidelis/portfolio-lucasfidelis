@@ -1,3 +1,4 @@
+import RelatedSkills from "@/components/RelatedSkills";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -6,14 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SkillDTO } from "@/data/skills/skillDTO";
 
 interface ExperienceCardProps {
   title: string;
   company: string;
   startDate: string;
   endDate?: string;
-  description: string;
-  technologies: string[];
+  description: Array<string>;
+  skills: Array<SkillDTO>;
   type?: string;
 }
 
@@ -32,7 +34,7 @@ export default function ExperienceCard({
   startDate,
   endDate,
   description,
-  technologies,
+  skills,
   type,
 }: ExperienceCardProps) {
   const formattedEndDate = endDate || "Atualmente";
@@ -58,18 +60,18 @@ export default function ExperienceCard({
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-          {description}
-        </p>
-        {technologies.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2">
-            {technologies.map((tech) => (
-              <Badge key={tech} variant="outline" className="text-xs">
-                {tech}
-              </Badge>
+        {description.length > 1 ? (
+          <ul className="list-disc pl-5 space-y-1.5 marker:text-primary text-sm md:text-base text-foreground/90 leading-relaxed">
+            {description.map((item) => (
+              <li key={item}>{item}</li>
             ))}
-          </div>
+          </ul>
+        ) : (
+          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+            {description[0]}
+          </p>
         )}
+        <RelatedSkills skills={skills} className="pt-2" />
       </CardContent>
     </Card>
   );

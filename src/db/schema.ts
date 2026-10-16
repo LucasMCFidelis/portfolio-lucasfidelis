@@ -2,11 +2,10 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   date,
-  doublePrecision,
   integer,
-  jsonb,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uuid,
@@ -87,6 +86,7 @@ export const projectsTable = pgTable("projects", {
 
 export const projectsRelations = relations(projectsTable, ({ many }) => ({
   images: many(imagesTable),
+  projectSkills: many(projectSkillsTable),
 }));
 
 export const imagesRelations = relations(imagesTable, ({ one }) => ({
@@ -98,9 +98,7 @@ export const imagesRelations = relations(imagesTable, ({ one }) => ({
 
 export const skillsTable = pgTable("skills", {
   id: uuid().primaryKey().defaultRandom(),
-  titleSkill: text("title_skill").notNull(),
-  levelSkill: doublePrecision("level_skill").notNull(),
-  descriptionSkill: text("description_skill"),
+  titleSkill: text("title_skill").notNull().unique(),
   typeSkill: typeSkill("type_skill").notNull().default("hard"),
 });
 
@@ -110,7 +108,7 @@ export const experiencesTable = pgTable("experiences", {
   title: varchar("title", { length: 255 }).notNull(),
   company: varchar("company", { length: 255 }).notNull(),
 
-  description: text("description").notNull(),
+  description: text("description").array().notNull(),
 
   startDate: date("start_date").notNull(),
   endDate: date("end_date"),
@@ -119,11 +117,71 @@ export const experiencesTable = pgTable("experiences", {
   category: experienceCategoryEnum("category").notNull(),
   type: experienceTypeEnum("type").notNull(),
 
-  // lista de tecnologias
-  technologies: jsonb("technologies").$type<string[]>().notNull(),
-
   experienceInEvidence: boolean("experience_in_evidence")
     .notNull()
     .default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const experienceSkillsTable = pgTable(
+  "experience_skills",
+  {
+    experienceId: uuid("experience_id")
+      .references(() => experiencesTable.id, { onDelete: "cascade" })
+      .notNull(),
+    skillId: uuid("skill_id")
+      .references(() => skillsTable.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.experienceId, t.skillId] })],
+);
+
+export const projectSkillsTable = pgTable(
+  "project_skills",
+  {
+    projectId: uuid("project_id")
+      .references(() => projectsTable.id, { onDelete: "cascade" })
+      .notNull(),
+    skillId: uuid("skill_id")
+      .references(() => skillsTable.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.projectId, t.skillId] })],
+);
+
+export const projectSkillsRelations = relations(
+  projectSkillsTable,
+  ({ one }) => ({
+    project: one(projectsTable, {
+      fields: [projectSkillsTable.projectId],
+      references: [projectsTable.id],
+    }),
+    skill: one(skillsTable, {
+      fields: [projectSkillsTable.skillId],
+      references: [skillsTable.id],
+    }),
+  }),
+);
+
+export const experiencesRelations = relations(experiencesTable, ({ many }) => ({
+  experienceSkills: many(experienceSkillsTable),
+}));
+
+export const skillsRelations = relations(skillsTable, ({ many }) => ({
+  experienceSkills: many(experienceSkillsTable),
+  projectSkills: many(projectSkillsTable),
+}));
+
+export const experienceSkillsRelations = relations(
+  experienceSkillsTable,
+  ({ one }) => ({
+    experience: one(experiencesTable, {
+      fields: [experienceSkillsTable.experienceId],
+      references: [experiencesTable.id],
+    }),
+    skill: one(skillsTable, {
+      fields: [experienceSkillsTable.skillId],
+      references: [skillsTable.id],
+    }),
+  }),
+);

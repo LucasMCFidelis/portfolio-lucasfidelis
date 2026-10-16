@@ -52,7 +52,7 @@ export default function SectionExperiences() {
                   startDate={experience.startDate}
                   endDate={experience.endDate}
                   description={experience.description}
-                  technologies={experience.technologies}
+                  skills={experience.skills}
                 />
               ))
             ) : (
@@ -86,7 +86,7 @@ export default function SectionExperiences() {
                   startDate={experience.startDate}
                   endDate={experience.endDate}
                   description={experience.description}
-                  technologies={experience.technologies}
+                  skills={experience.skills}
                   type={experience.typeComplement}
                 />
               ))

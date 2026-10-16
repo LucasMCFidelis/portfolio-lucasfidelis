@@ -4,7 +4,7 @@ import { useHardSkills, useSoftSkills } from "@/data/skills/useSkills";
 import { appSections } from "@/utils/lists/appSections";
 
 import SectionWrapper from "../SectionWrapper";
-import SkillCard from "../SkillCard/SkillCard";
+import SkillList from "../SkillList";
 import {
   Card,
   CardContent,
@@ -33,29 +33,11 @@ export default function SectionSkills() {
         <CardContent className="flex flex-col md:flex-row justify-between gap-8 px-0">
           <div className="w-full md:w-1/2 h-min flex flex-wrap justify-start gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
-            <div className="h-full flex flex-wrap gap-3">
-              {hardSkills.map((skill) => (
-                <SkillCard
-                  key={skill.titleSkill}
-                  titleSkill={skill.titleSkill}
-                  levelSkill={skill.levelSkill}
-                  descriptionSkill={skill.descriptionSkill}
-                />
-              ))}
-            </div>
+            <SkillList skills={hardSkills} label="Hard Skills" />
           </div>
           <div className="w-full md:w-1/2 h-min flex flex-wrap gap-x-3 gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Soft Skills</p>
-            <div className="h-full flex flex-wrap gap-3">
-              {softSkills.map((skill) => (
-                <SkillCard
-                  key={skill.titleSkill}
-                  titleSkill={skill.titleSkill}
-                  levelSkill={skill.levelSkill}
-                  descriptionSkill={skill.descriptionSkill}
-                />
-              ))}
-            </div>
+            <SkillList skills={softSkills} label="Soft Skills" />
           </div>
         </CardContent>
       </Card>
