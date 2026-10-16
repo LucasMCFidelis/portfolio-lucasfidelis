@@ -1,5 +1,9 @@
-import { getAcademicExperiences } from "@/data/experiences/getAcademicExperiences";
-import { getProfessionalExperiences } from "@/data/experiences/getProfessionalExperiences";
+"use client";
+
+import {
+  useAcademicExperiences,
+  useProfessionalExperiences,
+} from "@/data/experiences/useExperiences";
 import { appSections } from "@/utils/lists/appSections";
 
 import ExperienceCard from "../ExperienceCard/ExperienceCard";
@@ -12,17 +16,9 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default async function SectionExperiences() {
-  const results = await Promise.allSettled([
-    getProfessionalExperiences(),
-    getAcademicExperiences(),
-  ]);
-
-  const professionalExperiences =
-    results[0].status === "fulfilled" ? results[0].value : [];
-
-  const academicExperiences =
-    results[1].status === "fulfilled" ? results[1].value : [];
+export default function SectionExperiences() {
+  const { data: professionalExperiences = [] } = useProfessionalExperiences();
+  const { data: academicExperiences = [] } = useAcademicExperiences();
 
   return (
     <SectionWrapper id={appSections.experiences.id} className="pt-[10vh]">
@@ -48,9 +44,9 @@ export default async function SectionExperiences() {
             }}
           >
             {academicExperiences.length > 0 ? (
-              academicExperiences.map((experience, index) => (
+              academicExperiences.map((experience) => (
                 <ExperienceCard
-                  key={index}
+                  key={`${experience.company}-${experience.title}-${experience.startDate}`}
                   title={experience.title}
                   company={experience.company}
                   startDate={experience.startDate}
@@ -60,7 +56,9 @@ export default async function SectionExperiences() {
                 />
               ))
             ) : (
-              <p className="text-muted-foreground">Carregando formação...</p>
+              <p className="text-muted-foreground">
+                Nenhuma formação disponível no momento.
+              </p>
             )}
           </div>
         </CardContent>
@@ -80,9 +78,9 @@ export default async function SectionExperiences() {
         <CardContent className="px-0">
           <div className="w-full flex flex-col gap-6 mt-6">
             {professionalExperiences.length > 0 ? (
-              professionalExperiences.map((experience, index) => (
+              professionalExperiences.map((experience) => (
                 <ExperienceCard
-                  key={index}
+                  key={`${experience.company}-${experience.title}-${experience.startDate}`}
                   title={experience.title}
                   company={experience.company}
                   startDate={experience.startDate}
@@ -94,7 +92,7 @@ export default async function SectionExperiences() {
               ))
             ) : (
               <p className="text-muted-foreground">
-                Carregando experiências...
+                Nenhuma experiência disponível no momento.
               </p>
             )}
           </div>

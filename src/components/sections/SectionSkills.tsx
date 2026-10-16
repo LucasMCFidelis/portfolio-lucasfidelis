@@ -1,5 +1,6 @@
-import { getHardSkills } from "@/data/skills/getHardSkills";
-import { getSoftSkills } from "@/data/skills/getSoftSkills";
+"use client";
+
+import { useHardSkills, useSoftSkills } from "@/data/skills/useSkills";
 import { appSections } from "@/utils/lists/appSections";
 
 import SectionWrapper from "../SectionWrapper";
@@ -12,11 +13,9 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default async function SectionSkills() {
-  const [hardSkills, softSkills] = await Promise.all([
-    getHardSkills(),
-    getSoftSkills(),
-  ]);
+export default function SectionSkills() {
+  const { data: hardSkills = [] } = useHardSkills();
+  const { data: softSkills = [] } = useSoftSkills();
 
   return (
     <SectionWrapper id={appSections.skills.id} className="pt-[10vh]">
@@ -35,9 +34,9 @@ export default async function SectionSkills() {
           <div className="w-full md:w-1/2 h-min flex flex-wrap justify-start gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
             <div className="h-full flex flex-wrap gap-3">
-              {hardSkills.map((skill, index) => (
+              {hardSkills.map((skill) => (
                 <SkillCard
-                  key={index}
+                  key={skill.titleSkill}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}
                   descriptionSkill={skill.descriptionSkill}
@@ -48,9 +47,9 @@ export default async function SectionSkills() {
           <div className="w-full md:w-1/2 h-min flex flex-wrap gap-x-3 gap-y-5">
             <p className="text-sm lg:text-2xl font-sans w-full">Soft Skills</p>
             <div className="h-full flex flex-wrap gap-3">
-              {softSkills.map((skill, index) => (
+              {softSkills.map((skill) => (
                 <SkillCard
-                  key={index}
+                  key={skill.titleSkill}
                   titleSkill={skill.titleSkill}
                   levelSkill={skill.levelSkill}
                   descriptionSkill={skill.descriptionSkill}

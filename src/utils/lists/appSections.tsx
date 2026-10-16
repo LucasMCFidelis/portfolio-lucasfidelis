@@ -1,10 +1,10 @@
-type Section = {
+export type Section = {
   title: string;
   id: string;
   href?: string;
 };
 
-export const appSections: Record<string, Section> = {
+export const appSections = {
   home: {
     title: "Início",
     id: "home",
@@ -30,4 +30,4 @@ export const appSections: Record<string, Section> = {
     title: "Contato",
     id: "contact",
   },
-};
+} satisfies Record<string, Section>;

@@ -41,7 +41,7 @@ export function ProjectCardCarousel({ images }: { images: Array<ImageDTO> }) {
       <ProjectCarouselFull images={images} title="Teste" />
       <CarouselContent>
         {images.map((image, index) => (
-          <CarouselItem key={index}>
+          <CarouselItem key={image?.id ?? index}>
             <div>
               <Card className="py-0">
                 <CardContent className="relative w-full h-full overflow-hidden aspect-square">
