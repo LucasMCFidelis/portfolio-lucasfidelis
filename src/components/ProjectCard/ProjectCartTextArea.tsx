@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Icon, IconName } from "@/components/IconWrapper";
+import RelatedSkills from "@/components/RelatedSkills";
 import {
   Card,
   CardContent,
@@ -44,6 +45,7 @@ function LinkInProjectCart({ href, iconKey, title }: LinkInProjectCartProps) {
 }
 
 export function ProjectCardTextArea({
+  id,
   title,
   description,
   yearDevelopment,
@@ -51,6 +53,7 @@ export function ProjectCardTextArea({
   repositoryUrl,
   deploymentUrl,
   documentationUrl,
+  skills,
   haveImages,
 }: ProjectCardTextAreaProps) {
   return (
@@ -80,6 +83,18 @@ export function ProjectCardTextArea({
           </p>
         </div>
         <Separator />
+        {skills.length > 0 && (
+          <>
+            <div className="space-y-2">
+              <p>Skills</p>
+              <RelatedSkills
+                id={`project-${id}-skills`}
+                skills={skills}
+              />
+            </div>
+            <Separator />
+          </>
+        )}
         <CardFooter className="max-w-full flex flex-wrap gap-x-2 px-0">
           <LinkInProjectCart
             iconKey={"GitHub"}

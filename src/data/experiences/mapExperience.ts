@@ -1,6 +1,7 @@
 import type { experiencesTable } from "@/db/schema";
 import { formatDate } from "@/utils/formatDate";
 
+import { mapLinkedSkills } from "../skills/mapLinkedSkills";
 import { SkillDTO } from "../skills/skillDTO";
 import { AcademicExperienceDTO } from "./academicExperienceDTO";
 import { mapAcademicType } from "./mapAcademicType";
@@ -23,12 +24,7 @@ function mapExperienceBase(row: ExperienceRow): ExperienceBaseDTO {
     startDate: formatDate(row.startDate),
     endDate: row.endDate ? formatDate(row.endDate) : undefined,
     description: row.description,
-    skills: row.experienceSkills
-      .map(({ skill }) => ({
-        titleSkill: skill.titleSkill,
-        typeSkill: skill.typeSkill,
-      }))
-      .sort((a, b) => a.titleSkill.localeCompare(b.titleSkill, "pt-BR")),
+    skills: mapLinkedSkills(row.experienceSkills),
   };
 }
 

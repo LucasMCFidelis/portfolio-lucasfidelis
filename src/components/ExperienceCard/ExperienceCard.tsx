@@ -1,3 +1,4 @@
+import RelatedSkills from "@/components/RelatedSkills";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -62,15 +63,7 @@ export default function ExperienceCard({
         <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
           {description}
         </p>
-        {skills.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2">
-            {skills.map(({ titleSkill }) => (
-              <Badge key={titleSkill} variant="outline" className="text-xs">
-                {titleSkill}
-              </Badge>
-            ))}
-          </div>
-        )}
+        <RelatedSkills skills={skills} className="pt-2" />
       </CardContent>
     </Card>
   );

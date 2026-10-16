@@ -3,7 +3,6 @@ import {
   boolean,
   date,
   integer,
-  jsonb,
   pgEnum,
   pgTable,
   primaryKey,
@@ -87,6 +86,7 @@ export const projectsTable = pgTable("projects", {
 
 export const projectsRelations = relations(projectsTable, ({ many }) => ({
   images: many(imagesTable),
+  projectSkills: many(projectSkillsTable),
 }));
 
 export const imagesRelations = relations(imagesTable, ({ one }) => ({
@@ -136,12 +136,40 @@ export const experienceSkillsTable = pgTable(
   (t) => [primaryKey({ columns: [t.experienceId, t.skillId] })],
 );
 
+export const projectSkillsTable = pgTable(
+  "project_skills",
+  {
+    projectId: uuid("project_id")
+      .references(() => projectsTable.id, { onDelete: "cascade" })
+      .notNull(),
+    skillId: uuid("skill_id")
+      .references(() => skillsTable.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.projectId, t.skillId] })],
+);
+
+export const projectSkillsRelations = relations(
+  projectSkillsTable,
+  ({ one }) => ({
+    project: one(projectsTable, {
+      fields: [projectSkillsTable.projectId],
+      references: [projectsTable.id],
+    }),
+    skill: one(skillsTable, {
+      fields: [projectSkillsTable.skillId],
+      references: [skillsTable.id],
+    }),
+  }),
+);
+
 export const experiencesRelations = relations(experiencesTable, ({ many }) => ({
   experienceSkills: many(experienceSkillsTable),
 }));
 
 export const skillsRelations = relations(skillsTable, ({ many }) => ({
   experienceSkills: many(experienceSkillsTable),
+  projectSkills: many(projectSkillsTable),
 }));
 
 export const experienceSkillsRelations = relations(
