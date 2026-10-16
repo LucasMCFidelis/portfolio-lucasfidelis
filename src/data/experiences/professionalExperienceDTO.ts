@@ -18,7 +18,7 @@ export interface ProfessionalExperienceDTO {
   company: string;
   startDate: string;
   endDate?: string;
-  description: string;
+  description: Array<string>;
   skills: Array<SkillDTO>;
   type: ProfessionalExperienceType;
   typeComplement: ProfessionalType;

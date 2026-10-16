@@ -11,7 +11,7 @@ export interface AcademicExperienceDTO {
   company: string;
   startDate: string;
   endDate?: string;
-  description: string;
+  description: Array<string>;
   skills: Array<SkillDTO>;
   type: AcademicExperienceType;
   typeComplement: AcademicType;

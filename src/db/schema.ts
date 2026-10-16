@@ -108,7 +108,7 @@ export const experiencesTable = pgTable("experiences", {
   title: varchar("title", { length: 255 }).notNull(),
   company: varchar("company", { length: 255 }).notNull(),
 
-  description: text("description").notNull(),
+  description: text("description").array().notNull(),
 
   startDate: date("start_date").notNull(),
   endDate: date("end_date"),

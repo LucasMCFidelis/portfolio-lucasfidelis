@@ -14,7 +14,7 @@ interface ExperienceCardProps {
   company: string;
   startDate: string;
   endDate?: string;
-  description: string;
+  description: Array<string>;
   skills: Array<SkillDTO>;
   type?: string;
 }
@@ -60,9 +60,17 @@ export default function ExperienceCard({
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-          {description}
-        </p>
+        {description.length > 1 ? (
+          <ul className="list-disc pl-5 space-y-1.5 marker:text-primary text-sm md:text-base text-foreground/90 leading-relaxed">
+            {description.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+            {description[0]}
+          </p>
+        )}
         <RelatedSkills skills={skills} className="pt-2" />
       </CardContent>
     </Card>
