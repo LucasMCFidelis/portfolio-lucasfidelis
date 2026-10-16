@@ -55,7 +55,7 @@ src/
 │   ├── ui/                   # Primitivos shadcn/ui (gerados pelo CLI — editar com cuidado)
 │   ├── sections/             # Seções de página (SectionProjects, SectionSkills, SectionExperience, SectionContact)
 │   ├── ProjectCard/          # Card de projeto dividido em Wrapper / Carousel / TextArea
-│   ├── SkillCard/            # Card de skill dividido em Wrapper / Button / Content
+│   ├── SkillList.tsx         # Lista de skills (badges apenas com o título)
 │   ├── ExperienceCard/
 │   └── *.tsx                 # Componentes compartilhados (Header, SectionWrapper, IconWrapper, FormContact, ThemeToggle, SocialMediasButtons)
 ├── data/                     # Camada de acesso a dados (TanStack Query sobre as actions)
@@ -103,7 +103,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 ## Convenções do projeto
 
 - **Componentes**: um componente por arquivo, `PascalCase.tsx`, default export para componentes de seção/card e named export para utilitários (`Icon`, `FormContact`). Props tipadas com `interface XProps`.
-- **Composição**: cards complexos são quebrados em `Wrapper` + partes (ver `ProjectCard/` e `SkillCard/`) para manter o máximo possível no servidor e isolar o que precisa de `"use client"`.
+- **Composição**: cards complexos são quebrados em `Wrapper` + partes (ver `ProjectCard/`) para manter o máximo possível no servidor e isolar o que precisa de `"use client"`.
 - **Seções** usam `SectionWrapper` (`id` vindo de `appSections`) e o padrão `Card` do shadcn com `bg-transparent border-none`.
 - **Ícones**: sempre `<Icon name="..." />`. Para um novo ícone, registre-o no mapa `ICONS` de `IconWrapper.tsx`. Ícones de redes sociais usam o `title` do banco como `IconName`.
 - **Classes**: `cn()` de `@/lib/utils` para condicionais; `twMerge` já está embutido em `cn`.
@@ -141,7 +141,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 ## Boas práticas — React
 
 1. **Componentes puros e pequenos**: uma responsabilidade por componente; extraia quando houver JSX repetido ou lógica distinta (como `Wrapper` + conteúdo nos cards).
-2. **Props tipadas e mínimas**: passe só o que o componente usa (`Omit<SkillDTO, "typeSkill">` é um bom exemplo); prefira dados primitivos/DTOs a objetos de banco.
+2. **Props tipadas e mínimas**: passe só o que o componente usa (`Pick<SkillDTO, "titleSkill">` em `SkillList` é um bom exemplo); prefira dados primitivos/DTOs a objetos de banco.
 3. **`key` estável**: use o `id` do item, não o índice do array, em listas que podem mudar/reordenar. Quando o item não tem `id` (ex.: skills, experiências), use um campo único como `titleSkill` ou uma chave composta.
 4. **Estado**: mantenha o menor estado possível e derive o resto durante o render; não duplique em `useState` o que pode ser calculado. Levante o estado só até o ancestral comum.
 5. **`useEffect` só para sincronizar com sistemas externos** (DOM, localStorage, subscriptions). Não use para derivar estado nem para tratar eventos; sempre limpe timers/listeners no retorno (ex.: o `setTimeout` de `DownloadResumeButton` deveria ser limpo no unmount).

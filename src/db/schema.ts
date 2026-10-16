@@ -2,7 +2,6 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   date,
-  doublePrecision,
   integer,
   jsonb,
   pgEnum,
@@ -99,8 +98,6 @@ export const imagesRelations = relations(imagesTable, ({ one }) => ({
 export const skillsTable = pgTable("skills", {
   id: uuid().primaryKey().defaultRandom(),
   titleSkill: text("title_skill").notNull(),
-  levelSkill: doublePrecision("level_skill").notNull(),
-  descriptionSkill: text("description_skill"),
   typeSkill: typeSkill("type_skill").notNull().default("hard"),
 });
 
