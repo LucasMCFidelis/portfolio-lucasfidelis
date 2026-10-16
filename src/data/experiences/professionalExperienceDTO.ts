@@ -1,3 +1,5 @@
+import { SkillDTO } from "../skills/skillDTO";
+
 export const professionalTypes = [
   "full-time",
   "part-time",
@@ -17,7 +19,7 @@ export interface ProfessionalExperienceDTO {
   startDate: string;
   endDate?: string;
   description: string;
-  technologies: string[];
+  skills: Array<SkillDTO>;
   type: ProfessionalExperienceType;
   typeComplement: ProfessionalType;
 }

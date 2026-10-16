@@ -1,12 +1,15 @@
 import type { experiencesTable } from "@/db/schema";
 import { formatDate } from "@/utils/formatDate";
 
+import { SkillDTO } from "../skills/skillDTO";
 import { AcademicExperienceDTO } from "./academicExperienceDTO";
 import { mapAcademicType } from "./mapAcademicType";
 import { mapProfessionalType } from "./mapProfessionalType";
 import { ProfessionalExperienceDTO } from "./professionalExperienceDTO";
 
-type ExperienceRow = typeof experiencesTable.$inferSelect;
+type ExperienceRow = typeof experiencesTable.$inferSelect & {
+  experienceSkills: Array<{ skill: SkillDTO }>;
+};
 
 type ExperienceBaseDTO = Omit<
   AcademicExperienceDTO,
@@ -20,7 +23,12 @@ function mapExperienceBase(row: ExperienceRow): ExperienceBaseDTO {
     startDate: formatDate(row.startDate),
     endDate: row.endDate ? formatDate(row.endDate) : undefined,
     description: row.description,
-    technologies: row.technologies,
+    skills: row.experienceSkills
+      .map(({ skill }) => ({
+        titleSkill: skill.titleSkill,
+        typeSkill: skill.typeSkill,
+      }))
+      .sort((a, b) => a.titleSkill.localeCompare(b.titleSkill, "pt-BR")),
   };
 }
 

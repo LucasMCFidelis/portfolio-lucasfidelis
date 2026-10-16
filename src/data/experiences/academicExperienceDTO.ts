@@ -1,3 +1,5 @@
+import { SkillDTO } from "../skills/skillDTO";
+
 export const academicTypes = ["degree", "bootcamp"] as const;
 
 export type AcademicType = (typeof academicTypes)[number];
@@ -10,7 +12,7 @@ export interface AcademicExperienceDTO {
   startDate: string;
   endDate?: string;
   description: string;
-  technologies: string[];
+  skills: Array<SkillDTO>;
   type: AcademicExperienceType;
   typeComplement: AcademicType;
 }

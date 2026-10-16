@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SkillDTO } from "@/data/skills/skillDTO";
 
 interface ExperienceCardProps {
   title: string;
@@ -13,7 +14,7 @@ interface ExperienceCardProps {
   startDate: string;
   endDate?: string;
   description: string;
-  technologies: string[];
+  skills: Array<SkillDTO>;
   type?: string;
 }
 
@@ -32,7 +33,7 @@ export default function ExperienceCard({
   startDate,
   endDate,
   description,
-  technologies,
+  skills,
   type,
 }: ExperienceCardProps) {
   const formattedEndDate = endDate || "Atualmente";
@@ -61,11 +62,11 @@ export default function ExperienceCard({
         <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
           {description}
         </p>
-        {technologies.length > 0 && (
+        {skills.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-2">
-            {technologies.map((tech) => (
-              <Badge key={tech} variant="outline" className="text-xs">
-                {tech}
+            {skills.map(({ titleSkill }) => (
+              <Badge key={titleSkill} variant="outline" className="text-xs">
+                {titleSkill}
               </Badge>
             ))}
           </div>

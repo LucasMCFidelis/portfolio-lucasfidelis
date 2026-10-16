@@ -90,7 +90,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
  (Client Components)  ◀── cache hidratado (dehydrate → HydrationBoundary) ──┘
 ```
 
-1. **Schema** em `src/db/schema.ts` (tabelas `*Table`, enums `pgEnum`, `relations`). Tabelas: `global_content`, `social_medias`, `images`, `projects`, `skills`, `experiences`.
+1. **Schema** em `src/db/schema.ts` (tabelas `*Table`, enums `pgEnum`, `relations`). Tabelas: `global_content`, `social_medias`, `images`, `projects`, `skills`, `experiences`, `experience_skills` (N:N entre experiências e skills).
 2. **Actions de leitura** em `src/actions/<dominio>/get*.ts`: uma função `getX` por caso de uso, retornando um DTO/tipo próprio (nunca o row cru do banco quando a UI não precisa de tudo). Ordenação e filtros (ex.: `visible = true`, `projectInEvidence`) ficam na query, não na UI. Elas **propagam erros** (não engolem com `catch`), para o React Query poder tratar/refazer a busca em vez de cachear `[]`.
 3. **Data layer** em `src/data/<dominio>/`: `<dominio>Queries.ts` define `queryOptions` (chave + `queryFn` chamando a action) e `use*.ts` expõe os hooks `useQuery`. Componentes **nunca chamam a action direto** — usam o hook.
 4. **Prefetch no servidor**: cada `page.tsx`/`layout.tsx` envolve o que consome dados em `<PrefetchBoundary queries={[...]}>` com os mesmos `queryOptions`. O servidor busca (via `getServerQueryClient`, um client por requisição), hidrata o cache e o HTML inicial já sai com os dados (SEO/LCP preservados). O `QueryProvider` (no `layout.tsx`) dá o cache ao browser: navegar entre páginas reaproveita dados "frescos" por 5 min (`staleTime`) sem novo request.

@@ -16,6 +16,11 @@ export async function getAcademicExperiences(): Promise<
       desc(experiencesTable.experienceInEvidence),
       desc(experiencesTable.endDate),
     ],
+    with: {
+      experienceSkills: {
+        with: { skill: { columns: { titleSkill: true, typeSkill: true } } },
+      },
+    },
   });
 
   return experiences.map(mapAcademicExperience);
