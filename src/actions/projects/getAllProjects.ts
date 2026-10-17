@@ -5,7 +5,11 @@ import { asc, desc, eq } from "drizzle-orm";
 import { mapProject } from "@/data/projects/mapProject";
 import { ProjectDTO } from "@/data/projects/projectDTO";
 import { db } from "@/db";
-import { imagesTable, projectsTable } from "@/db/schema";
+import {
+  imagesTable,
+  projectRepositoriesTable,
+  projectsTable,
+} from "@/db/schema";
 
 export async function getAllProjects(): Promise<Array<ProjectDTO>> {
   const projects = await db.query.projectsTable.findMany({
@@ -17,6 +21,10 @@ export async function getAllProjects(): Promise<Array<ProjectDTO>> {
     ],
     with: {
       images: { orderBy: asc(imagesTable.indexDisplay) },
+      repositories: {
+        columns: { repositoryTitle: true, repositoryUrl: true },
+        orderBy: asc(projectRepositoriesTable.indexDisplay),
+      },
       projectSkills: {
         with: { skill: { columns: { titleSkill: true, typeSkill: true } } },
       },
