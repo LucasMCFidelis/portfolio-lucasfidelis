@@ -26,13 +26,22 @@ export function ProjectCardCarousel({ images }: { images: Array<ImageDTO> }) {
       return;
     }
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on("select", () => {
+    const updateSnaps = () => {
+      setCount(api.scrollSnapList().length);
       setCurrent(api.selectedScrollSnap() + 1);
-    });
+    };
+
+    updateSnaps();
+
+    api.on("select", updateSnaps);
+    api.on("reInit", updateSnaps);
+
+    return () => {
+      api.off("select", updateSnaps);
+      api.off("reInit", updateSnaps);
+    };
   }, [api]);
+
   return (
     <Carousel
       className="relative w-4/5 lg:w-[30vw] xl:w-[40vw]"
@@ -49,9 +58,8 @@ export function ProjectCardCarousel({ images }: { images: Array<ImageDTO> }) {
                     <Image
                       src={image.url}
                       fill
-                      className={`rounded-xl ${
-                        image.mobileScreen ? "object-contain" : "object-cover"
-                      }`}
+                      className={`rounded-xl ${image.mobileScreen ? "object-contain" : "object-cover"
+                        }`}
                       alt={image.title}
                     />
                   ) : (
