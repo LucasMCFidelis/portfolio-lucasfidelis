@@ -44,7 +44,7 @@ export const typeSkill = pgEnum("type_skill", ["hard", "soft"]);
 export const globalContentTable = pgTable("global_content", {
   id: uuid().primaryKey().defaultRandom(),
   aboutCurtDescription: text("about_curt_description"),
-  aboutLargeDescription: text("about_large_description"),
+  aboutLargeDescription: text("about_large_description").array(),
   fileResumeId: text("file_resume_id").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
