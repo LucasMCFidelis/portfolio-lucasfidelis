@@ -76,7 +76,6 @@ export const projectsTable = pgTable("projects", {
     .notNull()
     .default(new Date().getFullYear()),
   typeProject: typeProject("type_project").notNull().default("outros"),
-  repositoryUrl: text("repository_url").notNull(),
   deploymentUrl: text("deployment_url"),
   documentationUrl: text("documentation_url"),
   visible: boolean().notNull().default(true),
@@ -84,10 +83,32 @@ export const projectsTable = pgTable("projects", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const projectRepositoriesTable = pgTable("project_repositories", {
+  id: uuid().primaryKey().defaultRandom(),
+  projectId: uuid("project_id")
+    .references(() => projectsTable.id, { onDelete: "cascade" })
+    .notNull(),
+  repositoryTitle: text("repository_title"),
+  repositoryUrl: text("repository_url").notNull(),
+  indexDisplay: integer("index_display"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const projectsRelations = relations(projectsTable, ({ many }) => ({
   images: many(imagesTable),
+  repositories: many(projectRepositoriesTable),
   projectSkills: many(projectSkillsTable),
 }));
+
+export const projectRepositoriesRelations = relations(
+  projectRepositoriesTable,
+  ({ one }) => ({
+    project: one(projectsTable, {
+      fields: [projectRepositoriesTable.projectId],
+      references: [projectsTable.id],
+    }),
+  }),
+);
 
 export const imagesRelations = relations(imagesTable, ({ one }) => ({
   project: one(projectsTable, {

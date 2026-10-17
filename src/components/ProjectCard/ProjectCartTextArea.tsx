@@ -50,7 +50,7 @@ export function ProjectCardTextArea({
   description,
   yearDevelopment,
   typeProject,
-  repositoryUrl,
+  repositories,
   deploymentUrl,
   documentationUrl,
   skills,
@@ -96,11 +96,14 @@ export function ProjectCardTextArea({
           </>
         )}
         <CardFooter className="max-w-full flex flex-wrap gap-x-2 px-0">
-          <LinkInProjectCart
-            iconKey={"GitHub"}
-            href={repositoryUrl}
-            title={"Repositório"}
-          />
+          {repositories.map(({ repositoryTitle, repositoryUrl }) => (
+            <LinkInProjectCart
+              key={repositoryUrl}
+              iconKey={"GitHub"}
+              href={repositoryUrl}
+              title={repositoryTitle ?? "Repositório"}
+            />
+          ))}
           {deploymentUrl && (
             <LinkInProjectCart
               iconKey={"Link"}
