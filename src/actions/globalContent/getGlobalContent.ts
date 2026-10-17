@@ -13,7 +13,7 @@ export async function getGlobalContent(): Promise<GlobalContentDTO> {
 
   return {
     aboutCurtDescription: allGlobalContent?.aboutCurtDescription || "",
-    aboutLargeDescription: allGlobalContent?.aboutLargeDescription || "",
+    aboutLargeDescription: allGlobalContent?.aboutLargeDescription ?? [],
     fileResumeId: allGlobalContent?.fileResumeId || "",
   };
 }

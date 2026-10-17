@@ -21,9 +21,11 @@ export default function AboutMeCard() {
         <CardTitle className="text-sm lg:text-2xl font-sans">
           {data?.aboutCurtDescription}
         </CardTitle>
-        <CardDescription
-          dangerouslySetInnerHTML={{ __html: data?.aboutLargeDescription ?? "" }}
-        />
+        <div className="flex flex-col gap-2">
+          {data?.aboutLargeDescription.map((paragraph) => (
+            <CardDescription key={paragraph}>{paragraph}</CardDescription>
+          ))}
+        </div>
       </CardHeader>
       <CardFooter className="max-w-full flex flex-wrap justify-start items-center gap-4">
         <DownloadResumeButton fileId={data?.fileResumeId ?? ""} />
