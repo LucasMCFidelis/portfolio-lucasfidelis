@@ -121,6 +121,7 @@ export const skillsTable = pgTable("skills", {
   id: uuid().primaryKey().defaultRandom(),
   titleSkill: text("title_skill").notNull().unique(),
   typeSkill: typeSkill("type_skill").notNull().default("hard"),
+  skillInEvidence: boolean("skill_in_evidence").notNull().default(true),
 });
 
 export const experiencesTable = pgTable("experiences", {
