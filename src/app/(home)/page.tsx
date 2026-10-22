@@ -41,7 +41,7 @@ export default function HomePage() {
         id={appSections.home.id}
         className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5"
       >
-        <div className="relative w-full max-w-sm self-center h-[60vh] sm:h-[40vh] sm:w-[30vh] lg:h-[65vh] lg:w-[55vh] xl:min-w-lg rounded-2xl">
+        <div className="relative w-full max-w-sm self-center h-[60vh] sm:h-[40vh] sm:w-[30vh] lg:h-[65vh] lg:w-[55vh] xl:min-w-lg rounded-2xl animate-rise-in motion-reduce:animate-none">
           <Image
             src={"/profile.jpeg"}
             alt="Foto Lucas"
@@ -51,15 +51,15 @@ export default function HomePage() {
         </div>
         <Card className="w-full md:max-w-xl flex flex-col md:flex-1 gap-y-5 bg-transparent border-none">
           <CardHeader>
-            <CardTitle>
+            <CardTitle className="animate-rise-in motion-reduce:animate-none [animation-delay:100ms]">
               <h1>
                 Olá, eu sou
                 <br className="hidden md:inline" /> Lucas Fidelis
               </h1>
             </CardTitle>
-            <HomeDescription />
+            <HomeDescription className="animate-rise-in motion-reduce:animate-none [animation-delay:200ms]" />
           </CardHeader>
-          <CardAction className="flex justify-start items-center gap-4 px-5">
+          <CardAction className="flex justify-start items-center gap-4 px-5 animate-rise-in motion-reduce:animate-none [animation-delay:300ms]">
             <ActionsHomeCard>
               <SocialMediasButtons />
             </ActionsHomeCard>
