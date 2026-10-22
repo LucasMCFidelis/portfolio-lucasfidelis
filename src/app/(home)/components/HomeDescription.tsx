@@ -3,8 +3,16 @@
 import { CardDescription } from "@/components/ui/card";
 import { useGlobalContent } from "@/data/globalContent/useGlobalContent";
 
-export default function HomeDescription() {
+interface HomeDescriptionProps {
+  className?: string;
+}
+
+export default function HomeDescription({ className }: HomeDescriptionProps) {
   const { data } = useGlobalContent();
 
-  return <CardDescription>{data?.aboutCurtDescription}</CardDescription>;
+  return (
+    <CardDescription className={className}>
+      {data?.aboutCurtDescription}
+    </CardDescription>
+  );
 }

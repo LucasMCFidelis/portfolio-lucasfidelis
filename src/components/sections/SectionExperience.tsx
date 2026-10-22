@@ -7,6 +7,7 @@ import {
 import { appSections } from "@/utils/lists/appSections";
 
 import ExperienceCard from "../ExperienceCard/ExperienceCard";
+import Reveal from "../Reveal";
 import SectionWrapper from "../SectionWrapper";
 import {
   Card,
@@ -23,17 +24,19 @@ export default function SectionExperiences() {
   return (
     <SectionWrapper id={appSections.experiences.id} className="pt-[10vh]">
       <Card className="bg-transparent border-none w-full px-5">
-        <CardHeader className="p-0 flex flex-col md:flex-row justify-between">
-          <CardTitle>
-            <h2>Formação</h2>
-          </CardTitle>
-          <CardDescription className="md:max-w-1/2">
-            Minha formação acadêmica em Análise e Desenvolvimento de Sistemas,
-            complementada com especializações intensivas em Engenharia de
-            Qualidade de Software. Uma base sólida que une conhecimento técnico
-            com expertise em garantia de qualidade.
-          </CardDescription>
-        </CardHeader>
+        <Reveal asChild>
+          <CardHeader className="p-0 flex flex-col md:flex-row justify-between">
+            <CardTitle>
+              <h2>Formação</h2>
+            </CardTitle>
+            <CardDescription className="md:max-w-1/2">
+              Minha formação acadêmica em Análise e Desenvolvimento de Sistemas,
+              complementada com especializações intensivas em Engenharia de
+              Qualidade de Software. Uma base sólida que une conhecimento
+              técnico com expertise em garantia de qualidade.
+            </CardDescription>
+          </CardHeader>
+        </Reveal>
         <CardContent className="px-0">
           <div
             className="w-full mt-6"
@@ -44,16 +47,21 @@ export default function SectionExperiences() {
             }}
           >
             {academicExperiences.length > 0 ? (
-              academicExperiences.map((experience) => (
-                <ExperienceCard
+              academicExperiences.map((experience, index) => (
+                <Reveal
                   key={`${experience.company}-${experience.title}-${experience.startDate}`}
-                  title={experience.title}
-                  company={experience.company}
-                  startDate={experience.startDate}
-                  endDate={experience.endDate}
-                  description={experience.description}
-                  skills={experience.skills}
-                />
+                  className="grid"
+                  delay={(index % 2) * 100}
+                >
+                  <ExperienceCard
+                    title={experience.title}
+                    company={experience.company}
+                    startDate={experience.startDate}
+                    endDate={experience.endDate}
+                    description={experience.description}
+                    skills={experience.skills}
+                  />
+                </Reveal>
               ))
             ) : (
               <p className="text-muted-foreground">
@@ -64,31 +72,38 @@ export default function SectionExperiences() {
         </CardContent>
       </Card>
       <Card className="bg-transparent border-none w-full px-5">
-        <CardHeader className="p-0 flex flex-col md:flex-row justify-between">
-          <CardTitle>
-            <h2>Experiência Profissional</h2>
-          </CardTitle>
-          <CardDescription className="md:max-w-1/2">
-            Resumo da minha trajetória profissional construída sobre projetos
-            desafiadores, soluções inovadoras e constante aprendizado. Focada
-            especialmente na garantia de qualidade de software, cada experiência
-            reflete minha adaptabilidade e comprometimento com entrega de valor.
-          </CardDescription>
-        </CardHeader>
+        <Reveal asChild>
+          <CardHeader className="p-0 flex flex-col md:flex-row justify-between">
+            <CardTitle>
+              <h2>Experiência Profissional</h2>
+            </CardTitle>
+            <CardDescription className="md:max-w-1/2">
+              Resumo da minha trajetória profissional construída sobre projetos
+              desafiadores, soluções inovadoras e constante aprendizado. Focada
+              especialmente na garantia de qualidade de software, cada
+              experiência reflete minha adaptabilidade e comprometimento com
+              entrega de valor.
+            </CardDescription>
+          </CardHeader>
+        </Reveal>
         <CardContent className="px-0">
           <div className="w-full flex flex-col gap-6 mt-6">
             {professionalExperiences.length > 0 ? (
               professionalExperiences.map((experience) => (
-                <ExperienceCard
+                <Reveal
                   key={`${experience.company}-${experience.title}-${experience.startDate}`}
-                  title={experience.title}
-                  company={experience.company}
-                  startDate={experience.startDate}
-                  endDate={experience.endDate}
-                  description={experience.description}
-                  skills={experience.skills}
-                  type={experience.typeComplement}
-                />
+                  className="grid"
+                >
+                  <ExperienceCard
+                    title={experience.title}
+                    company={experience.company}
+                    startDate={experience.startDate}
+                    endDate={experience.endDate}
+                    description={experience.description}
+                    skills={experience.skills}
+                    type={experience.typeComplement}
+                  />
+                </Reveal>
               ))
             ) : (
               <p className="text-muted-foreground">

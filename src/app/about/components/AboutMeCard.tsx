@@ -16,7 +16,7 @@ export default function AboutMeCard() {
   const { data } = useGlobalContent();
 
   return (
-    <Card className="bg-transparent border-none w-full lg:w-3/5">
+    <Card className="bg-transparent border-none w-full lg:w-3/5 animate-rise-in motion-reduce:animate-none [animation-delay:100ms]">
       <CardHeader>
         <CardTitle className="text-sm lg:text-2xl font-sans">
           {data?.aboutCurtDescription}

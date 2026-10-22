@@ -40,13 +40,15 @@ export default function AboutMePage() {
     >
       <SectionWrapper id={appSections.about.id} className="lg:flex-col">
         <div className="flex flex-col lg:flex-row w-full lg:justify-between">
-          <h2 className="font-semibold">Sobre mim</h2>
+          <h2 className="font-semibold animate-rise-in motion-reduce:animate-none">
+            Sobre mim
+          </h2>
           <AboutMeCard />
         </div>
         <Image
           src={image}
           alt=""
-          className="w-full md:max-h-96 object-contain py-4"
+          className="w-full md:max-h-96 object-contain py-4 animate-rise-in motion-reduce:animate-none [animation-delay:200ms]"
         />
       </SectionWrapper>
       <SectionExperience />

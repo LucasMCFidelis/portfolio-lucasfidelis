@@ -10,6 +10,7 @@ import { useProjects } from "@/data/projects/useProjects";
 import { ProjectCardCarousel } from "../ProjectCard/ProjectCardCarousel";
 import ProjectCardWrapper from "../ProjectCard/ProjectCardWrapper";
 import { ProjectCardTextArea } from "../ProjectCard/ProjectCartTextArea";
+import Reveal from "../Reveal";
 import SectionWrapper from "../SectionWrapper";
 import {
   Card,
@@ -38,12 +39,14 @@ export default function SectionProjects({
     <>
       <SectionWrapper>
         <Card className="bg-transparent border-none w-full gap-10">
-          <CardHeader className="lg:w-1/2">
-            <CardTitle>
-              <h2>{title}</h2>
-            </CardTitle>
-            {description && <CardDescription>{description}</CardDescription>}
-          </CardHeader>
+          <Reveal asChild>
+            <CardHeader className="lg:w-1/2">
+              <CardTitle>
+                <h2>{title}</h2>
+              </CardTitle>
+              {description && <CardDescription>{description}</CardDescription>}
+            </CardHeader>
+          </Reveal>
           <CardContent className="w-full space-y-10">
             {projects.map((project) => {
               const { images, ...rest } = project;
