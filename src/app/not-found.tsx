@@ -7,9 +7,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { appSections } from "@/utils/lists/appSections";
 
 export const metadata: Metadata = {
-  title: "Página não encontrada - Portfólio de Lucas Fidelis",
+  title: "Página não encontrada",
   description:
     "A página que você procurou não existe ou foi movida. Volte ao início do portfólio de Lucas Fidelis.",
+  robots: { index: false },
 };
 
 export default function NotFound() {

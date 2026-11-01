@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Icon } from "@/components/IconWrapper";
+import PersonJsonLd from "@/components/PersonJsonLd";
 import PrefetchBoundary from "@/components/PrefetchBoundary";
 import SectionProjects from "@/components/sections/SectionProjects";
 import SectionWrapper from "@/components/SectionWrapper";
@@ -18,15 +19,17 @@ import { globalContentQueryOptions } from "@/data/globalContent/globalContentQue
 import { inEvidenceProjectsQueryOptions } from "@/data/projects/projectsQueries";
 import { socialMediasQueryOptions } from "@/data/socialMedias/socialMediasQueries";
 import { appSections } from "@/utils/lists/appSections";
+import { pageMetadata } from "@/utils/siteConfig";
 
 import ActionsHomeCard from "./components/ActionsHomeCard";
 import HomeDescription from "./components/HomeDescription";
 
-export const metadata: Metadata = {
-  title: "Inicio - Portfólio de Lucas Fidelis",
+export const metadata: Metadata = pageMetadata({
+  title: "Analista de QA",
   description:
-    "Portfólio de Lucas Fidelis — Desenvolvedor Front-end e QA. Explore projetos em destaque, habilidades com React, TypeScript, Next.js, testes automatizados e práticas modernas de desenvolvimento. Conheça meu trabalho e formas de contato.",
-};
+    "Lucas Fidelis, Analista de QA em João Pessoa (PB). Projetos em destaque de testes manuais e de APIs e automação de testes web e mobile com Cypress, Playwright, Appium e BDD.",
+  path: appSections.home.href,
+});
 
 export default function HomePage() {
   return (
@@ -37,6 +40,7 @@ export default function HomePage() {
         socialMediasQueryOptions(),
       ]}
     >
+      <PersonJsonLd />
       <SectionWrapper
         id={appSections.home.id}
         className="sm:items-center sm:flex-row-reverse sm:justify-between gap-5"

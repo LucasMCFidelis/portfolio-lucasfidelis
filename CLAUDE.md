@@ -34,6 +34,7 @@ Não há suíte de testes configurada.
 
 - `DATABASE_URL` — usada por `src/db/index.ts` e `drizzle.config.ts`
 - `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER`, `MAIL_PASS` — SMTP usado em `src/actions/sendEmail.ts`
+- `SITE_URL` (opcional) — URL pública do site, usada em `metadataBase`, canonical/Open Graph, `sitemap.xml`, `robots.txt` e JSON-LD (`getSiteUrl` em `src/utils/siteConfig.ts`). Sem ela, usa `VERCEL_PROJECT_PRODUCTION_URL` (na Vercel) e, por fim, o domínio atual `https://portfolio-lucasfidelis.vercel.app`.
 
 ## Estrutura de pastas
 
@@ -109,7 +110,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 - **Ícones**: sempre `<Icon name="..." />`. Para um novo ícone, registre-o no mapa `ICONS` de `IconWrapper.tsx`. Ícones de redes sociais usam o `title` do banco como `IconName`.
 - **Classes**: `cn()` de `@/lib/utils` para condicionais; `twMerge` já está embutido em `cn`.
 - **Imports**: ordenados pelo `simple-import-sort` — rode `npx eslint --fix` se o lint reclamar. Estilos globais (`import "./index.css"`, CSS de libs) ficam no topo.
-- **Metadata**: cada `page.tsx` exporta `metadata` próprio (title no formato `"<Página> - Portfólio de Lucas Fidelis"`).
+- **Metadata/SEO**: cada `page.tsx` exporta `metadata = pageMetadata({ title, description, path })` (de `@/utils/siteConfig`), que monta canonical, Open Graph e Twitter. O `title` é só o nome da página: o template do `layout.tsx` completa `"<Página> - Portfólio de Lucas Fidelis"`. Textos, keywords e competências de SEO ficam em `siteConfig` (foco em QA); novas rotas públicas entram em `src/app/sitemap.ts`.
 - **IDs HTML**: elementos interativos importantes têm `id` estável e `aria-label` (usados também por testes/QA) — mantenha ao criar botões/links/forms.
 - **Commits**: Conventional Commits em inglês (`feat:`, `fix:`, `refactor:`, `style:`, `chore:`, `perf:`). Branch de trabalho: `develop`; PRs para `main`.
 
