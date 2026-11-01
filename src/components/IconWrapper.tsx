@@ -10,6 +10,7 @@ import {
   Download,
   Folder,
   GitHub,
+  InfoOutlined,
   Instagram,
   Link,
   LinkedIn,
@@ -35,6 +36,7 @@ const ICONS = {
   ArrowBack: <ArrowBack />,
   Link: <Link />,
   Folder: <Folder />,
+  Info: <InfoOutlined />,
 } as const;
 
 export type IconName = keyof typeof ICONS;

@@ -6,6 +6,7 @@ import {
 } from "@/data/experiences/useExperiences";
 import { appSections } from "@/utils/lists/appSections";
 
+import { DataUnavailable } from "../DataUnavailable";
 import ExperienceCard from "../ExperienceCard/ExperienceCard";
 import Reveal from "../Reveal";
 import SectionWrapper from "../SectionWrapper";
@@ -18,8 +19,11 @@ import {
 } from "../ui/card";
 
 export default function SectionExperiences() {
-  const { data: professionalExperiences = [] } = useProfessionalExperiences();
-  const { data: academicExperiences = [] } = useAcademicExperiences();
+  const professionalQuery = useProfessionalExperiences();
+  const academicQuery = useAcademicExperiences();
+
+  const professionalExperiences = professionalQuery.data;
+  const academicExperiences = academicQuery.data;
 
   return (
     <SectionWrapper id={appSections.experiences.id} className="pt-[10vh]">
@@ -46,7 +50,15 @@ export default function SectionExperiences() {
               gap: "1.5rem",
             }}
           >
-            {academicExperiences.length > 0 ? (
+            {!academicExperiences ? (
+              <DataUnavailable
+                id="academic-experiences"
+                message="Não foi possível carregar a formação agora."
+                onRetry={() => academicQuery.refetch()}
+                isRetrying={academicQuery.isFetching}
+                className="col-span-full"
+              />
+            ) : academicExperiences.length > 0 ? (
               academicExperiences.map((experience, index) => (
                 <Reveal
                   key={`${experience.company}-${experience.title}-${experience.startDate}`}
@@ -88,7 +100,14 @@ export default function SectionExperiences() {
         </Reveal>
         <CardContent className="px-0">
           <div className="w-full flex flex-col gap-6 mt-6">
-            {professionalExperiences.length > 0 ? (
+            {!professionalExperiences ? (
+              <DataUnavailable
+                id="professional-experiences"
+                message="Não foi possível carregar as experiências profissionais agora."
+                onRetry={() => professionalQuery.refetch()}
+                isRetrying={professionalQuery.isFetching}
+              />
+            ) : professionalExperiences.length > 0 ? (
               professionalExperiences.map((experience) => (
                 <Reveal
                   key={`${experience.company}-${experience.title}-${experience.startDate}`}

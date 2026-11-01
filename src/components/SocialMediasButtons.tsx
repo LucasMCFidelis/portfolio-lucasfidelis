@@ -8,13 +8,14 @@ import { Icon, IconName } from "./IconWrapper";
 import { buttonVariants } from "./ui/button";
 
 export function SocialMediasButtons() {
-  const { data: socialMedias = {} } = useSocialMedias();
+  const { data: socialMedias } = useSocialMedias();
   return (
     <>
       {Object.entries(socialMedias).map(({ 0: key, 1: data }) => (
         <Link
           key={key}
           id={data.title.toLowerCase()}
+          aria-label={data.title}
           href={data.url}
           target="_blank"
           rel="noopener noreferrer"
