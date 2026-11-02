@@ -5,23 +5,26 @@ import { desc, eq } from "drizzle-orm";
 import { AcademicExperienceDTO } from "@/data/experiences/academicExperienceDTO";
 import { mapAcademicExperience } from "@/data/experiences/mapExperience";
 import { db } from "@/db";
+import { queryDb } from "@/db/queryDb";
 import { experiencesTable } from "@/db/schema";
 
 export async function getAcademicExperiences(): Promise<
   Array<AcademicExperienceDTO>
 > {
-  const experiences = await db.query.experiencesTable.findMany({
-    where: eq(experiencesTable.category, "academic"),
-    orderBy: [
-      desc(experiencesTable.experienceInEvidence),
-      desc(experiencesTable.endDate),
-    ],
-    with: {
-      experienceSkills: {
-        with: { skill: { columns: { titleSkill: true, typeSkill: true } } },
+  const experiences = await queryDb("getAcademicExperiences", () =>
+    db.query.experiencesTable.findMany({
+      where: eq(experiencesTable.category, "academic"),
+      orderBy: [
+        desc(experiencesTable.experienceInEvidence),
+        desc(experiencesTable.endDate),
+      ],
+      with: {
+        experienceSkills: {
+          with: { skill: { columns: { titleSkill: true, typeSkill: true } } },
+        },
       },
-    },
-  });
+    })
+  );
 
   return experiences.map(mapAcademicExperience);
 }

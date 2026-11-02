@@ -3,6 +3,7 @@
 import { useHardSkills, useSoftSkills } from "@/data/skills/useSkills";
 import { appSections } from "@/utils/lists/appSections";
 
+import { DataUnavailable } from "../DataUnavailable";
 import Reveal from "../Reveal";
 import SectionWrapper from "../SectionWrapper";
 import SkillList from "../SkillList";
@@ -15,8 +16,16 @@ import {
 } from "../ui/card";
 
 export default function SectionSkills() {
-  const { data: hardSkills = [] } = useHardSkills();
-  const { data: softSkills = [] } = useSoftSkills();
+  const hardSkillsQuery = useHardSkills();
+  const softSkillsQuery = useSoftSkills();
+
+  const hardSkills = hardSkillsQuery.data;
+  const softSkills = softSkillsQuery.data;
+
+  const handleRetry = () => {
+    if (!hardSkills) hardSkillsQuery.refetch();
+    if (!softSkills) softSkillsQuery.refetch();
+  };
 
   return (
     <SectionWrapper id={appSections.skills.id} className="pt-[10vh]">
@@ -34,14 +43,30 @@ export default function SectionSkills() {
           </CardHeader>
         </Reveal>
         <CardContent className="flex flex-col md:flex-row justify-between gap-8 px-0">
-          <div className="w-full md:w-1/2 h-min flex flex-wrap justify-start gap-y-5">
-            <p className="text-sm lg:text-2xl font-sans w-full">Hard Skills</p>
-            <SkillList skills={hardSkills} label="Hard Skills" />
-          </div>
-          <div className="w-full md:w-1/2 h-min flex flex-wrap gap-x-3 gap-y-5">
-            <p className="text-sm lg:text-2xl font-sans w-full">Soft Skills</p>
-            <SkillList skills={softSkills} label="Soft Skills" />
-          </div>
+          {hardSkills && softSkills ? (
+            <>
+              <div className="w-full md:w-1/2 h-min flex flex-wrap justify-start gap-y-5">
+                <p className="text-sm lg:text-2xl font-sans w-full">
+                  Hard Skills
+                </p>
+                <SkillList skills={hardSkills} label="Hard Skills" />
+              </div>
+              <div className="w-full md:w-1/2 h-min flex flex-wrap gap-x-3 gap-y-5">
+                <p className="text-sm lg:text-2xl font-sans w-full">
+                  Soft Skills
+                </p>
+                <SkillList skills={softSkills} label="Soft Skills" />
+              </div>
+            </>
+          ) : (
+            <DataUnavailable
+              id="skills"
+              message="Não foi possível carregar as habilidades agora."
+              onRetry={handleRetry}
+              isRetrying={hardSkillsQuery.isFetching || softSkillsQuery.isFetching}
+              className="w-full mt-6"
+            />
+          )}
         </CardContent>
       </Card>
     </SectionWrapper>

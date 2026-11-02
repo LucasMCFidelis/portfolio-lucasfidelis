@@ -11,26 +11,30 @@ import {
   professionalExperiencesQueryOptions,
 } from "@/data/experiences/experiencesQueries";
 import { globalContentQueryOptions } from "@/data/globalContent/globalContentQueries";
+import { resumeAvailabilityQueryOptions } from "@/data/resume/resumeQueries";
 import {
   hardSkillsQueryOptions,
   softSkillsQueryOptions,
 } from "@/data/skills/skillsQueries";
 import { socialMediasQueryOptions } from "@/data/socialMedias/socialMediasQueries";
 import { appSections } from "@/utils/lists/appSections";
+import { pageMetadata } from "@/utils/siteConfig";
 
 import AboutMeCard from "./components/AboutMeCard";
 
-export const metadata: Metadata = {
-  title: "Sobre Mim - Portfólio de Lucas Fidelis",
+export const metadata: Metadata = pageMetadata({
+  title: "Sobre Mim",
   description:
-    "Conheça mais sobre Lucas Fidelis — desenvolvedor focado em soluções web modernas. Saiba sobre sua trajetória, principais habilidades técnicas e comportamentais, experiências e formas de contato.",
-};
+    "Conheça a trajetória de Lucas Fidelis como Analista de QA: formação em ADS pela UEPB, bootcamps em qualidade de software, experiências em times ágeis e habilidades em testes e automação.",
+  path: appSections.about.href,
+});
 
 export default function AboutMePage() {
   return (
     <PrefetchBoundary
       queries={[
         globalContentQueryOptions(),
+        resumeAvailabilityQueryOptions(),
         socialMediasQueryOptions(),
         professionalExperiencesQueryOptions(),
         academicExperiencesQueryOptions(),

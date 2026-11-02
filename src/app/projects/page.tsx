@@ -4,12 +4,15 @@ import PrefetchBoundary from "@/components/PrefetchBoundary";
 import SectionProjects from "@/components/sections/SectionProjects";
 import { allProjectsQueryOptions } from "@/data/projects/projectsQueries";
 import { socialMediasQueryOptions } from "@/data/socialMedias/socialMediasQueries";
+import { appSections } from "@/utils/lists/appSections";
+import { pageMetadata } from "@/utils/siteConfig";
 
-export const metadata: Metadata = {
-  title: "Projetos - Portfólio de Lucas Fidelis",
+export const metadata: Metadata = pageMetadata({
+  title: "Projetos",
   description:
-    "Explore os principais projetos desenvolvidos por Lucas Fidelis, organizados por relevância e ano. Conheça aplicações web, soluções front-end, automações e outros trabalhos profissionais e acadêmicos.",
-};
+    "Projetos de qualidade de software de Lucas Fidelis: automação de testes E2E, de API e mobile, BDD com Gherkin, testes de integração e pipelines de CI com GitHub Actions.",
+  path: appSections.projects.href,
+});
 
 export default function ProjectsPage() {
   return (

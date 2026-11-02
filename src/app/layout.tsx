@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { socialMediasQueryOptions } from "@/data/socialMedias/socialMediasQueries";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { getSiteUrl, siteConfig, siteKeywords } from "@/utils/siteConfig";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,9 +26,31 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio Lucas Fidelis",
-  description: "Portfólio de Lucas Fidelis — explore projetos, habilidades, informações profissionais e formas de contato reunidos em um único lugar.",
+  metadataBase: getSiteUrl(),
+  title: {
+    default: `${siteConfig.author} - ${siteConfig.jobTitle}`,
+    template: `%s - ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
+  authors: [{ name: siteConfig.author, url: siteConfig.githubUrl }],
+  creator: siteConfig.author,
+  keywords: siteKeywords,
   icons: "/icon.svg",
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
+    title: `${siteConfig.author} - ${siteConfig.jobTitle}`,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
+  twitter: {
+    card: "summary",
+    title: `${siteConfig.author} - ${siteConfig.jobTitle}`,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage.url],
+  },
 };
 
 const themeScript = `

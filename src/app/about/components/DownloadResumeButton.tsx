@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/IconWrapper";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getResumeDownloadUrl } from "@/utils/resumeDownloadUrl";
 
 interface DownloadResumeButtonProps {
   fileId: string;
@@ -28,7 +29,7 @@ export default function DownloadResumeButton({
 
   return (
     <Link
-      href={`https://drive.google.com/uc?export=download&id=${fileId}`}
+      href={getResumeDownloadUrl(fileId)}
       aria-disabled={isDownloading}
       onClick={handleDownload}
       download

@@ -29,3 +29,5 @@ next-env.d.ts
 *.tsbuildinfo
 
 scripts/
+# Testes
+coverage

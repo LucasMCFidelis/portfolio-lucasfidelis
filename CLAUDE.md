@@ -15,6 +15,7 @@ Portfólio pessoal de Lucas Fidelis (Desenvolvedor Front-end e QA). Todo o conte
 | E-mail | nodemailer em Server Action |
 | Feedback | react-toastify |
 | Lint | ESLint 9 flat config (`next/core-web-vitals`, `next/typescript`) + `simple-import-sort` |
+| Testes | Jest 30 (`next/jest`, jsdom) + React Testing Library + `@testing-library/user-event` / `jest-dom` |
 
 ## Comandos
 
@@ -26,14 +27,28 @@ npm run lint     # eslint . (imports fora de ordem são ERRO)
 npx tsc --noEmit # checagem de tipos
 npx drizzle-kit generate   # gera migration em ./drizzle a partir de src/db/schema.ts
 npx drizzle-kit push       # aplica o schema direto no banco
+npm test                   # jest (testes unitários)
+npm run test:watch         # jest --watch
+npm run test:coverage      # jest --coverage (relatório em ./coverage, ignorado pelo git)
 ```
 
-Não há suíte de testes configurada.
+### CI
+
+`.github/workflows/ci.yml` roda em push/PR para `main` e `develop`: lint → `tsc --noEmit` → `jest --coverage --ci` (relatório como artefato) → `next build`. O build usa uma `DATABASE_URL` fictícia (sem banco): as queries falham rápido e as páginas saem com a versão padrão, então a CI não precisa de secrets. Depois da CI, em **push** (nunca em PR), um job de deploy chama o deploy hook da Vercel via POST: `develop` → environment `preview` (secret `DEV_DEPLOY_HOOK_URL`), `main` → environment `production` (secret `PROD_DEPLOY_HOOK_URL`).
+
+### Testes
+
+- Config em `jest.config.mjs` (ESM por causa do `"type": "module"`) + `jest.setup.ts` (jest-dom e mocks de `IntersectionObserver`, `ResizeObserver` e `matchMedia`, que o jsdom não tem).
+- Arquivos `*.test.ts(x)` ficam **ao lado** do arquivo testado (em `src/app/**` eles não viram rota).
+- Helpers em `src/test/`: `renderWithQueryClient` / `createQueryWrapper` (QueryClient novo por teste, `retry: false`) e `fixtures.ts` (DTOs de exemplo).
+- Componentes que leem dados: mocke a **action** (não o hook) e sempre com factory — `jest.mock("@/actions/x/getX", () => ({ getX: jest.fn() }))`. Sem factory o Jest carrega o módulo real, que importa `@/db` e quebra sem `DATABASE_URL`. Actions são testadas mockando `@/db` (`db.query.<tabela>.findMany`).
+- Todo componente com dados deve ter teste do **estado de erro** (action rejeitada → `DataUnavailable` com `#unavailable-<id>` e retry, ou versão padrão + `#fallback-content-notice`). Como o aviso também aparece durante o carregamento, espere a falha de fato: `findByText("Tentar novamente")` (habilitado) ou `queryClient.getQueryState(key)?.status === "error"`.
 
 ### Variáveis de ambiente (`.env`, ignorado pelo git — nunca commitar)
 
 - `DATABASE_URL` — usada por `src/db/index.ts` e `drizzle.config.ts`
 - `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER`, `MAIL_PASS` — SMTP usado em `src/actions/sendEmail.ts`
+- `SITE_URL` (opcional) — URL pública do site, usada em `metadataBase`, canonical/Open Graph, `sitemap.xml`, `robots.txt` e JSON-LD (`getSiteUrl` em `src/utils/siteConfig.ts`). Sem ela, usa `VERCEL_PROJECT_PRODUCTION_URL` (na Vercel) e, por fim, o domínio atual `https://portfolio-lucasfidelis.vercel.app`.
 
 ## Estrutura de pastas
 
@@ -60,7 +75,7 @@ src/
 │   ├── ExperienceCard/
 │   └── *.tsx                 # Componentes compartilhados (Header, SectionWrapper, IconWrapper, FormContact, ThemeToggle, SocialMediasButtons)
 ├── data/                     # Camada de acesso a dados (TanStack Query sobre as actions)
-│   └── <dominio>/            # projects, skills, experiences, socialMedias, globalContent, images
+│   └── <dominio>/            # projects, skills, experiences, socialMedias, globalContent, images, resume
 │       ├── <dominio>Queries.ts # `queryOptions` (chave + queryFn → action); sem "use client", usável no servidor
 │       ├── use*.ts           # Hooks `useQuery` ("use client") consumidos pelos componentes
 │       ├── *DTO.ts           # Tipos de saída consumidos pela UI (também as uniões/constantes dos tipos, ex.: academicExperienceDTO.ts)
@@ -74,6 +89,7 @@ src/
 │   ├── makeQueryClient.ts    # Factory do QueryClient (staleTime 5 min) — server e client
 │   └── getServerQueryClient.ts # QueryClient por requisição (`React.cache`) — só servidor
 ├── providers/                # Context providers ("use client"): ThemeProvider, QueryProvider
+├── test/                     # Helpers de teste (renderWithQueryClient, fixtures) — os *.test.tsx ficam ao lado do código
 └── utils/                    # Funções puras e constantes (formatDate, appSections, scrollToContactSession…)
 public/                       # Estáticos (icon.svg, profile.jpeg)
 drizzle/                      # Migrations geradas (drizzle-kit)
@@ -97,9 +113,10 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 4. **Prefetch no servidor**: cada `page.tsx`/`layout.tsx` envolve o que consome dados em `<PrefetchBoundary queries={[...]}>` com os mesmos `queryOptions`. O servidor busca (via `getServerQueryClient`, um client por requisição), hidrata o cache e o HTML inicial já sai com os dados (SEO/LCP preservados). O `QueryProvider` (no `layout.tsx`) dá o cache ao browser: navegar entre páginas reaproveita dados "frescos" por 5 min (`staleTime`) sem novo request.
 5. **Seções e componentes que leem dados são Client Components** (`"use client"` + hook `use*`). Páginas continuam Server Components, agora síncronos: só declaram o `PrefetchBoundary` e a composição. Ao criar um componente que precisa de dados, **prefetch a mesma query na página** — senão ele só busca depois da hidratação.
 6. **Client Components** também existem para: Header (navegação/sheet), ThemeProvider/ThemeToggle, FormContact, carrosséis, botões com `onClick`/estado.
-7. **Mutações** (envio de e-mail) via Server Action em `src/actions/`, chamada pelo formulário client.
-8. **Navegação/seções** centralizadas em `src/utils/lists/appSections.tsx` (`id` para âncoras, `href` para rotas). Use essa constante em vez de strings soltas.
-9. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`, com preferência salva em `localStorage` (`isDarkMode`) ou `prefers-color-scheme`; um script inline em `layout.tsx` aplica a classe antes da hidratação (mantenha a mesma chave nos dois lugares); cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
+7. **Currículo**: `getResumeAvailability` (`src/actions/resume/`) consulta o Google Drive no servidor (o Drive não libera CORS) e só confirma o arquivo se ele existir e for público. `resumeAvailabilityQueryOptions` lê o `fileResumeId` do mesmo QueryClient (`ensureQueryData`), por isso entra no `PrefetchBoundary` sem argumentos. Na UI, `ResumeDownload` mostra o botão de download, "Verificando currículo..." ou o aviso desabilitado "Currículo indisponível no momento".
+8. **Mutações** (envio de e-mail) via Server Action em `src/actions/`, chamada pelo formulário client.
+9. **Navegação/seções** centralizadas em `src/utils/lists/appSections.tsx` (`id` para âncoras, `href` para rotas). Use essa constante em vez de strings soltas.
+10. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`, com preferência salva em `localStorage` (`isDarkMode`) ou `prefers-color-scheme`; um script inline em `layout.tsx` aplica a classe antes da hidratação (mantenha a mesma chave nos dois lugares); cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
 
 ## Convenções do projeto
 
@@ -109,7 +126,7 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 - **Ícones**: sempre `<Icon name="..." />`. Para um novo ícone, registre-o no mapa `ICONS` de `IconWrapper.tsx`. Ícones de redes sociais usam o `title` do banco como `IconName`.
 - **Classes**: `cn()` de `@/lib/utils` para condicionais; `twMerge` já está embutido em `cn`.
 - **Imports**: ordenados pelo `simple-import-sort` — rode `npx eslint --fix` se o lint reclamar. Estilos globais (`import "./index.css"`, CSS de libs) ficam no topo.
-- **Metadata**: cada `page.tsx` exporta `metadata` próprio (title no formato `"<Página> - Portfólio de Lucas Fidelis"`).
+- **Metadata/SEO**: cada `page.tsx` exporta `metadata = pageMetadata({ title, description, path })` (de `@/utils/siteConfig`), que monta canonical, Open Graph e Twitter. O `title` é só o nome da página: o template do `layout.tsx` completa `"<Página> - Portfólio de Lucas Fidelis"`. Textos, keywords e competências de SEO ficam em `siteConfig` (foco em QA); novas rotas públicas entram em `src/app/sitemap.ts`.
 - **IDs HTML**: elementos interativos importantes têm `id` estável e `aria-label` (usados também por testes/QA) — mantenha ao criar botões/links/forms.
 - **Commits**: Conventional Commits em inglês (`feat:`, `fix:`, `refactor:`, `style:`, `chore:`, `perf:`). Branch de trabalho: `develop`; PRs para `main`.
 

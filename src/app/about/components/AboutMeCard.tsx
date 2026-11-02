@@ -1,5 +1,6 @@
 "use client";
 
+import { FallbackNotice } from "@/components/FallbackNotice";
 import { SocialMediasButtons } from "@/components/SocialMediasButtons";
 import {
   Card,
@@ -10,25 +11,26 @@ import {
 } from "@/components/ui/card";
 import { useGlobalContent } from "@/data/globalContent/useGlobalContent";
 
-import DownloadResumeButton from "./DownloadResumeButton";
+import ResumeDownload from "./ResumeDownload";
 
 export default function AboutMeCard() {
-  const { data } = useGlobalContent();
+  const { data, isFallback } = useGlobalContent();
 
   return (
     <Card className="bg-transparent border-none w-full lg:w-3/5 animate-rise-in motion-reduce:animate-none [animation-delay:100ms]">
       <CardHeader>
         <CardTitle className="text-sm lg:text-2xl font-sans">
-          {data?.aboutCurtDescription}
+          {data.aboutCurtDescription}
         </CardTitle>
         <div className="flex flex-col gap-2">
-          {data?.aboutLargeDescription.map((paragraph) => (
+          {data.aboutLargeDescription.map((paragraph) => (
             <CardDescription key={paragraph}>{paragraph}</CardDescription>
           ))}
         </div>
+        {isFallback && <FallbackNotice className="mt-2" />}
       </CardHeader>
       <CardFooter className="max-w-full flex flex-wrap justify-start items-center gap-4">
-        <DownloadResumeButton fileId={data?.fileResumeId ?? ""} />
+        {data.fileResumeId && <ResumeDownload fileId={data.fileResumeId} />}
         <SocialMediasButtons />
       </CardFooter>
     </Card>

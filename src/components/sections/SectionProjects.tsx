@@ -7,6 +7,7 @@ import { ReactNode } from "react";
 import { ProjectsVariant } from "@/data/projects/projectsQueries";
 import { useProjects } from "@/data/projects/useProjects";
 
+import { DataUnavailable } from "../DataUnavailable";
 import { ProjectCardCarousel } from "../ProjectCard/ProjectCardCarousel";
 import ProjectCardWrapper from "../ProjectCard/ProjectCardWrapper";
 import { ProjectCardTextArea } from "../ProjectCard/ProjectCartTextArea";
@@ -33,7 +34,7 @@ export default function SectionProjects({
   variant,
   children,
 }: SectionProjectsProps) {
-  const { data: projects = [] } = useProjects(variant);
+  const { data: projects, refetch, isFetching } = useProjects(variant);
 
   return (
     <>
@@ -48,16 +49,25 @@ export default function SectionProjects({
             </CardHeader>
           </Reveal>
           <CardContent className="w-full space-y-10">
-            {projects.map((project) => {
-              const { images, ...rest } = project;
-              const haveImages = project.images.length > 0;
-              return (
-                <ProjectCardWrapper key={project.id} projectId={project.id}>
-                  {haveImages && <ProjectCardCarousel images={images} />}
-                  <ProjectCardTextArea haveImages={haveImages} {...rest} />
-                </ProjectCardWrapper>
-              );
-            })}
+            {projects ? (
+              projects.map((project) => {
+                const { images, ...rest } = project;
+                const haveImages = project.images.length > 0;
+                return (
+                  <ProjectCardWrapper key={project.id} projectId={project.id}>
+                    {haveImages && <ProjectCardCarousel images={images} />}
+                    <ProjectCardTextArea haveImages={haveImages} {...rest} />
+                  </ProjectCardWrapper>
+                );
+              })
+            ) : (
+              <DataUnavailable
+                id={`projects-${variant}`}
+                message="Não foi possível carregar os projetos agora."
+                onRetry={() => refetch()}
+                isRetrying={isFetching}
+              />
+            )}
             {children}
           </CardContent>
         </Card>
