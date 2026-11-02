@@ -39,6 +39,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # next-env.d.ts (tipos de imagens/svg e rotas) é gerado e fica no .gitignore.
+      - name: Generate Next.js types
+        run: npx next typegen
+
       - name: Type check
         run: npx tsc --noEmit
 
