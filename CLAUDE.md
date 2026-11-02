@@ -32,6 +32,10 @@ npm run test:watch         # jest --watch
 npm run test:coverage      # jest --coverage (relatório em ./coverage, ignorado pelo git)
 ```
 
+### CI
+
+`.github/workflows/ci.yml` roda em push/PR para `main` e `develop`: lint → `tsc --noEmit` → `jest --coverage --ci` (relatório como artefato) → `next build`. O build usa uma `DATABASE_URL` fictícia (sem banco): as queries falham rápido e as páginas saem com a versão padrão, então a CI não precisa de secrets.
+
 ### Testes
 
 - Config em `jest.config.mjs` (ESM por causa do `"type": "module"`) + `jest.setup.ts` (jest-dom e mocks de `IntersectionObserver`, `ResizeObserver` e `matchMedia`, que o jsdom não tem).
@@ -178,5 +182,5 @@ Itens encontrados na análise do código. Não são regras — são candidatos a
 - Dados de contato (`fidelis.lucasm@gmail.com`) estão hardcoded em `SectionContact`; considerar mover para o banco/`global_content` junto das demais informações. *(Decidido manter por enquanto — exigiria alteração de schema + migration.)*
 - `package.json` ainda tem `"type": "module"` e `"version": "0.0.0"` herdados do template Vite (`"type": "module"` é necessário para o `eslint.config.js` atual em ESM — não remover sem ajustar o config).
 - `ProjectCardCarousel.tsx` passa `title="Teste"` fixo para `ProjectCarouselFull` (placeholder esquecido; deveria receber o título do projeto).
-- O botão de currículo (`DownloadResumeButton`) aparece sempre que há `fileResumeId`, mesmo se o arquivo não existir no Drive ou for privado. Comportamento esperado já especificado em `src/app/about/components/ResumeAvailability.test.tsx` (aviso desabilitado "Currículo indisponível no momento"); esses 4 testes falham até a verificação ser implementada.
+- O botão de currículo (`DownloadResumeButton`) aparece sempre que há `fileResumeId`, mesmo se o arquivo não existir no Drive ou for privado. Comportamento esperado já especificado em `src/app/about/components/ResumeAvailability.test.tsx` (aviso desabilitado "Currículo indisponível no momento"); esses 4 testes estão marcados com `it.failing` — troque para `it` ao implementar a verificação.
 - `ExperienceCard` não exibe o rótulo de tipo das experiências acadêmicas (`typeComplement` `degree`/`bootcamp` já é entregue pelo data layer, mas `typeLabels` só cobre os tipos profissionais).
