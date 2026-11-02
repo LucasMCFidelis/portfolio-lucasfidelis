@@ -18,12 +18,30 @@ jest.mock("@/actions/socialMedias/getAllSocialMedias", () => ({
 const mockGetGlobalContent = getGlobalContent as jest.Mock;
 const mockGetAllSocialMedias = getAllSocialMedias as jest.Mock;
 
+// A disponibilidade do currículo tem testes próprios (ResumeAvailability.test);
+// aqui o Drive sempre responde com o arquivo público.
+const originalFetch = global.fetch;
+const publicDriveFile = {
+  ok: true,
+  status: 200,
+  url: "https://drive.usercontent.google.com/download?id=resume-file-id",
+  headers: {
+    get: (name: string) =>
+      name.toLowerCase() === "content-type" ? "application/pdf" : null,
+  },
+  body: null,
+};
+
 describe("AboutMeCard", () => {
   beforeEach(() => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue(publicDriveFile) as unknown as typeof fetch;
     mockGetAllSocialMedias.mockResolvedValue(socialMediasFixture);
   });
 
   afterEach(() => {
+    global.fetch = originalFetch;
     mockGetGlobalContent.mockReset();
     mockGetAllSocialMedias.mockReset();
   });
@@ -38,7 +56,9 @@ describe("AboutMeCard", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Primeiro parágrafo.")).toBeInTheDocument();
     expect(screen.getByText("Segundo parágrafo.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /DOWNLOAD RESUME/ })).toHaveAttribute(
+    expect(
+      await screen.findByRole("link", { name: /DOWNLOAD RESUME/ })
+    ).toHaveAttribute(
       "href",
       expect.stringContaining("id=resume-file-id")
     );

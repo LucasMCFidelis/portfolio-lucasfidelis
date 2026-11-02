@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { useGlobalContent } from "@/data/globalContent/useGlobalContent";
 
-import DownloadResumeButton from "./DownloadResumeButton";
+import ResumeDownload from "./ResumeDownload";
 
 export default function AboutMeCard() {
   const { data, isFallback } = useGlobalContent();
@@ -30,7 +30,7 @@ export default function AboutMeCard() {
         {isFallback && <FallbackNotice className="mt-2" />}
       </CardHeader>
       <CardFooter className="max-w-full flex flex-wrap justify-start items-center gap-4">
-        {data.fileResumeId && <DownloadResumeButton fileId={data.fileResumeId} />}
+        {data.fileResumeId && <ResumeDownload fileId={data.fileResumeId} />}
         <SocialMediasButtons />
       </CardFooter>
     </Card>

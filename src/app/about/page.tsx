@@ -11,6 +11,7 @@ import {
   professionalExperiencesQueryOptions,
 } from "@/data/experiences/experiencesQueries";
 import { globalContentQueryOptions } from "@/data/globalContent/globalContentQueries";
+import { resumeAvailabilityQueryOptions } from "@/data/resume/resumeQueries";
 import {
   hardSkillsQueryOptions,
   softSkillsQueryOptions,
@@ -33,6 +34,7 @@ export default function AboutMePage() {
     <PrefetchBoundary
       queries={[
         globalContentQueryOptions(),
+        resumeAvailabilityQueryOptions(),
         socialMediasQueryOptions(),
         professionalExperiencesQueryOptions(),
         academicExperiencesQueryOptions(),

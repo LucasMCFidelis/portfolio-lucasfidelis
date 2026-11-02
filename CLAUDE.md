@@ -75,7 +75,7 @@ src/
 │   ├── ExperienceCard/
 │   └── *.tsx                 # Componentes compartilhados (Header, SectionWrapper, IconWrapper, FormContact, ThemeToggle, SocialMediasButtons)
 ├── data/                     # Camada de acesso a dados (TanStack Query sobre as actions)
-│   └── <dominio>/            # projects, skills, experiences, socialMedias, globalContent, images
+│   └── <dominio>/            # projects, skills, experiences, socialMedias, globalContent, images, resume
 │       ├── <dominio>Queries.ts # `queryOptions` (chave + queryFn → action); sem "use client", usável no servidor
 │       ├── use*.ts           # Hooks `useQuery` ("use client") consumidos pelos componentes
 │       ├── *DTO.ts           # Tipos de saída consumidos pela UI (também as uniões/constantes dos tipos, ex.: academicExperienceDTO.ts)
@@ -113,9 +113,10 @@ Postgres ──Drizzle──▶ src/actions/<dominio>/get*.ts ("use server")
 4. **Prefetch no servidor**: cada `page.tsx`/`layout.tsx` envolve o que consome dados em `<PrefetchBoundary queries={[...]}>` com os mesmos `queryOptions`. O servidor busca (via `getServerQueryClient`, um client por requisição), hidrata o cache e o HTML inicial já sai com os dados (SEO/LCP preservados). O `QueryProvider` (no `layout.tsx`) dá o cache ao browser: navegar entre páginas reaproveita dados "frescos" por 5 min (`staleTime`) sem novo request.
 5. **Seções e componentes que leem dados são Client Components** (`"use client"` + hook `use*`). Páginas continuam Server Components, agora síncronos: só declaram o `PrefetchBoundary` e a composição. Ao criar um componente que precisa de dados, **prefetch a mesma query na página** — senão ele só busca depois da hidratação.
 6. **Client Components** também existem para: Header (navegação/sheet), ThemeProvider/ThemeToggle, FormContact, carrosséis, botões com `onClick`/estado.
-7. **Mutações** (envio de e-mail) via Server Action em `src/actions/`, chamada pelo formulário client.
-8. **Navegação/seções** centralizadas em `src/utils/lists/appSections.tsx` (`id` para âncoras, `href` para rotas). Use essa constante em vez de strings soltas.
-9. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`, com preferência salva em `localStorage` (`isDarkMode`) ou `prefers-color-scheme`; um script inline em `layout.tsx` aplica a classe antes da hidratação (mantenha a mesma chave nos dois lugares); cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
+7. **Currículo**: `getResumeAvailability` (`src/actions/resume/`) consulta o Google Drive no servidor (o Drive não libera CORS) e só confirma o arquivo se ele existir e for público. `resumeAvailabilityQueryOptions` lê o `fileResumeId` do mesmo QueryClient (`ensureQueryData`), por isso entra no `PrefetchBoundary` sem argumentos. Na UI, `ResumeDownload` mostra o botão de download, "Verificando currículo..." ou o aviso desabilitado "Currículo indisponível no momento".
+8. **Mutações** (envio de e-mail) via Server Action em `src/actions/`, chamada pelo formulário client.
+9. **Navegação/seções** centralizadas em `src/utils/lists/appSections.tsx` (`id` para âncoras, `href` para rotas). Use essa constante em vez de strings soltas.
+10. **Tema** (claro/escuro): classe `dark` no `<html>` controlada por `ThemeProvider`, com preferência salva em `localStorage` (`isDarkMode`) ou `prefers-color-scheme`; um script inline em `layout.tsx` aplica a classe antes da hidratação (mantenha a mesma chave nos dois lugares); cores via tokens CSS (`bg-background`, `text-primary`…) — não use cores hardcoded.
 
 ## Convenções do projeto
 
@@ -182,5 +183,4 @@ Itens encontrados na análise do código. Não são regras — são candidatos a
 - Dados de contato (`fidelis.lucasm@gmail.com`) estão hardcoded em `SectionContact`; considerar mover para o banco/`global_content` junto das demais informações. *(Decidido manter por enquanto — exigiria alteração de schema + migration.)*
 - `package.json` ainda tem `"type": "module"` e `"version": "0.0.0"` herdados do template Vite (`"type": "module"` é necessário para o `eslint.config.js` atual em ESM — não remover sem ajustar o config).
 - `ProjectCardCarousel.tsx` passa `title="Teste"` fixo para `ProjectCarouselFull` (placeholder esquecido; deveria receber o título do projeto).
-- O botão de currículo (`DownloadResumeButton`) aparece sempre que há `fileResumeId`, mesmo se o arquivo não existir no Drive ou for privado. Comportamento esperado já especificado em `src/app/about/components/ResumeAvailability.test.tsx` (aviso desabilitado "Currículo indisponível no momento"); esses 4 testes estão marcados com `it.failing` — troque para `it` ao implementar a verificação.
 - `ExperienceCard` não exibe o rótulo de tipo das experiências acadêmicas (`typeComplement` `degree`/`bootcamp` já é entregue pelo data layer, mas `typeLabels` só cobre os tipos profissionais).
