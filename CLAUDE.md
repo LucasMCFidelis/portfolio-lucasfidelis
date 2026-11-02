@@ -15,6 +15,7 @@ Portfólio pessoal de Lucas Fidelis (Desenvolvedor Front-end e QA). Todo o conte
 | E-mail | nodemailer em Server Action |
 | Feedback | react-toastify |
 | Lint | ESLint 9 flat config (`next/core-web-vitals`, `next/typescript`) + `simple-import-sort` |
+| Testes | Jest 30 (`next/jest`, jsdom) + React Testing Library + `@testing-library/user-event` / `jest-dom` |
 
 ## Comandos
 
@@ -26,9 +27,18 @@ npm run lint     # eslint . (imports fora de ordem são ERRO)
 npx tsc --noEmit # checagem de tipos
 npx drizzle-kit generate   # gera migration em ./drizzle a partir de src/db/schema.ts
 npx drizzle-kit push       # aplica o schema direto no banco
+npm test                   # jest (testes unitários)
+npm run test:watch         # jest --watch
+npm run test:coverage      # jest --coverage (relatório em ./coverage, ignorado pelo git)
 ```
 
-Não há suíte de testes configurada.
+### Testes
+
+- Config em `jest.config.mjs` (ESM por causa do `"type": "module"`) + `jest.setup.ts` (jest-dom e mocks de `IntersectionObserver`, `ResizeObserver` e `matchMedia`, que o jsdom não tem).
+- Arquivos `*.test.ts(x)` ficam **ao lado** do arquivo testado (em `src/app/**` eles não viram rota).
+- Helpers em `src/test/`: `renderWithQueryClient` / `createQueryWrapper` (QueryClient novo por teste, `retry: false`) e `fixtures.ts` (DTOs de exemplo).
+- Componentes que leem dados: mocke a **action** (não o hook) e sempre com factory — `jest.mock("@/actions/x/getX", () => ({ getX: jest.fn() }))`. Sem factory o Jest carrega o módulo real, que importa `@/db` e quebra sem `DATABASE_URL`. Actions são testadas mockando `@/db` (`db.query.<tabela>.findMany`).
+- Todo componente com dados deve ter teste do **estado de erro** (action rejeitada → `DataUnavailable` com `#unavailable-<id>` e retry, ou versão padrão + `#fallback-content-notice`). Como o aviso também aparece durante o carregamento, espere a falha de fato: `findByText("Tentar novamente")` (habilitado) ou `queryClient.getQueryState(key)?.status === "error"`.
 
 ### Variáveis de ambiente (`.env`, ignorado pelo git — nunca commitar)
 
@@ -75,6 +85,7 @@ src/
 │   ├── makeQueryClient.ts    # Factory do QueryClient (staleTime 5 min) — server e client
 │   └── getServerQueryClient.ts # QueryClient por requisição (`React.cache`) — só servidor
 ├── providers/                # Context providers ("use client"): ThemeProvider, QueryProvider
+├── test/                     # Helpers de teste (renderWithQueryClient, fixtures) — os *.test.tsx ficam ao lado do código
 └── utils/                    # Funções puras e constantes (formatDate, appSections, scrollToContactSession…)
 public/                       # Estáticos (icon.svg, profile.jpeg)
 drizzle/                      # Migrations geradas (drizzle-kit)
@@ -167,4 +178,5 @@ Itens encontrados na análise do código. Não são regras — são candidatos a
 - Dados de contato (`fidelis.lucasm@gmail.com`) estão hardcoded em `SectionContact`; considerar mover para o banco/`global_content` junto das demais informações. *(Decidido manter por enquanto — exigiria alteração de schema + migration.)*
 - `package.json` ainda tem `"type": "module"` e `"version": "0.0.0"` herdados do template Vite (`"type": "module"` é necessário para o `eslint.config.js` atual em ESM — não remover sem ajustar o config).
 - `ProjectCardCarousel.tsx` passa `title="Teste"` fixo para `ProjectCarouselFull` (placeholder esquecido; deveria receber o título do projeto).
+- O botão de currículo (`DownloadResumeButton`) aparece sempre que há `fileResumeId`, mesmo se o arquivo não existir no Drive ou for privado. Comportamento esperado já especificado em `src/app/about/components/ResumeAvailability.test.tsx` (aviso desabilitado "Currículo indisponível no momento"); esses 4 testes falham até a verificação ser implementada.
 - `ExperienceCard` não exibe o rótulo de tipo das experiências acadêmicas (`typeComplement` `degree`/`bootcamp` já é entregue pelo data layer, mas `typeLabels` só cobre os tipos profissionais).
