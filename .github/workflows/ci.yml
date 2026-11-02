@@ -72,3 +72,46 @@ jobs:
           # Banco inexistente: as queries falham rápido e o PrefetchBoundary
           # renderiza a versão padrão (valida também o modo "banco fora do ar").
           DATABASE_URL: postgres://ci:ci@127.0.0.1:5432/ci
+
+  # Deploy só em push (nunca em PR), depois da CI passar.
+  # develop → environment "preview" | main → environment "production".
+  deploy-preview:
+    name: Deploy Preview (Vercel)
+    runs-on: ubuntu-latest
+    needs: ci
+    timeout-minutes: 10
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    environment:
+      name: preview
+
+    steps:
+      - name: Trigger Vercel deploy hook (preview)
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEV_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "::error::Secret DEV_DEPLOY_HOOK_URL não configurado no environment preview."
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error -X POST "$DEPLOY_HOOK_URL"
+
+  deploy-production:
+    name: Deploy Production (Vercel)
+    runs-on: ubuntu-latest
+    needs: ci
+    timeout-minutes: 10
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://portfolio-lucasfidelis.vercel.app
+
+    steps:
+      - name: Trigger Vercel deploy hook (production)
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.PROD_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "::error::Secret PROD_DEPLOY_HOOK_URL não configurado no environment production."
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error -X POST "$DEPLOY_HOOK_URL"
