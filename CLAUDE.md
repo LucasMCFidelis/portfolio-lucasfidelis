@@ -34,7 +34,7 @@ npm run test:coverage      # jest --coverage (relatório em ./coverage, ignorado
 
 ### CI
 
-`.github/workflows/ci.yml` roda em push/PR para `main` e `develop`: lint → `tsc --noEmit` → `jest --coverage --ci` (relatório como artefato) → `next build`. O build usa uma `DATABASE_URL` fictícia (sem banco): as queries falham rápido e as páginas saem com a versão padrão, então a CI não precisa de secrets. Depois da CI, em **push** (nunca em PR), um job de deploy chama o deploy hook da Vercel via POST: `develop` → environment `preview` (secret `DEV_DEPLOY_HOOK_URL`), `main` → environment `production` (secret `PROD_DEPLOY_HOOK_URL`). Os deploys automáticos da integração Git da Vercel estão desligados em `vercel.json` (`git.deploymentEnabled: false`), para que só o pipeline faça deploy.
+`.github/workflows/ci.yml` roda em push/PR para `main` e `develop`: lint → `tsc --noEmit` → `jest --coverage --ci` (relatório como artefato) → `next build`. O build usa uma `DATABASE_URL` fictícia (sem banco): as queries falham rápido e as páginas saem com a versão padrão, então a CI não precisa de secrets. Depois da CI, em **push** (nunca em PR), um job faz o deploy do commit testado com a Vercel CLI (versão fixada em `VERCEL_CLI` no workflow; build roda na Vercel): `develop` → `vercel deploy` (environment `preview`), `main` → `vercel deploy --prod` (environment `production`). Secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. Os deploys automáticos da integração Git da Vercel estão desligados em `vercel.json` (`git.deploymentEnabled: false`) — isso também bloqueia deploy hooks, por isso o deploy é via CLI.
 
 ### Testes
 

@@ -73,45 +73,74 @@ jobs:
           # renderiza a versão padrão (valida também o modo "banco fora do ar").
           DATABASE_URL: postgres://ci:ci@127.0.0.1:5432/ci
 
-  # Deploy só em push (nunca em PR), depois da CI passar.
+  # Deploy só em push (nunca em PR), depois da CI passar, do mesmo commit testado.
   # develop → environment "preview" | main → environment "production".
+  # Os deploys automáticos da Vercel estão desligados em vercel.json
+  # (git.deploymentEnabled: false); o build roda na Vercel com as variáveis do projeto.
   deploy-preview:
     name: Deploy Preview (Vercel)
     runs-on: ubuntu-latest
     needs: ci
-    timeout-minutes: 10
+    timeout-minutes: 15
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     environment:
       name: preview
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      VERCEL_CLI: vercel@65.9.0
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
-      - name: Trigger Vercel deploy hook (preview)
-        env:
-          DEPLOY_HOOK_URL: ${{ secrets.DEV_DEPLOY_HOOK_URL }}
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check Vercel secrets
         run: |
-          if [ -z "$DEPLOY_HOOK_URL" ]; then
-            echo "::error::Secret DEV_DEPLOY_HOOK_URL não configurado no environment preview."
-            exit 1
-          fi
-          curl --fail-with-body --silent --show-error -X POST "$DEPLOY_HOOK_URL"
+          for name in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Secret $name não configurado (repositório ou environment preview)."
+              exit 1
+            fi
+          done
+
+      - name: Deploy to Vercel (preview)
+        id: deploy
+        run: |
+          url=$(npx --yes "$VERCEL_CLI" deploy --yes --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Preview: $url" >> "$GITHUB_STEP_SUMMARY"
 
   deploy-production:
     name: Deploy Production (Vercel)
     runs-on: ubuntu-latest
     needs: ci
-    timeout-minutes: 10
+    timeout-minutes: 15
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: production
       url: https://portfolio-lucasfidelis.vercel.app
+    env:
+      VERCEL_CLI: vercel@65.9.0
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
-      - name: Trigger Vercel deploy hook (production)
-        env:
-          DEPLOY_HOOK_URL: ${{ secrets.PROD_DEPLOY_HOOK_URL }}
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Check Vercel secrets
         run: |
-          if [ -z "$DEPLOY_HOOK_URL" ]; then
-            echo "::error::Secret PROD_DEPLOY_HOOK_URL não configurado no environment production."
-            exit 1
-          fi
-          curl --fail-with-body --silent --show-error -X POST "$DEPLOY_HOOK_URL"
+          for name in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Secret $name não configurado (repositório ou environment production)."
+              exit 1
+            fi
+          done
+
+      - name: Deploy to Vercel (production)
+        run: |
+          url=$(npx --yes "$VERCEL_CLI" deploy --prod --yes --token="$VERCEL_TOKEN")
+          echo "Production: $url" >> "$GITHUB_STEP_SUMMARY"
