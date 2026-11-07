@@ -9,7 +9,9 @@ const config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
-  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
+  // e2e/ é o pacote do Playwright (*.spec.ts), que roda separado.
+  testPathIgnorePatterns: ["/node_modules/", "/.next/", "<rootDir>/e2e/"],
+  modulePathIgnorePatterns: ["<rootDir>/e2e/"],
   collectCoverageFrom: [
     "src/**/*.{ts,tsx}",
     "!src/components/ui/**",

@@ -30,6 +30,8 @@ npx drizzle-kit push       # aplica o schema direto no banco
 npm test                   # jest (testes unitários)
 npm run test:watch         # jest --watch
 npm run test:coverage      # jest --coverage (relatório em ./coverage, ignorado pelo git)
+npm run e2e:setup          # instala o pacote e2e/ (npm ci) + Chromium do Playwright
+npm run test:e2e           # playwright test (sobe o `next dev` sozinho ou reaproveita um já aberto)
 ```
 
 ### CI
@@ -43,6 +45,14 @@ npm run test:coverage      # jest --coverage (relatório em ./coverage, ignorado
 - Helpers em `src/test/`: `renderWithQueryClient` / `createQueryWrapper` (QueryClient novo por teste, `retry: false`) e `fixtures.ts` (DTOs de exemplo).
 - Componentes que leem dados: mocke a **action** (não o hook) e sempre com factory — `jest.mock("@/actions/x/getX", () => ({ getX: jest.fn() }))`. Sem factory o Jest carrega o módulo real, que importa `@/db` e quebra sem `DATABASE_URL`. Actions são testadas mockando `@/db` (`db.query.<tabela>.findMany`).
 - Todo componente com dados deve ter teste do **estado de erro** (action rejeitada → `DataUnavailable` com `#unavailable-<id>` e retry, ou versão padrão + `#fallback-content-notice`). Como o aviso também aparece durante o carregamento, espere a falha de fato: `findByText("Tentar novamente")` (habilitado) ou `queryClient.getQueryState(key)?.status === "error"`.
+
+### Testes E2E (Playwright)
+
+- Ficam em `e2e/`, um **pacote npm independente** (`package.json`, `package-lock.json`, `tsconfig.json` e `node_modules` próprios). Não é workspace: `npm ci` na raiz não instala o Playwright, e o deploy ignora a pasta (`.vercelignore`). Lint, `tsc` e Jest da raiz excluem `e2e/`.
+- Dependências do e2e são instaladas **dentro de `e2e/`** (`npm --prefix e2e i -D <pkg>`), nunca no `package.json` da raiz.
+- `e2e/playwright.config.ts`: projetos `chromium` (desktop) e `mobile-chrome` (Pixel 7). O `webServer` roda na raiz (`cwd: ".."`): `npm run dev` localmente e `npm run build && npm run start` com `CI=true`. Com `E2E_BASE_URL` (ex.: URL de preview da Vercel) nenhum servidor é iniciado; `E2E_PORT` muda a porta local (padrão 3000).
+- Scripts dentro de `e2e/`: `test`, `test:headed`, `test:ui`, `test:debug`, `report`, `codegen`, `typecheck`.
+- Testes em `e2e/tests/*.spec.ts`. Use os `id`/`aria-label` estáveis da UI e não dependa do conteúdo do banco (os smoke tests passam também com a versão padrão das páginas).
 
 ### Variáveis de ambiente (`.env`, ignorado pelo git — nunca commitar)
 
@@ -93,6 +103,7 @@ src/
 └── utils/                    # Funções puras e constantes (formatDate, appSections, scrollToContactSession…)
 public/                       # Estáticos (icon.svg, profile.jpeg)
 drizzle/                      # Migrations geradas (drizzle-kit)
+e2e/                          # Pacote independente de testes E2E (Playwright): config, tsconfig e tests/*.spec.ts
 ```
 
 Alias de import: `@/*` → `./src/*`. Dentro da mesma pasta de feature, imports relativos (`./`, `../`) são aceitos (ex.: `../SectionWrapper` em `sections/`); entre áreas diferentes, use `@/`.

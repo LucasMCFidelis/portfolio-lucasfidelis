@@ -1,0 +1,2 @@
+# Pacote de testes E2E (Playwright): não faz parte do deploy.
+e2e/
