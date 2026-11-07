@@ -27,6 +27,9 @@ npm run lint     # eslint . (imports fora de ordem são ERRO)
 npx tsc --noEmit # checagem de tipos
 npx drizzle-kit generate   # gera migration em ./drizzle a partir de src/db/schema.ts
 npx drizzle-kit push       # aplica o schema direto no banco
+npm run db:push            # mesmo que o anterior (na CI: `npm run db:push -- --force`)
+npm run db:seed            # APAGA o conteúdo das tabelas e insere os dados de src/db/seed/seedData.ts
+                           # (só em host local; para outro host exige SEED_ALLOW_REMOTE=true)
 npm test                   # jest (testes unitários)
 npm run test:watch         # jest --watch
 npm run test:coverage      # jest --coverage (relatório em ./coverage, ignorado pelo git)
@@ -36,7 +39,7 @@ npm run test:e2e           # playwright test (sobe o `next dev` sozinho ou reapr
 
 ### CI
 
-`.github/workflows/ci.yml` roda em push/PR para `main` e `develop`: lint → `tsc --noEmit` → `jest --coverage --ci` (relatório como artefato) → `next build`. O build usa uma `DATABASE_URL` fictícia (sem banco): as queries falham rápido e as páginas saem com a versão padrão, então a CI não precisa de secrets. Depois da CI, em **push** (nunca em PR), um job faz o deploy do commit testado com a Vercel CLI (versão fixada em `VERCEL_CLI` no workflow; build roda na Vercel): `develop` → `vercel deploy` (environment `preview`), `main` → `vercel deploy --prod` (environment `production`). Secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. Os deploys automáticos da integração Git da Vercel estão desligados em `vercel.json` (`git.deploymentEnabled: false`) — isso também bloqueia deploy hooks, por isso o deploy é via CLI.
+`.github/workflows/ci.yml` roda em push/PR para `main` e `develop`: sobe um Postgres descartável (`services: postgres`) → `db:push` (schema) → `db:seed` (conteúdo fictício) → lint → `tsc --noEmit` → `jest --coverage --ci` (relatório como artefato) → `next build` → testes e2e. Build e e2e leem o banco populado pelo seed; a CI não precisa de secrets. Depois da CI, em **push** (nunca em PR), um job faz o deploy do commit testado com a Vercel CLI (versão fixada em `VERCEL_CLI` no workflow; build roda na Vercel): `develop` → `vercel deploy` (environment `preview`), `main` → `vercel deploy --prod` (environment `production`). Secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. Os deploys automáticos da integração Git da Vercel estão desligados em `vercel.json` (`git.deploymentEnabled: false`) — isso também bloqueia deploy hooks, por isso o deploy é via CLI.
 
 ### Testes
 
@@ -92,7 +95,8 @@ src/
 │       └── map*.ts           # Mapeadores banco → UI (usados pelas actions)
 ├── db/
 │   ├── index.ts              # Instância `db` do Drizzle
-│   └── schema.ts             # Tabelas, enums e relations
+│   ├── schema.ts             # Tabelas, enums e relations
+│   └── seed/                 # `npm run db:seed`: index.ts (runner) + seedData.ts (conteúdo fictício)
 ├── hooks/states/             # Hooks de estado/contexto (useThemeContext)
 ├── lib/
 │   ├── utils.ts              # `cn()` (clsx + tailwind-merge) — convenção shadcn
